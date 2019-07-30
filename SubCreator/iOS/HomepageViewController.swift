@@ -75,42 +75,21 @@ class HomepageViewController: BaseViewController, View {
             }
             .disposed(by: disposeBag)
         
+        collectionView.rx.willDisplayCell
+            .subscribe(onNext: { (cell, ip) in
+                cell.transform = CGAffineTransform(a: 1.4, b: 0, c: 0, d: 1.4, tx: 10, ty: 10)
+                UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+                    cell.transform = CGAffineTransform.identity
+                })
+            })
+            .disposed(by: disposeBag)
+        
         editButton.rx.tap
             .map { [unowned self] in !self.editButton.isSelected }
             .throttle(1, scheduler: MainScheduler.instance)
             .distinctUntilChanged()
             .do(onNext: { [unowned self] (isSelected) in
-                print(isSelected)
-                if isSelected {
-                    self.myCreationButton.isHidden = !isSelected
-                    self.myCollectionButton.isHidden = !isSelected
-                    UIView.animate(withDuration: 0.5,
-                                   delay: 0,
-                                   usingSpringWithDamping: 0.5,
-                                   initialSpringVelocity: 1,
-                                   options: UIView.AnimationOptions.curveEaseInOut,
-                                   animations: {
-                                    self.myCollectionButton.transform = CGAffineTransform(translationX: 0, y: -65)
-                                    self.myCreationButton.transform = CGAffineTransform(translationX: 0, y: -110)
-                    })
-                } else {
-                    UIView.animate(withDuration: 0.5,
-                                   delay: 0,
-                                   usingSpringWithDamping: 0.5,
-                                   initialSpringVelocity: 1,
-                                   options: UIView.AnimationOptions.curveEaseOut,
-                                   animations: {
-                                    self.myCollectionButton.transform = CGAffineTransform.identity
-                                    self.myCreationButton.transform = CGAffineTransform.identity
-                                    self.myCollectionButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                                    self.myCreationButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                    }, completion: { (_) in
-                        self.myCollectionButton.transform = CGAffineTransform.identity
-                        self.myCreationButton.transform = CGAffineTransform.identity
-                        self.myCreationButton.isHidden = !isSelected
-                        self.myCollectionButton.isHidden = !isSelected
-                    })
-                }
+                self.editButtonTapped(isSelected)
             })
             .bind(to: editButton.rx.isSelected)
             .disposed(by: disposeBag)
@@ -143,6 +122,39 @@ class HomepageViewController: BaseViewController, View {
             .mt.layout { (make) in
                 make.right.equalTo(-12)
                 make.centerY.equalTo(editButton)
+        }
+    }
+    
+    private func editButtonTapped(_ isSelected: Bool) {
+        if isSelected {
+            self.myCreationButton.isHidden = !isSelected
+            self.myCollectionButton.isHidden = !isSelected
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 1,
+                           options: UIView.AnimationOptions.curveEaseInOut,
+                           animations: {
+                            self.myCollectionButton.transform = CGAffineTransform(translationX: 0, y: -65)
+                            self.myCreationButton.transform = CGAffineTransform(translationX: 0, y: -110)
+            })
+        } else {
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 1,
+                           options: UIView.AnimationOptions.curveEaseOut,
+                           animations: {
+                            self.myCollectionButton.transform = CGAffineTransform.identity
+                            self.myCreationButton.transform = CGAffineTransform.identity
+                            self.myCollectionButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                            self.myCreationButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            }, completion: { (_) in
+                self.myCollectionButton.transform = CGAffineTransform.identity
+                self.myCreationButton.transform = CGAffineTransform.identity
+                self.myCreationButton.isHidden = !isSelected
+                self.myCollectionButton.isHidden = !isSelected
+            })
         }
     }
     
