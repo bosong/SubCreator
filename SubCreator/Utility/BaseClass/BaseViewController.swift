@@ -22,6 +22,7 @@ class BaseViewController: UIViewController {
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
+        view.backgroundColor = .white
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -37,15 +38,9 @@ class BaseViewController: UIViewController {
     }
     
     // MARK: - Layout Constraints
-    
-    private(set) var didSetupConstraints = false
-    
-    override open func updateViewConstraints() {
-        if !didSetupConstraints {
-            setupConstraints()
-            didSetupConstraints = true
-        }
-        super.updateViewConstraints()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        setupConstraints()
     }
     
     open func setupConstraints() {

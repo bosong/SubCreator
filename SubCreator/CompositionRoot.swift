@@ -20,10 +20,10 @@ public final class CompositionRoot {
     public static func resolve() -> AppDependency {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
+        window.backgroundColor = .white
         let homepageVC = HomepageViewController()
         homepageVC.reactor = HomepageViewReactor()
-        window.rootViewController =
-            UINavigationController(rootViewController: homepageVC)
+        window.rootViewController = UINavigationController(rootViewController: homepageVC)
         window.makeKeyAndVisible()
         
         return AppDependency(window: window,
@@ -40,7 +40,9 @@ public final class CompositionRoot {
     
     /// ConfigureAppearance for App
     static func configureAppearance() {
-        
+        UINavigationBar.appearance().tintColor = .black
+        UINavigationBar.appearance().shadowImage = UIImage.resizable().color(.white).image
+        UINavigationBar.appearance().backgroundColor = UIColor.white
     }
     
     /// ConfigurePreferences for App

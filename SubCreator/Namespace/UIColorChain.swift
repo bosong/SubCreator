@@ -10,5 +10,6 @@ import UIKit
 
 extension UIColor: NamespaceWrappable { }
 extension NamespaceWrapper where T: UIColor {
-    
+    static var theme: UIColor { return UIColor(hex: 0xFFDF45) }
+    static var lightGray: UIColor { return UIColor(hex: 0xD8D8D8) }
 }

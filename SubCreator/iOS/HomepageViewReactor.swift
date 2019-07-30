@@ -19,12 +19,13 @@ class HomepageViewReactor: Reactor {
     }
     
     struct State {
-        
+        var data: [UIImage]
     }
     
-    var initialState = State()
+    var initialState: State
     
     init() {
-        
+        let imgs = Array(repeating: R.image.图()!, count: 100)
+        initialState = State(data: imgs)
     }
 }
