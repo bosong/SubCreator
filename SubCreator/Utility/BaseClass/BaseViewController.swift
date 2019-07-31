@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class BaseViewController: UIViewController {
     // MARK: - Properties
@@ -74,7 +75,20 @@ class BaseViewController: UIViewController {
     @objc public func pop() {
         navigationController?.popViewController(animated: true)
     }
+}
 
+extension Reactive where Base: BaseViewController {
+    func pop() -> Binder<Void> {
+        return Binder<Void>.init(base, binding: { (vc, _) in
+            vc.navigationController?.popViewController(animated: true)
+        })
+    }
+    
+    func dismiss() -> Binder<Void> {
+        return Binder<Void>.init(base, binding: { (vc, _) in
+            vc.dismiss(animated: true, completion: nil)
+        })
+    }
 }
 
 extension BaseViewController: UIGestureRecognizerDelegate {

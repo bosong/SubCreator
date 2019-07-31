@@ -36,6 +36,9 @@
 		586FE18922F02B1300A0EF82 /* UIColor+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE18822F02B1300A0EF82 /* UIColor+Ex.swift */; };
 		586FE18B22F02E9900A0EF82 /* Constant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE18A22F02E9900A0EF82 /* Constant.swift */; };
 		586FE18D22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE18C22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift */; };
+		586FE19122F1390900A0EF82 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE19022F1390900A0EF82 /* DetailViewController.swift */; };
+		586FE19322F139F500A0EF82 /* CALayer+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE19222F139F500A0EF82 /* CALayer+Ex.swift */; };
+		586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */; };
 		EAE903D5F360A3F8EE3F4714 /* Pods_SubCreatorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F451B4CE6CD66C051455D15A /* Pods_SubCreatorUITests.framework */; };
 		F351878A9F59A1615E7B9BF8 /* Pods_SubCreatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */; };
 /* End PBXBuildFile section */
@@ -93,6 +96,9 @@
 		586FE18822F02B1300A0EF82 /* UIColor+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Ex.swift"; sourceTree = "<group>"; };
 		586FE18A22F02E9900A0EF82 /* Constant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constant.swift; sourceTree = "<group>"; };
 		586FE18C22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageCollectionViewCell.swift; sourceTree = "<group>"; };
+		586FE19022F1390900A0EF82 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		586FE19222F139F500A0EF82 /* CALayer+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+Ex.swift"; sourceTree = "<group>"; };
+		586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubCreatorViewController.swift; sourceTree = "<group>"; };
 		5C1B0FF4AF7157292C44BFC6 /* Pods-SubCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreator.release.xcconfig"; path = "Target Support Files/Pods-SubCreator/Pods-SubCreator.release.xcconfig"; sourceTree = "<group>"; };
 		64A44AF438ECBC225B379F25 /* Pods-SubCreatorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreatorUITests.release.xcconfig"; path = "Target Support Files/Pods-SubCreatorUITests/Pods-SubCreatorUITests.release.xcconfig"; sourceTree = "<group>"; };
 		81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SubCreatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,6 +212,7 @@
 				586FE18822F02B1300A0EF82 /* UIColor+Ex.swift */,
 				586FE16122EFF5B300A0EF82 /* UICollectionView+Ex.swift */,
 				586FE16522EFF5B400A0EF82 /* UITableView+Ex.swift */,
+				586FE19222F139F500A0EF82 /* CALayer+Ex.swift */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -256,8 +263,10 @@
 			isa = PBXGroup;
 			children = (
 				586FE15522EFF58900A0EF82 /* HomepageViewController.swift */,
-				586FE18C22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift */,
 				586FE17222EFF69800A0EF82 /* HomepageViewReactor.swift */,
+				586FE19022F1390900A0EF82 /* DetailViewController.swift */,
+				586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */,
+				586FE18C22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift */,
 				586FE18A22F02E9900A0EF82 /* Constant.swift */,
 			);
 			path = iOS;
@@ -547,10 +556,12 @@
 				586FE16B22EFF5B400A0EF82 /* Then.swift in Sources */,
 				586FE18B22F02E9900A0EF82 /* Constant.swift in Sources */,
 				586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */,
+				586FE19122F1390900A0EF82 /* DetailViewController.swift in Sources */,
 				586FE16E22EFF5B400A0EF82 /* MJRefresh+Rx.swift in Sources */,
 				586FE18922F02B1300A0EF82 /* UIColor+Ex.swift in Sources */,
 				586FE15622EFF58900A0EF82 /* HomepageViewController.swift in Sources */,
 				586FE17922EFF79F00A0EF82 /* UIViewChain.swift in Sources */,
+				586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */,
 				586FE18722F0217600A0EF82 /* SwiftyImage.swift in Sources */,
 				586FE15C22EFF5A100A0EF82 /* BaseTableViewCell.swift in Sources */,
 				586FE16922EFF5B400A0EF82 /* UICollectionView+Ex.swift in Sources */,
@@ -559,6 +570,7 @@
 				586FE16A22EFF5B400A0EF82 /* UIViewController+Rx.swift in Sources */,
 				586FE18D22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift in Sources */,
 				586FE15D22EFF5A100A0EF82 /* BaseViewController.swift in Sources */,
+				586FE19322F139F500A0EF82 /* CALayer+Ex.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

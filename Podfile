@@ -15,6 +15,7 @@ target 'SubCreator' do
   pod 'Kingfisher'
   pod 'SnapKit'
   pod 'R.swift'
+  pod 'Hero'
   # Pods for SubCreator
 
   target 'SubCreatorTests' do

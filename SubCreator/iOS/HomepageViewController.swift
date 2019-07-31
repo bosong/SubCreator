@@ -63,6 +63,7 @@ class HomepageViewController: BaseViewController, View {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
+        editButton.hero.id = "bottomButton"
     }
     
     // MARK: - SEL
@@ -77,10 +78,30 @@ class HomepageViewController: BaseViewController, View {
         
         collectionView.rx.willDisplayCell
             .subscribe(onNext: { (cell, ip) in
-                cell.transform = CGAffineTransform(a: 1.4, b: 0, c: 0, d: 1.4, tx: 10, ty: 10)
-                UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
-                    cell.transform = CGAffineTransform.identity
+                let col = ip.item % 3
+                let delayTime = Double(col) / Double(10)
+                cell.transform = CGAffineTransform(a: 0.6, b: 0, c: 0, d: 0.6, tx: -10, ty: -10)
+                cell.alpha = 0.5
+                DispatchQueue.main.asyncAfter(deadline: .now() + delayTime, execute: {
+                    UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseInOut, animations: {
+                        cell.alpha = 1
+                        cell.transform = CGAffineTransform.identity
+                    })
                 })
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { [unowned self] (ip) in
+                let cell = self.collectionView.cellForItem(at: ip)
+                cell?.hero.id = "homepageCell\(ip.item)"
+                let detailVC = DetailViewController()
+                detailVC.subCreatorButton.hero.id = self.editButton.hero.id
+                detailVC.cardView.hero.id = cell?.hero.id
+                detailVC.shareButton.hero.id = self.editButton.hero.id
+                detailVC.saveButton.hero.id = self.editButton.hero.id
+                detailVC.collectButton.hero.id = self.editButton.hero.id
+                self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
         
