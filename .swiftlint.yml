@@ -4,6 +4,7 @@ excluded:
   - ./R.generated.swift
   - SubCreatorTests
   - SubCreatorUITests
+  - ./SubCreator/Utility/Device
 disabled_rules:
   - trailing_whitespace
 

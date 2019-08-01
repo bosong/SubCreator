@@ -128,7 +128,7 @@ class HomepageViewController: BaseViewController, View {
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.right.equalTo(-10)
-                make.bottom.equalTo(-safeAreaBottomHeight - 30)
+                make.bottom.equalTo(-safeAreaBottomMargin - 30)
         }
         
         view.insertSubview(myCreationButton, belowSubview: editButton)

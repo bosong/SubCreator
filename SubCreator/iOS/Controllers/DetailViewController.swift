@@ -121,7 +121,7 @@ class DetailViewController: BaseViewController {
         subCreatorButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.bottom.equalTo(-80 - safeAreaBottomHeight)
+                make.bottom.equalTo(-80 - safeAreaBottomMargin)
                 make.centerX.equalToSuperview()
                 make.size.equalTo(CGSize(width: 80, height: 80))
         }

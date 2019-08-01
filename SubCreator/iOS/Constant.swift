@@ -13,6 +13,7 @@ let statusBarHeight: CGFloat = ((UIApplication.shared.statusBarFrame.height == 0
     (isIphoneX ? 44.0 : 20.0) :
     (UIApplication.shared.statusBarFrame.height))
 
+let screenFrame = UIScreen.main.bounds
 let screenWidth = UIScreen.main.bounds.size.width
 let screenHeight = UIScreen.main.bounds.size.height
 
@@ -27,9 +28,10 @@ let safeAreaTopHeight = (statusBarHeight)
 
 /// 安全区域顶部位移 == IphoneX状态栏高度变化
 let safeAreaTopMargin: CGFloat = (isIphoneX ? 24.0 : 0.0)
+let safeAreaNavTop: CGFloat = UIApplication.shared.statusBarFrame.size.height + 44
 
 /// 安全区域底部间隙 == 底部进入主屏幕手势标识高度
-let safeAreaBottomHeight: CGFloat = (isIphoneX ? 34.0 : 0.0)
+public let safeAreaBottomMargin: CGFloat = isIphoneX ? 34 : 0
 
 /// iPhoneX
-let isIphoneX = ((screenWidth == 375) && (screenHeight == 812))
+let isIphoneX = Device.isGreatOrEqualToiPhoneX
