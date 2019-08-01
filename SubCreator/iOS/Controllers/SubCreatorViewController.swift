@@ -39,6 +39,8 @@ class SubCreatorViewController: BaseViewController {
         $0.sizeToFit()
     }
     let toolBar = SubCreatorToolBar(frame: CGRect(x: 0, y: screenHeight - 50, width: screenWidth, height: 50))
+    let inputTextView = InputTextView()
+    let toolBarStyleItemView = ToolBarStyleItemView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217))
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
@@ -52,6 +54,54 @@ class SubCreatorViewController: BaseViewController {
         self.backButton.rx.tap
             .bind(to: self.rx.dismiss())
             .disposed(by: disposeBag)
+        
+        toolBar.event
+            .subscribe(onNext: { [unowned self] (item) in
+                switch item {
+                case .text:
+                    break
+                case .face:
+//                    self.inputTextView.textView.resignFirstResponder()
+                    
+//                    self.inputTextView.textView.inputView = ToolBarStyleItemView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217))
+                    self.toolBar.inputView = self.toolBarStyleItemView
+                    self.toolBar.becomeFirstResponder()
+                case .style:
+                    self.toolBar.inputView = self.inputTextView
+                    self.inputTextView.textView.becomeFirstResponder()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        NotificationCenter.default.rx
+            .notification(UIResponder.keyboardWillShowNotification)
+            .takeUntil(rx.deallocated)
+            .subscribe(onNext: { [weak self] (notification) in
+                guard let self = self,
+                    let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+                        return
+                }
+                let size = value.cgRectValue.size
+                let keyboardHeight =  UIInterfaceOrientation.portrait.isLandscape ? size.width : size.height
+                var toolBarY: CGFloat = 0
+                switch self.toolBar.currentSelected.value {
+                case .text:
+                    toolBarY = screenHeight - self.toolBar.frame.height - keyboardHeight
+                case .face:
+                    toolBarY = screenHeight - self.toolBar.frame.height - keyboardHeight
+                case .style:
+                    toolBarY = self.inputTextView.frame.minY - self.toolBar.frame.height
+                }
+                self.toolBar.frame = CGRect(origin: CGPoint(x: 0, y: toolBarY), size: self.toolBar.frame.size)
+            })
+            .disposed(by: disposeBag)
+//        inputTextView
+//            .textViewHeightObservable
+//            .subscribe(onNext: { [unowned self] (_) in
+//                let toolBarY = self.inputTextView.frame.minY - self.toolBar.frame.height
+//                self.toolBar.frame = CGRect(origin: CGPoint(x: 0, y: toolBarY), size: self.toolBar.frame.size)
+//            })
+//            .disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -111,6 +161,7 @@ class SubCreatorViewController: BaseViewController {
         }
         
         view.addSubview(toolBar)
+        view.addSubview(self.inputTextView)
     }
     // MARK: - Private Functions
 }

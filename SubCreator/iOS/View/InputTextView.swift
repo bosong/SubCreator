@@ -79,7 +79,8 @@ class InputTextView: UIView {
             (textView.font?.lineHeight ?? 0) + 2 * topBottomInset) + 10
         
         textView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: textViewHeight)
-        frame = CGRect(x: 0, y: 736 - keyboardHeight - textViewHeight, width: screenWidth, height: textViewHeight + keyboardHeight)
+        let inputTextViewY = keyboardHeight == 0 ? screenHeight : screenHeight - keyboardHeight - textViewHeight
+        frame = CGRect(x: 0, y: inputTextViewY, width: screenWidth, height: textViewHeight + keyboardHeight)
         textViewHeightSubject.onNext(frame.height)
     }
     

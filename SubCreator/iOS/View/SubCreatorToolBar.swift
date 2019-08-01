@@ -18,9 +18,23 @@ enum ToolBarItem {
 
 class SubCreatorToolBar: BaseView {
     var event = PublishRelay<ToolBarItem>()
-    
+    var currentSelected = BehaviorRelay<ToolBarItem>(value: .style)
+    var toolBarInputView: UIView = UIView()
     private let items: [ToolBarItem] = [.face, .style, .text]
     private let disposeBag = DisposeBag()
+    
+    override var inputView: UIView {
+        set {
+            self.toolBarInputView = newValue
+            self.becomeFirstResponder()
+        }
+        get {
+            return self.toolBarInputView
+        }
+    }
+    override var canBecomeFocused: Bool {
+        return true
+    }
     
     override func setupSubviews() {
         backgroundColor = UIColor.white
@@ -31,15 +45,21 @@ class SubCreatorToolBar: BaseView {
             switch item {
             case .face:
                 button.setImage(R.image.toobar_item_face(), for: .normal)
-                button.rx.tap
-                    .map { ToolBarItem.face }
+                let tapped = button.rx.tap.map { ToolBarItem.face }.share()
+                tapped
                     .bind(to: event)
+                    .disposed(by: disposeBag)
+                tapped
+                    .bind(to: currentSelected)
                     .disposed(by: disposeBag)
             case .style:
                 button.setImage(R.image.toobar_item_style(), for: .normal)
-                button.rx.tap
-                    .map { ToolBarItem.style }
+                let tapped = button.rx.tap.map { ToolBarItem.style }
+                tapped
                     .bind(to: event)
+                    .disposed(by: disposeBag)
+                tapped
+                    .bind(to: currentSelected)
                     .disposed(by: disposeBag)
             case .text:
                 button.setTitle("字", for: .normal)
