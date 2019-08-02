@@ -48,6 +48,9 @@
 		586FE21122F28A4B00A0EF82 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE20D22F28A4B00A0EF82 /* Device.swift */; };
 		586FE21322F28DCF00A0EF82 /* NSAttributedString+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21222F28DCF00A0EF82 /* NSAttributedString+Ex.swift */; };
 		586FE21722F28E7600A0EF82 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */; };
+		586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21822F297A700A0EF82 /* TaskViewController.swift */; };
+		58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF556D22F41557009E8CCC /* UIView+Extension.swift */; };
+		58FF557022F4344B009E8CCC /* GJJHPJW--GB1-0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */; };
 		EAE903D5F360A3F8EE3F4714 /* Pods_SubCreatorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F451B4CE6CD66C051455D15A /* Pods_SubCreatorUITests.framework */; };
 		F351878A9F59A1615E7B9BF8 /* Pods_SubCreatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */; };
 /* End PBXBuildFile section */
@@ -119,6 +122,9 @@
 		586FE21422F28E7500A0EF82 /* SubCreator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SubCreator-Bridging-Header.h"; sourceTree = "<group>"; };
 		586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		586FE21622F28E7600A0EF82 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
+		586FE21822F297A700A0EF82 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
+		58FF556D22F41557009E8CCC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
+		58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GJJHPJW--GB1-0.ttf"; sourceTree = "<group>"; };
 		5C1B0FF4AF7157292C44BFC6 /* Pods-SubCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreator.release.xcconfig"; path = "Target Support Files/Pods-SubCreator/Pods-SubCreator.release.xcconfig"; sourceTree = "<group>"; };
 		64A44AF438ECBC225B379F25 /* Pods-SubCreatorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreatorUITests.release.xcconfig"; path = "Target Support Files/Pods-SubCreatorUITests/Pods-SubCreatorUITests.release.xcconfig"; sourceTree = "<group>"; };
 		81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SubCreatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -194,6 +200,7 @@
 			children = (
 				586FE12522EFEBB200A0EF82 /* AppDelegate.swift */,
 				586FE15322EFF4F500A0EF82 /* CompositionRoot.swift */,
+				586FE21822F297A700A0EF82 /* TaskViewController.swift */,
 				586FE18222EFF96800A0EF82 /* iOS */,
 				586FE17422EFF79E00A0EF82 /* Namespace */,
 				586FE16F22EFF5BF00A0EF82 /* Utility */,
@@ -234,6 +241,7 @@
 				586FE20122F2850900A0EF82 /* Optional+Ex.swift */,
 				586FE16122EFF5B300A0EF82 /* UICollectionView+Ex.swift */,
 				586FE21222F28DCF00A0EF82 /* NSAttributedString+Ex.swift */,
+				58FF556D22F41557009E8CCC /* UIView+Extension.swift */,
 				586FE16522EFF5B400A0EF82 /* UITableView+Ex.swift */,
 				586FE19222F139F500A0EF82 /* CALayer+Ex.swift */,
 				586FE21622F28E7600A0EF82 /* UITextView+Placeholder.h */,
@@ -277,6 +285,7 @@
 		586FE18122EFF8FB00A0EF82 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */,
 				586FE18422EFFB6F00A0EF82 /* R.generated.swift */,
 				586FE12C22EFEBB300A0EF82 /* Assets.xcassets */,
 				586FE13122EFEBB300A0EF82 /* Info.plist */,
@@ -451,6 +460,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58FF557022F4344B009E8CCC /* GJJHPJW--GB1-0.ttf in Resources */,
 				586FE12D22EFEBB300A0EF82 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -624,7 +634,9 @@
 				586FE17922EFF79F00A0EF82 /* UIViewChain.swift in Sources */,
 				586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */,
 				586FE18722F0217600A0EF82 /* SwiftyImage.swift in Sources */,
+				586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */,
 				586FE15C22EFF5A100A0EF82 /* BaseTableViewCell.swift in Sources */,
+				58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */,
 				586FE20E22F28A4B00A0EF82 /* DeviceSize.swift in Sources */,
 				586FE16922EFF5B400A0EF82 /* UICollectionView+Ex.swift in Sources */,
 				586FE20822F2899400A0EF82 /* InputTextView.swift in Sources */,

@@ -12,11 +12,25 @@ import RxCocoa
 
 class SubCreatorViewController: BaseViewController {
 
+    struct Metric {
+        static let styleItemViewHeight: CGFloat = 217
+        static let cardViewSize = CGSize(width: screenWidth - 45 * 2, height: screenWidth - 45 * 2)
+        static func textLableFont(size: CGFloat) -> UIFont {
+            return UIFont(name: "GJJHPJW--GB1-0", size: size) ?? UIFont.systemFont(ofSize: size)
+        }
+    }
     // MARK: - Properties
     // MARK: - Initialized
     // MARK: - UI properties
-    let cardView = UIImageView().then {
+    let cardView = UIImageView(frame: CGRect(origin: .zero, size: Metric.cardViewSize)).then {
         $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
+        $0.isUserInteractionEnabled = true
+    }
+    let textLabel = UILabel().then {
+        $0.textColor = UIColor.black
+        $0.font = Metric.textLableFont(size: 28)
+        $0.numberOfLines = 0
+        $0.isUserInteractionEnabled = true
     }
     let backButton = UIButton(type: .custom).then {
         $0.setImage(R.image.navigation_bar_back(), for: .normal)
@@ -40,15 +54,14 @@ class SubCreatorViewController: BaseViewController {
     }
     let toolBar = SubCreatorToolBar(frame: CGRect(x: 0, y: screenHeight - 50, width: screenWidth, height: 50))
     let inputTextView = InputTextView()
-    let toolBarStyleItemView = ToolBarStyleItemView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217))
+    let toolBarStyleItemView = ToolBarStyleItemView()
+    var toolBarSel: ToolBarItem = .style
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.hero.isEnabled = true
-        //        cardView.hero.id = "card"
-        //        subCreatorButton.hero.id = "bottomButton"
-        //        cardView.hero.modifiers = [.cascade]
         cardView.hero.modifiers = [.scale()]
         cardView.image = R.image.图()
         self.backButton.rx.tap
@@ -57,51 +70,64 @@ class SubCreatorViewController: BaseViewController {
         
         toolBar.event
             .subscribe(onNext: { [unowned self] (item) in
+                self.toolBarSel = item
                 switch item {
                 case .text:
-                    break
-                case .face:
-//                    self.inputTextView.textView.resignFirstResponder()
-                    
-//                    self.inputTextView.textView.inputView = ToolBarStyleItemView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217))
-                    self.toolBar.inputView = self.toolBarStyleItemView
-                    self.toolBar.becomeFirstResponder()
-                case .style:
-                    self.toolBar.inputView = self.inputTextView
                     self.inputTextView.textView.becomeFirstResponder()
+                case .face:
+                    break
+                case .style:
+                    self.toolBarStyleItemView.removeFromSuperview()
+                    self.inputTextView.textView.resignFirstResponder()
+                    self.view.insertSubview(self.toolBarStyleItemView, belowSubview: self.toolBar)
+                    self.toolBarStyleItemView.y = screenHeight
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.toolBarStyleItemView.bottom = screenHeight
+                        self.toolBar.bottom = self.toolBarStyleItemView.y
+                    })
                 }
             })
             .disposed(by: disposeBag)
         
-        NotificationCenter.default.rx
-            .notification(UIResponder.keyboardWillShowNotification)
-            .takeUntil(rx.deallocated)
-            .subscribe(onNext: { [weak self] (notification) in
-                guard let self = self,
-                    let value = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
-                        return
-                }
-                let size = value.cgRectValue.size
-                let keyboardHeight =  UIInterfaceOrientation.portrait.isLandscape ? size.width : size.height
-                var toolBarY: CGFloat = 0
-                switch self.toolBar.currentSelected.value {
-                case .text:
-                    toolBarY = screenHeight - self.toolBar.frame.height - keyboardHeight
-                case .face:
-                    toolBarY = screenHeight - self.toolBar.frame.height - keyboardHeight
-                case .style:
-                    toolBarY = self.inputTextView.frame.minY - self.toolBar.frame.height
-                }
-                self.toolBar.frame = CGRect(origin: CGPoint(x: 0, y: toolBarY), size: self.toolBar.frame.size)
+        inputTextView
+            .textViewHeightObservable
+            .subscribe(onNext: { [unowned self] (_) in
+                guard self.toolBarSel == .text else { return }
+                self.toolBar.bottom = self.inputTextView.y
             })
             .disposed(by: disposeBag)
-//        inputTextView
-//            .textViewHeightObservable
-//            .subscribe(onNext: { [unowned self] (_) in
-//                let toolBarY = self.inputTextView.frame.minY - self.toolBar.frame.height
-//                self.toolBar.frame = CGRect(origin: CGPoint(x: 0, y: toolBarY), size: self.toolBar.frame.size)
-//            })
-//            .disposed(by: disposeBag)
+        
+        inputTextView.textView.rx.text
+            .bind(to: textLabel.rx.text)
+            .disposed(by: disposeBag)
+        
+        toolBarStyleItemView.colorSwitchView
+            .colorSelectedBehavior
+            .asObservable()
+            .subscribe(onNext: { [unowned self] (color) in
+                self.textLabel.textColor = color
+            })
+            .disposed(by: disposeBag)
+        
+        toolBarStyleItemView.fontSliderView
+            .rx.controlEvent(.valueChanged)
+            .map { [unowned self] in self.toolBarStyleItemView.fontSliderView.fraction * 100}
+            .subscribe(onNext: { [unowned self] (value) in
+                self.textLabel.font = Metric.textLableFont(size: value)
+            })
+            .disposed(by: disposeBag)
+        
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:)))
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
+        textLabel.addGestureRecognizer(pan)
+        cardView.addGestureRecognizer(rotate)
+        
+        self.saveButton.rx.tap
+            .subscribe(onNext: { (_) in
+                let arr = Array(self.textLabel.text ?? "")
+                self.textLabel.text = arr.map { $0.description }.joined(separator: "\n")
+            })
+            .disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -115,6 +141,19 @@ class SubCreatorViewController: BaseViewController {
     }
     
     // MARK: - SEL
+    @objc func panGesture(_ gesture: UIPanGestureRecognizer) {
+        let point = gesture.location(in: self.cardView)
+        self.textLabel.transform.tx = point.x - textLabel.center.x
+        self.textLabel.transform.ty = point.y - textLabel.center.y
+
+    }
+    
+    var textLabelRotation: CGFloat = 0
+    @objc func rotateGesture(_ gesture: UIRotationGestureRecognizer) {
+        textLabel.transform = textLabel.transform.rotated(by: gesture.rotation)
+        gesture.rotation = 0
+    }
+    
     // MARK: - Layout
     override func setupConstraints() {
         backButton
@@ -136,7 +175,14 @@ class SubCreatorViewController: BaseViewController {
             .mt.layout { (make) in
                 make.centerX.equalToSuperview()
                 make.top.equalTo(backButton.snp.centerY)
-                make.size.equalTo(screenWidth - 45 * 2)
+                make.size.equalTo(Metric.cardViewSize)
+        }
+        
+        textLabel
+            .mt.adhere(toSuperView: cardView)
+            .mt.layout { (make) in
+                make.center.equalToSuperview()
+                make.size.lessThanOrEqualTo(cardView)
         }
         
         shareButton
@@ -160,8 +206,8 @@ class SubCreatorViewController: BaseViewController {
                 make.centerY.equalTo(shareButton)
         }
         
-        view.addSubview(toolBar)
         view.addSubview(self.inputTextView)
+        view.addSubview(toolBar)
     }
     // MARK: - Private Functions
 }

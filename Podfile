@@ -16,6 +16,7 @@ target 'SubCreator' do
   pod 'SnapKit'
   pod 'R.swift'
   pod 'Hero'
+  pod 'fluid-slider'
   # Pods for SubCreator
 
   target 'SubCreatorTests' do

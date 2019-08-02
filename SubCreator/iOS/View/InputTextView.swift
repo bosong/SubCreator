@@ -102,10 +102,10 @@ class InputTextView: UIView {
     lazy var textView: UITextView = {
         var textView = UITextView()
         textView.backgroundColor = UIColor.clear
-        textView.placeholder = "有什么想法想和大家分享"
-        textView.placeholderColor = UIColor.black
+        textView.placeholder = "赋予它灵魂……"
+        textView.placeholderColor = UIColor.lightGray
         textView.font = UIFont.systemFont(ofSize: 14)
-        textView.returnKeyType = .send
+        textView.returnKeyType = .done
         textView.isScrollEnabled = false
         textView.textContainerInset = UIEdgeInsets(top: topBottomInset, left: leftRightInset, bottom: topBottomInset, right: leftRightInset)
         textView.textContainer.lineBreakMode = .byTruncatingTail
@@ -132,7 +132,8 @@ extension InputTextView: UITextViewDelegate {
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             _postSubject.onNext(textView.text)
-            textView.text = ""
+            textView.resignFirstResponder()
+//            textView.text = ""
             textHeight = textView.font?.lineHeight ?? 0
             textView.resignFirstResponder()
         }

@@ -24,6 +24,7 @@ public final class CompositionRoot {
         let homepageVC = HomepageViewController()
         homepageVC.reactor = HomepageViewReactor()
         window.rootViewController = UINavigationController(rootViewController: homepageVC)
+//        window.rootViewController = UINavigationController(rootViewController: TaskViewController())
         window.makeKeyAndVisible()
         
         return AppDependency(window: window,
