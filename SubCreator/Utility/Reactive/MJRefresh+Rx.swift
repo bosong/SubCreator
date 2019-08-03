@@ -82,6 +82,14 @@ extension Reactive where Base: MJRefreshHeader {
 }
 
 extension Reactive where Base: MJRefreshFooter {
+    public var endRefresh: Binder<Bool> {
+        return Binder.init(base, binding: { (refresher, shouldEnd) in
+            if shouldEnd, refresher.isRefreshing {
+                refresher.endRefreshing()
+            }
+        })
+    }
+    
     public var status: Binder<RefreshStatus> {
         return Binder.init(base, binding: { (refresher, status) in
             switch status {

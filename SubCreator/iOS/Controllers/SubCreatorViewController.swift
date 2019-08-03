@@ -20,7 +20,18 @@ class SubCreatorViewController: BaseViewController {
         }
     }
     // MARK: - Properties
+    private var doneTapped = false
+    
     // MARK: - Initialized
+    init(image: UIImage) {
+        super.init(nibName: nil, bundle: nil)
+        cardView.image = image
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     // MARK: - UI properties
     let cardView = UIImageView(frame: CGRect(origin: .zero, size: Metric.cardViewSize)).then {
         $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
@@ -50,6 +61,7 @@ class SubCreatorViewController: BaseViewController {
     }
     let collectButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_collection(), for: .normal)
+        $0.isHidden = true
         $0.sizeToFit()
     }
     let toolBar = SubCreatorToolBar(frame: CGRect(x: 0, y: screenHeight - 50, width: screenWidth, height: 50))
@@ -63,16 +75,22 @@ class SubCreatorViewController: BaseViewController {
         
         self.hero.isEnabled = true
         cardView.hero.modifiers = [.scale()]
-        cardView.image = R.image.图()
         self.backButton.rx.tap
-            .bind(to: self.rx.dismiss())
+            .subscribe(onNext: { [unowned self] in
+                if self.doneTapped {
+                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+                } else {
+                    self.dismiss(animated: true, completion: nil)
+                }
+            })
             .disposed(by: disposeBag)
         
-        toolBar.event
+        toolBar.currentSelected
             .subscribe(onNext: { [unowned self] (item) in
                 self.toolBarSel = item
                 switch item {
                 case .text:
+                    self.toolBarStyleItemView.removeFromSuperview()
                     self.inputTextView.textView.becomeFirstResponder()
                 case .face:
                     break
@@ -101,6 +119,21 @@ class SubCreatorViewController: BaseViewController {
             .bind(to: textLabel.rx.text)
             .disposed(by: disposeBag)
         
+        toolBarStyleItemView.textDirectionButton
+            .rx.tap
+            .map { [unowned self] in !self.toolBarStyleItemView.textDirectionButton.isSelected }
+            .do(onNext: { (isSelected) in
+                if isSelected {
+                    let arr = Array(self.textLabel.text ?? "")
+                    self.textLabel.text = arr.map { $0.description }.joined(separator: "\n")
+                } else {
+                    let text = self.textLabel.text ?? ""
+                    self.textLabel.text = text.components(separatedBy: "\n").joined()
+                }
+            })
+            .bind(to: toolBarStyleItemView.textDirectionButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
         toolBarStyleItemView.colorSwitchView
             .colorSelectedBehavior
             .asObservable()
@@ -124,8 +157,41 @@ class SubCreatorViewController: BaseViewController {
         
         self.saveButton.rx.tap
             .subscribe(onNext: { (_) in
-                let arr = Array(self.textLabel.text ?? "")
-                self.textLabel.text = arr.map { $0.description }.joined(separator: "\n")
+                SaveImageTools.shared.saveImage(self.cardView.asImage(), completed: { (error) in
+                    error.noneDo {
+                        DispatchQueue.main.async {
+                            message(.success, title: "已保存到手机相册")
+                        }
+                    }
+                })
+            })
+            .disposed(by: disposeBag)
+        
+        self.doneButton.rx.tap
+            .subscribe(onNext: { [unowned self] (_) in
+                CreationCacher.shared.add(ImageWrapper(image: self.cardView.asImage()))
+                message(.success, title: "保存成功，可以再 ->我的创作 中查看")
+                self.doneTapped = true
+                switch self.toolBarSel {
+                case .text:
+                    self.inputTextView.textView.resignFirstResponder()
+                case .style:
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.toolBarStyleItemView.y = screenHeight
+                        self.toolBar.bottom = screenHeight
+                    }, completion: { (_) in
+                        self.toolBarStyleItemView.removeFromSuperview()
+                    })
+                case .face:
+                    break
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
+        self.shareButton.rx.tap
+            .subscribe(onNext: { [unowned self] (_) in
+                Share.shareShow(controller: self, items: [self.cardView.asImage()])
             })
             .disposed(by: disposeBag)
     }
@@ -145,7 +211,21 @@ class SubCreatorViewController: BaseViewController {
         let point = gesture.location(in: self.cardView)
         self.textLabel.transform.tx = point.x - textLabel.center.x
         self.textLabel.transform.ty = point.y - textLabel.center.y
-
+        if textLabel.transform.tx < -cardView.width / 2 + self.textLabel.width / 2 {
+            textLabel.transform.tx = -cardView.width / 2 + self.textLabel.width / 2
+        }
+        if textLabel.transform.tx > cardView.width / 2 - self.textLabel.width / 2 {
+            textLabel.transform.tx = cardView.width / 2 - self.textLabel.width / 2
+        }
+        if textLabel.transform.ty < -cardView.height / 2 + self.textLabel.height / 2 {
+            textLabel.transform.ty = -cardView.height / 2 + self.textLabel.height / 2
+        }
+        if textLabel.transform.ty > cardView.height / 2 - self.textLabel.height / 2 {
+            textLabel.transform.ty = cardView.height / 2 - self.textLabel.height / 2
+        }
+        
+        print(self.textLabel.transform.tx)
+        print(self.textLabel.transform.ty)
     }
     
     var textLabelRotation: CGFloat = 0
@@ -188,7 +268,7 @@ class SubCreatorViewController: BaseViewController {
         shareButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalToSuperview()
+                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
                 make.centerY.equalTo(cardView.snp.bottom)
         }
         

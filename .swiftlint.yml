@@ -5,6 +5,7 @@ excluded:
   - SubCreatorTests
   - SubCreatorUITests
   - ./SubCreator/Utility/Device
+  - ./SubCreator/iOS/Controllers/Photo
 disabled_rules:
   - trailing_whitespace
 
@@ -16,6 +17,7 @@ force_try:
 # 同时有警告和错误等级的规则，可以只设置它的警告等级
 # 隐式
 line_length: 150
+function_body_length: 100
 # 可以通过一个数组同时进行隐式设置
 type_body_length:
   - 300 # warning

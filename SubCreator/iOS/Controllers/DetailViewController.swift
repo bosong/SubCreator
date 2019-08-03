@@ -12,7 +12,23 @@ import Hero
 class DetailViewController: BaseViewController {
 
     // MARK: - Properties
+    private var item: HomeItem?
     // MARK: - Initialized
+    init(image: UIImage, item: HomeItem? = nil) {
+        super.init(nibName: nil, bundle: nil)
+        cardView.image = image
+        self.collectButton.isHidden = item.isNone
+        if let item = item {
+            self.item = item
+            self.collectButton.isSelected = CollectCacher.shared.loads().contains(item)
+        }
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     // MARK: - UI properties
     let cardView = UIImageView().then {
         $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
@@ -51,13 +67,14 @@ class DetailViewController: BaseViewController {
         saveButton.hero.modifiers = [.arc()]
         collectButton.hero.modifiers = [.arc()]
         subCreatorButton.hero.modifiers = [.arc()]
-        cardView.image = R.image.图()
+//        cardView.image = R.image.图()
         self.backButton.rx.tap
             .bind(to: self.rx.dismiss())
             .disposed(by: disposeBag)
         self.subCreatorButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
-                let subCreatorVC = SubCreatorViewController()
+                guard let image = self.cardView.image else { return }
+                let subCreatorVC = SubCreatorViewController(image: image)
                 subCreatorVC.cardView.hero.id = self.cardView.hero.id
                 subCreatorVC.backButton.hero.id = self.backButton.hero.id
                 subCreatorVC.doneButton.hero.id = self.backButton.hero.id
@@ -65,6 +82,39 @@ class DetailViewController: BaseViewController {
                 subCreatorVC.shareButton.hero.id = self.shareButton.hero.id
                 subCreatorVC.collectButton.hero.id = self.collectButton.hero.id
                 self.present(subCreatorVC, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
+        self.collectButton.rx.tap
+            .map { [unowned self] in !self.collectButton.isSelected }
+            .do(onNext: { (isSelected) in
+                guard let item = self.item else { return }
+                if isSelected {
+                    CollectCacher.shared.add(item)
+                    message(.success, title: "已收藏")
+                } else {
+                    CollectCacher.shared.remove(item)
+                    message(.success, title: "已取消收藏")
+                }
+            })
+            .bind(to: self.collectButton.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        self.shareButton.rx.tap
+            .subscribe(onNext: { [unowned self] (_) in
+                Share.shareShow(controller: self, items: [self.cardView.asImage()])
+            })
+            .disposed(by: disposeBag)
+        
+        self.saveButton.rx.tap
+            .subscribe(onNext: { (_) in
+                SaveImageTools.shared.saveImage(self.cardView.asImage(), completed: { (error) in
+                    error.noneDo {
+                        DispatchQueue.main.async {
+                            message(.success, title: "已保存到手机相册")
+                        }
+                    }
+                })
             })
             .disposed(by: disposeBag)
     }
@@ -100,7 +150,7 @@ class DetailViewController: BaseViewController {
         shareButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalToSuperview()
+                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
                 make.centerY.equalTo(cardView.snp.bottom)
         }
         
@@ -114,7 +164,7 @@ class DetailViewController: BaseViewController {
         collectButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
+                make.centerX.equalToSuperview()
                 make.centerY.equalTo(shareButton)
         }
         

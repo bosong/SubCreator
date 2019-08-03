@@ -51,6 +51,28 @@
 		586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21822F297A700A0EF82 /* TaskViewController.swift */; };
 		58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF556D22F41557009E8CCC /* UIView+Extension.swift */; };
 		58FF557022F4344B009E8CCC /* GJJHPJW--GB1-0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */; };
+		58FF557322F524EE009E8CCC /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557222F524EE009E8CCC /* Cacher.swift */; };
+		58FF557522F5255D009E8CCC /* CreationCacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557422F5255D009E8CCC /* CreationCacher.swift */; };
+		58FF557722F52F8A009E8CCC /* CollectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557622F52F8A009E8CCC /* CollectViewController.swift */; };
+		58FF557922F53011009E8CCC /* CollectViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557822F53011009E8CCC /* CollectViewReactor.swift */; };
+		58FF557B22F55383009E8CCC /* Share.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557A22F55383009E8CCC /* Share.swift */; };
+		58FF557D22F55736009E8CCC /* UIImage+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557C22F55735009E8CCC /* UIImage+Ex.swift */; };
+		58FF557F22F561B1009E8CCC /* SwiftyMessageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557E22F561B1009E8CCC /* SwiftyMessageHelper.swift */; };
+		58FF558122F563CF009E8CCC /* SaveImageTools.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558022F563CF009E8CCC /* SaveImageTools.swift */; };
+		58FF558322F5646D009E8CCC /* Permission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558222F5646D009E8CCC /* Permission.swift */; };
+		58FF558722F564B0009E8CCC /* PermissionUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558422F564B0009E8CCC /* PermissionUtilities.swift */; };
+		58FF558822F564B0009E8CCC /* PermissionAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558522F564B0009E8CCC /* PermissionAlert.swift */; };
+		58FF558922F564B0009E8CCC /* PermissionConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558622F564B0009E8CCC /* PermissionConstants.swift */; };
+		58FF559022F57D14009E8CCC /* ACGAPITargetType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558B22F57D13009E8CCC /* ACGAPITargetType.swift */; };
+		58FF559122F57D14009E8CCC /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558C22F57D13009E8CCC /* Networking.swift */; };
+		58FF559222F57D14009E8CCC /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558D22F57D13009E8CCC /* Router.swift */; };
+		58FF559322F57D14009E8CCC /* Mapping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558E22F57D13009E8CCC /* Mapping.swift */; };
+		58FF559422F57D14009E8CCC /* Parameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF558F22F57D13009E8CCC /* Parameters.swift */; };
+		58FF559722F57E7A009E8CCC /* Commonable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF559622F57E79009E8CCC /* Commonable.swift */; };
+		58FF559922F57EC9009E8CCC /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF559822F57EC9009E8CCC /* API.swift */; };
+		58FF559B22F57FC3009E8CCC /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF559A22F57FC3009E8CCC /* Service.swift */; };
+		58FF559D22F57FF0009E8CCC /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF559C22F57FF0009E8CCC /* Model.swift */; };
+		58FF55D722F5A6D4009E8CCC /* CollectCacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF55D622F5A6D4009E8CCC /* CollectCacher.swift */; };
 		EAE903D5F360A3F8EE3F4714 /* Pods_SubCreatorUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F451B4CE6CD66C051455D15A /* Pods_SubCreatorUITests.framework */; };
 		F351878A9F59A1615E7B9BF8 /* Pods_SubCreatorTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */; };
 /* End PBXBuildFile section */
@@ -125,6 +147,28 @@
 		586FE21822F297A700A0EF82 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		58FF556D22F41557009E8CCC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GJJHPJW--GB1-0.ttf"; sourceTree = "<group>"; };
+		58FF557222F524EE009E8CCC /* Cacher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
+		58FF557422F5255D009E8CCC /* CreationCacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreationCacher.swift; sourceTree = "<group>"; };
+		58FF557622F52F8A009E8CCC /* CollectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectViewController.swift; sourceTree = "<group>"; };
+		58FF557822F53011009E8CCC /* CollectViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectViewReactor.swift; sourceTree = "<group>"; };
+		58FF557A22F55383009E8CCC /* Share.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Share.swift; sourceTree = "<group>"; };
+		58FF557C22F55735009E8CCC /* UIImage+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Ex.swift"; sourceTree = "<group>"; };
+		58FF557E22F561B1009E8CCC /* SwiftyMessageHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyMessageHelper.swift; sourceTree = "<group>"; };
+		58FF558022F563CF009E8CCC /* SaveImageTools.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SaveImageTools.swift; sourceTree = "<group>"; };
+		58FF558222F5646D009E8CCC /* Permission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Permission.swift; sourceTree = "<group>"; };
+		58FF558422F564B0009E8CCC /* PermissionUtilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionUtilities.swift; sourceTree = "<group>"; };
+		58FF558522F564B0009E8CCC /* PermissionAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionAlert.swift; sourceTree = "<group>"; };
+		58FF558622F564B0009E8CCC /* PermissionConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PermissionConstants.swift; sourceTree = "<group>"; };
+		58FF558B22F57D13009E8CCC /* ACGAPITargetType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACGAPITargetType.swift; sourceTree = "<group>"; };
+		58FF558C22F57D13009E8CCC /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		58FF558D22F57D13009E8CCC /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
+		58FF558E22F57D13009E8CCC /* Mapping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mapping.swift; sourceTree = "<group>"; };
+		58FF558F22F57D13009E8CCC /* Parameters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Parameters.swift; sourceTree = "<group>"; };
+		58FF559622F57E79009E8CCC /* Commonable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commonable.swift; sourceTree = "<group>"; };
+		58FF559822F57EC9009E8CCC /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		58FF559A22F57FC3009E8CCC /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		58FF559C22F57FF0009E8CCC /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		58FF55D622F5A6D4009E8CCC /* CollectCacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectCacher.swift; sourceTree = "<group>"; };
 		5C1B0FF4AF7157292C44BFC6 /* Pods-SubCreator.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreator.release.xcconfig"; path = "Target Support Files/Pods-SubCreator/Pods-SubCreator.release.xcconfig"; sourceTree = "<group>"; };
 		64A44AF438ECBC225B379F25 /* Pods-SubCreatorUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SubCreatorUITests.release.xcconfig"; path = "Target Support Files/Pods-SubCreatorUITests/Pods-SubCreatorUITests.release.xcconfig"; sourceTree = "<group>"; };
 		81F655D6F6934623699D9BD0 /* Pods_SubCreatorTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SubCreatorTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -201,6 +245,7 @@
 				586FE12522EFEBB200A0EF82 /* AppDelegate.swift */,
 				586FE15322EFF4F500A0EF82 /* CompositionRoot.swift */,
 				586FE21822F297A700A0EF82 /* TaskViewController.swift */,
+				58FF559522F57D1C009E8CCC /* Networking */,
 				586FE18222EFF96800A0EF82 /* iOS */,
 				586FE17422EFF79E00A0EF82 /* Namespace */,
 				586FE16F22EFF5BF00A0EF82 /* Utility */,
@@ -233,14 +278,19 @@
 				586FE20922F28A4B00A0EF82 /* Device */,
 				586FE17022EFF5E800A0EF82 /* BaseClass */,
 				586FE17122EFF61E00A0EF82 /* Reactive */,
+				58FF558A22F564B6009E8CCC /* Permission */,
 				586FE16322EFF5B300A0EF82 /* Then.swift */,
 				586FE15F22EFF5B300A0EF82 /* Codable.swift */,
 				586FE16422EFF5B400A0EF82 /* Logger.swift */,
+				58FF557222F524EE009E8CCC /* Cacher.swift */,
 				586FE18622F0217600A0EF82 /* SwiftyImage.swift */,
+				58FF558022F563CF009E8CCC /* SaveImageTools.swift */,
 				586FE18822F02B1300A0EF82 /* UIColor+Ex.swift */,
+				58FF557C22F55735009E8CCC /* UIImage+Ex.swift */,
 				586FE20122F2850900A0EF82 /* Optional+Ex.swift */,
 				586FE16122EFF5B300A0EF82 /* UICollectionView+Ex.swift */,
 				586FE21222F28DCF00A0EF82 /* NSAttributedString+Ex.swift */,
+				58FF557E22F561B1009E8CCC /* SwiftyMessageHelper.swift */,
 				58FF556D22F41557009E8CCC /* UIView+Extension.swift */,
 				586FE16522EFF5B400A0EF82 /* UITableView+Ex.swift */,
 				586FE19222F139F500A0EF82 /* CALayer+Ex.swift */,
@@ -297,7 +347,11 @@
 		586FE18222EFF96800A0EF82 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
+				58FF557A22F55383009E8CCC /* Share.swift */,
+				58FF559C22F57FF0009E8CCC /* Model.swift */,
 				586FE18A22F02E9900A0EF82 /* Constant.swift */,
+				58FF557422F5255D009E8CCC /* CreationCacher.swift */,
+				58FF55D622F5A6D4009E8CCC /* CollectCacher.swift */,
 				586FE20622F2891700A0EF82 /* Controllers */,
 				586FE20522F2890100A0EF82 /* View */,
 			);
@@ -321,6 +375,8 @@
 				586FE17222EFF69800A0EF82 /* HomepageViewReactor.swift */,
 				586FE19022F1390900A0EF82 /* DetailViewController.swift */,
 				586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */,
+				58FF557622F52F8A009E8CCC /* CollectViewController.swift */,
+				58FF557822F53011009E8CCC /* CollectViewReactor.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -334,6 +390,32 @@
 				586FE20D22F28A4B00A0EF82 /* Device.swift */,
 			);
 			path = Device;
+			sourceTree = "<group>";
+		};
+		58FF558A22F564B6009E8CCC /* Permission */ = {
+			isa = PBXGroup;
+			children = (
+				58FF558222F5646D009E8CCC /* Permission.swift */,
+				58FF558522F564B0009E8CCC /* PermissionAlert.swift */,
+				58FF558622F564B0009E8CCC /* PermissionConstants.swift */,
+				58FF558422F564B0009E8CCC /* PermissionUtilities.swift */,
+			);
+			path = Permission;
+			sourceTree = "<group>";
+		};
+		58FF559522F57D1C009E8CCC /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				58FF559822F57EC9009E8CCC /* API.swift */,
+				58FF559A22F57FC3009E8CCC /* Service.swift */,
+				58FF558B22F57D13009E8CCC /* ACGAPITargetType.swift */,
+				58FF558E22F57D13009E8CCC /* Mapping.swift */,
+				58FF558C22F57D13009E8CCC /* Networking.swift */,
+				58FF558F22F57D13009E8CCC /* Parameters.swift */,
+				58FF558D22F57D13009E8CCC /* Router.swift */,
+				58FF559622F57E79009E8CCC /* Commonable.swift */,
+			);
+			path = Networking;
 			sourceTree = "<group>";
 		};
 		90F8C4932DF0FABC0DE91153 /* Pods */ = {
@@ -613,21 +695,37 @@
 				586FE15422EFF4F500A0EF82 /* CompositionRoot.swift in Sources */,
 				586FE17A22EFF79F00A0EF82 /* Namespace.swift in Sources */,
 				586FE16822EFF5B400A0EF82 /* UIAlertController+Rx.swift in Sources */,
+				58FF559222F57D14009E8CCC /* Router.swift in Sources */,
+				58FF557D22F55736009E8CCC /* UIImage+Ex.swift in Sources */,
 				586FE16D22EFF5B400A0EF82 /* UITableView+Ex.swift in Sources */,
 				586FE20F22F28A4B00A0EF82 /* Type.swift in Sources */,
 				586FE15E22EFF5A100A0EF82 /* BaseCollectionViewCell.swift in Sources */,
 				586FE16722EFF5B400A0EF82 /* Codable.swift in Sources */,
 				586FE21022F28A4B00A0EF82 /* Version.swift in Sources */,
+				58FF557922F53011009E8CCC /* CollectViewReactor.swift in Sources */,
+				58FF557F22F561B1009E8CCC /* SwiftyMessageHelper.swift in Sources */,
 				586FE17322EFF69800A0EF82 /* HomepageViewReactor.swift in Sources */,
+				58FF559922F57EC9009E8CCC /* API.swift in Sources */,
+				58FF559D22F57FF0009E8CCC /* Model.swift in Sources */,
+				58FF557522F5255D009E8CCC /* CreationCacher.swift in Sources */,
+				58FF559422F57D14009E8CCC /* Parameters.swift in Sources */,
 				586FE21322F28DCF00A0EF82 /* NSAttributedString+Ex.swift in Sources */,
+				58FF559722F57E7A009E8CCC /* Commonable.swift in Sources */,
 				586FE18522EFFB6F00A0EF82 /* R.generated.swift in Sources */,
 				586FE17C22EFF79F00A0EF82 /* UIFontChain.swift in Sources */,
+				58FF558922F564B0009E8CCC /* PermissionConstants.swift in Sources */,
+				58FF557322F524EE009E8CCC /* Cacher.swift in Sources */,
 				586FE16B22EFF5B400A0EF82 /* Then.swift in Sources */,
 				586FE18B22F02E9900A0EF82 /* Constant.swift in Sources */,
+				58FF559122F57D14009E8CCC /* Networking.swift in Sources */,
+				58FF559B22F57FC3009E8CCC /* Service.swift in Sources */,
+				58FF558322F5646D009E8CCC /* Permission.swift in Sources */,
 				586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */,
+				58FF559022F57D14009E8CCC /* ACGAPITargetType.swift in Sources */,
 				586FE20422F287CB00A0EF82 /* SubCreatorToolBar.swift in Sources */,
 				586FE19122F1390900A0EF82 /* DetailViewController.swift in Sources */,
 				586FE16E22EFF5B400A0EF82 /* MJRefresh+Rx.swift in Sources */,
+				58FF558122F563CF009E8CCC /* SaveImageTools.swift in Sources */,
 				586FE18922F02B1300A0EF82 /* UIColor+Ex.swift in Sources */,
 				586FE21122F28A4B00A0EF82 /* Device.swift in Sources */,
 				586FE15622EFF58900A0EF82 /* HomepageViewController.swift in Sources */,
@@ -635,7 +733,11 @@
 				586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */,
 				586FE18722F0217600A0EF82 /* SwiftyImage.swift in Sources */,
 				586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */,
+				58FF557B22F55383009E8CCC /* Share.swift in Sources */,
+				58FF55D722F5A6D4009E8CCC /* CollectCacher.swift in Sources */,
 				586FE15C22EFF5A100A0EF82 /* BaseTableViewCell.swift in Sources */,
+				58FF558722F564B0009E8CCC /* PermissionUtilities.swift in Sources */,
+				58FF557722F52F8A009E8CCC /* CollectViewController.swift in Sources */,
 				58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */,
 				586FE20E22F28A4B00A0EF82 /* DeviceSize.swift in Sources */,
 				586FE16922EFF5B400A0EF82 /* UICollectionView+Ex.swift in Sources */,
@@ -644,10 +746,12 @@
 				586FE15B22EFF5A100A0EF82 /* BaseView.swift in Sources */,
 				586FE21722F28E7600A0EF82 /* UITextView+Placeholder.m in Sources */,
 				586FE16A22EFF5B400A0EF82 /* UIViewController+Rx.swift in Sources */,
+				58FF559322F57D14009E8CCC /* Mapping.swift in Sources */,
 				586FE18D22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift in Sources */,
 				586FE15D22EFF5A100A0EF82 /* BaseViewController.swift in Sources */,
 				586FE20222F2850900A0EF82 /* Optional+Ex.swift in Sources */,
 				586FE19322F139F500A0EF82 /* CALayer+Ex.swift in Sources */,
+				58FF558822F564B0009E8CCC /* PermissionAlert.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

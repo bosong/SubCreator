@@ -17,6 +17,8 @@ target 'SubCreator' do
   pod 'R.swift'
   pod 'Hero'
   pod 'fluid-slider'
+  pod 'SwiftMessages'
+  pod 'Fusuma'
   # Pods for SubCreator
 
   target 'SubCreatorTests' do

@@ -18,8 +18,7 @@ enum ToolBarItem {
 }
 
 class SubCreatorToolBar: BaseView {
-    var event = PublishRelay<ToolBarItem>()
-    var currentSelected = BehaviorRelay<ToolBarItem>(value: .style)
+    var currentSelected = BehaviorRelay<ToolBarItem>(value: .text)
     var toolBarInputView: UIView?
     private let items: [ToolBarItem] = [.style, .text]
     private let disposeBag = DisposeBag()
@@ -75,9 +74,6 @@ class SubCreatorToolBar: BaseView {
             button.setImage(R.image.toobar_item_face(), for: .normal)
             let tapped = button.rx.tap.map { ToolBarItem.face }.share()
             tapped
-                .bind(to: event)
-                .disposed(by: disposeBag)
-            tapped
                 .bind(to: currentSelected)
                 .disposed(by: disposeBag)
         case .style:
@@ -85,17 +81,14 @@ class SubCreatorToolBar: BaseView {
             button.setImage(R.image.toobar_item_style_sel(), for: .selected)
             let tapped = button.rx.tap.map { ToolBarItem.style }
             tapped
-                .bind(to: event)
-                .disposed(by: disposeBag)
-            tapped
                 .bind(to: currentSelected)
                 .disposed(by: disposeBag)
         case .text:
             button.setImage(R.image.toobar_item_text_normal(), for: .normal)
             button.setImage(R.image.toobar_item_text_sel(), for: .selected)
-            button.rx.tap
-                .map { ToolBarItem.text }
-                .bind(to: event)
+            let tapped = button.rx.tap.map { ToolBarItem.text }
+            tapped
+                .bind(to: currentSelected)
                 .disposed(by: disposeBag)
         }
         button.sizeToFit()
@@ -129,6 +122,7 @@ class ToolBarStyleItemView: BaseView {
         slider.contentViewColor = UIColor.mt.theme
         slider.valueViewColor = .white
     }
+    let textDirectionButton = UIButton(type: .custom)
     
     private let helpLabel = UILabel().then {
         $0.textColor = UIColor(hex: 0x999999)
@@ -158,6 +152,19 @@ class ToolBarStyleItemView: BaseView {
             .mt.layout { (make) in
                 make.top.equalTo(25)
                 make.left.equalTo(30)
+        }
+        
+        textDirectionButton
+            .mt.config { (button) in
+                button.setTitle("文字方向: 横", for: .normal)
+                button.setTitle("文字方向: 竖", for: .selected)
+                button.setTitleColor(.black, for: .normal)
+                button.sizeToFit()
+            }
+            .mt.adhere(toSuperView: self)
+            .mt.layout { (make) in
+                make.centerY.equalTo(helpLabel)
+                make.right.equalTo(-30)
         }
         
         colorSwitchView

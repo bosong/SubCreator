@@ -9,7 +9,64 @@
 
 import UIKit
 
+// MARK: - Transform
 public extension UIView {
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
+    
+    func screenShots() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(frame.size, false, 0)
+        defer {
+            UIGraphicsEndImageContext()
+        }
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        layer.render(in: context)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        return image
+    }
+}
+
+// MARK: - Draw
+public extension UIView {
+    @IBInspectable var layerCornerRadius: CGFloat {
+        get {
+            return layer.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor {
+        get {
+            return UIColor(cgColor: layer.borderColor!)
+        }
+        set {
+            layer.borderColor = newValue.cgColor
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+    
+    @IBInspectable var masksToBounds: Bool {
+        get {
+            return layer.masksToBounds
+        }
+        set {
+            layer.masksToBounds = newValue
+        }
+    }
     
     /// 裁剪 view 的圆角
     func clipRectCorner(direction: UIRectCorner, cornerRadius: CGFloat) {
@@ -21,7 +78,10 @@ public extension UIView {
         layer.addSublayer(maskLayer)
         layer.mask = maskLayer
     }
-    
+}
+
+// MARK: - Frame
+public extension UIView {
     /// x
     var x: CGFloat {
         get {
@@ -109,7 +169,7 @@ public extension UIView {
         get {
             return center.x
         }
-        set(newValue){
+        set(newValue) {
             var tempCenter: CGPoint = center
             tempCenter.x = newValue
             center = tempCenter
@@ -127,60 +187,27 @@ public extension UIView {
             center = tempCenter
         }
     }
-    
-    @IBInspectable var layerCornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        }
-        set {
-            layer.cornerRadius = newValue
-        }
-    }
-    
-    @IBInspectable var borderColor: UIColor {
-        get {
-            return UIColor(cgColor: layer.borderColor!)
-        }
-        set {
-            layer.borderColor = newValue.cgColor
-        }
-    }
-    
-    @IBInspectable var borderWidth: CGFloat {
-        get {
-            return layer.borderWidth
-        }
-        set {
-            layer.borderWidth = newValue
-        }
-    }
-    
-    @IBInspectable var masksToBounds: Bool {
-        get {
-            return layer.masksToBounds
-        }
-        set {
-            layer.masksToBounds = newValue
-        }
-    }
-    
-    static func loadNib<T: UIView>(_ viewClass: T.Type, owner: Any? = nil, options: [UINib.OptionsKey : Any]? = nil) -> T {
+}
+
+// MARK: - Initialized
+public extension UIView {
+    static func loadNib<T: UIView>(_ viewClass: T.Type, owner: Any? = nil, options: [UINib.OptionsKey: Any]? = nil) -> T {
         let viewClassName = getClassName(viewClass)
         let bundle = Bundle(for: viewClass)
         guard let nibView = bundle.loadNibNamed(viewClassName,
-                                                  owner: owner,
-                                                  options: options)?.last as? T
+                                                owner: owner,
+                                                options: options)?.last as? T
             else { fatalError("can not load nib") }
         return nibView
     }
     
-    static func loadXib<T: UIView>(_ viewClass: T.Type, owner: Any? = nil, options: [UINib.OptionsKey : Any]? = nil) -> UIView {
+    static func loadXib<T: UIView>(_ viewClass: T.Type, owner: Any? = nil, options: [UINib.OptionsKey: Any]? = nil) -> UIView {
         let viewClassName = getClassName(viewClass)
         let bundle = Bundle(for: viewClass)
         guard
             let nibView = UINib(nibName: viewClassName, bundle: bundle).instantiate(withOwner: owner, options: options).first
                 as? UIView
-        else { fatalError("can not load nib") }
+            else { fatalError("can not load nib") }
         return nibView
     }
 }

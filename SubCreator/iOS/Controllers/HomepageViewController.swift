@@ -11,10 +11,15 @@ import RxSwift
 import RxCocoa
 import ReactorKit
 import RxDataSources
+import Kingfisher
+import MJRefresh
+import Fusuma
 
-class HomepageViewController: BaseViewController, View {
+class HomepageViewController: BaseViewController, ReactorKit.View {
 
     // MARK: - Properties
+    private var maxAnimateIp = IndexPath(item: 0, section: 0)
+    
     // MARK: - Initialized
     // MARK: - UI properties
     let titleView = HomePageTitleView()
@@ -22,6 +27,10 @@ class HomepageViewController: BaseViewController, View {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
         cv.backgroundColor = .white
         cv.registerItemClass(HomePageCollectionViewCell.self)
+        let refreshHeader = MJRefreshNormalHeader()
+        refreshHeader.lastUpdatedTimeLabel.isHidden = true
+        cv.mj_header = refreshHeader
+        cv.mj_footer = MJRefreshAutoFooter()
         return cv
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {
@@ -58,26 +67,59 @@ class HomepageViewController: BaseViewController, View {
         button.sizeToFit()
         return button
     }()
+    lazy var fusuma = FusumaViewController().then { (fusuma) in
+        fusuma.delegate = self
+        fusuma.availableModes = [FusumaMode.library, FusumaMode.camera]
+        fusuma.cropHeightRatio = 1
+        fusuma.allowMultipleSelection = false
+        fusumaCameraRollTitle = "相册"
+        fusumaCameraTitle = "拍照"
+    }
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "本地上传", style: .done, target: self, action: #selector(showPhoto))
         editButton.hero.id = "bottomButton"
     }
     
     // MARK: - SEL
     func bind(reactor: HomepageViewReactor) {
+        reactor.action.onNext(.loadData)
+        
+        collectionView.mj_header.rx.event
+            .map { _ in Reactor.Action.loadData }
+            .do(onNext: { [unowned self] (_) in
+                self.maxAnimateIp = IndexPath(item: 0, section: 0)
+            })
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        collectionView.mj_footer.rx.event
+            .map { _ in Reactor.Action.loadMore }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLoading }
+            .bind(to: collectionView.mj_header.rx.endRefresh)
+            .disposed(by: disposeBag)
+        
+        reactor.state.map { $0.isLoading }
+            .bind(to: collectionView.mj_footer.rx.endRefresh)
+            .disposed(by: disposeBag)
+        
         reactor.state.map { $0.data }
             .bind(to: collectionView.rx
                 .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
             ) { _, model, cell in
-                cell.imgV.image = model
+                cell.imgV.kf.setImage(with: URL(string: model.url))
             }
             .disposed(by: disposeBag)
         
         collectionView.rx.willDisplayCell
             .subscribe(onNext: { (cell, ip) in
+                guard ip > self.maxAnimateIp else { return }
                 let col = ip.item % 3
                 let delayTime = Double(col) / Double(10)
                 cell.transform = CGAffineTransform(a: 0.6, b: 0, c: 0, d: 0.6, tx: -10, ty: -10)
@@ -88,14 +130,19 @@ class HomepageViewController: BaseViewController, View {
                         cell.transform = CGAffineTransform.identity
                     })
                 })
+                self.maxAnimateIp = ip
             })
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
+            .do(onNext: { [unowned self] _ in
+                self.editButtonTapped(false)
+            })
             .subscribe(onNext: { [unowned self] (ip) in
-                let cell = self.collectionView.cellForItem(at: ip)
+                let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
+                guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.item)"
-                let detailVC = DetailViewController()
+                let detailVC = DetailViewController(image: image, item: reactor.currentState.data[ip.item])
                 detailVC.subCreatorButton.hero.id = self.editButton.hero.id
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = self.editButton.hero.id
@@ -107,13 +154,40 @@ class HomepageViewController: BaseViewController, View {
         
         editButton.rx.tap
             .map { [unowned self] in !self.editButton.isSelected }
-            .throttle(1, scheduler: MainScheduler.instance)
-            .distinctUntilChanged()
-            .do(onNext: { [unowned self] (isSelected) in
+            .throttle(0.6, scheduler: MainScheduler.instance)
+            .subscribe(onNext: { [unowned self] (isSelected) in
                 self.editButtonTapped(isSelected)
             })
-            .bind(to: editButton.rx.isSelected)
             .disposed(by: disposeBag)
+        
+        Observable.merge(
+            myCollectionButton.rx.tap.asObservable(),
+            myCreationButton.rx.tap.asObservable()
+            )
+            .subscribe(onNext: { [unowned self] (_) in
+                self.editButtonTapped(false)
+            })
+            .disposed(by: disposeBag)
+        
+        myCreationButton.rx.tap
+            .subscribe(onNext: { [unowned self] (_) in
+                let collectVC = CollectViewController()
+                collectVC.reactor = CollectViewReactor(.creation)
+                self.navigationController?.pushViewController(collectVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        myCollectionButton.rx.tap
+            .subscribe(onNext: { (_) in
+                let collectVC = CollectViewController()
+                collectVC.reactor = CollectViewReactor(.collect)
+                self.navigationController?.pushViewController(collectVC, animated: true)
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    @objc func showPhoto() {
+        self.present(fusuma, animated: true, completion: nil)
     }
     
     // MARK: - Layout
@@ -147,6 +221,7 @@ class HomepageViewController: BaseViewController, View {
     }
     
     private func editButtonTapped(_ isSelected: Bool) {
+        self.editButton.isSelected = isSelected
         if isSelected {
             self.myCreationButton.isHidden = !isSelected
             self.myCollectionButton.isHidden = !isSelected
@@ -168,9 +243,11 @@ class HomepageViewController: BaseViewController, View {
                            animations: {
                             self.myCollectionButton.transform = CGAffineTransform.identity
                             self.myCreationButton.transform = CGAffineTransform.identity
-                            self.myCollectionButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-                            self.myCreationButton.transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+                            self.myCollectionButton.alpha = 0
+                            self.myCreationButton.alpha = 0
             }, completion: { (_) in
+                self.myCollectionButton.alpha = 1
+                self.myCreationButton.alpha = 1
                 self.myCollectionButton.transform = CGAffineTransform.identity
                 self.myCreationButton.transform = CGAffineTransform.identity
                 self.myCreationButton.isHidden = !isSelected
@@ -213,5 +290,34 @@ class HomePageTitleView: BaseView {
                 make.left.equalTo(imgV.snp.right).offset(8)
                 make.centerY.equalToSuperview()
         }
+    }
+}
+
+extension HomepageViewController: FusumaDelegate {
+    func fusumaMultipleImageSelected(_ images: [UIImage], source: FusumaMode) {
+        
+    }
+    
+    func fusumaImageSelected(_ image: UIImage, source: FusumaMode) {
+        
+    }
+    
+    func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
+        let detailVC = DetailViewController(image: image)
+        detailVC.subCreatorButton.hero.id = self.editButton.hero.id
+//        detailVC.cardView.hero.id = fusuma.view.hero.id
+        detailVC.shareButton.hero.id = self.editButton.hero.id
+        detailVC.saveButton.hero.id = self.editButton.hero.id
+        detailVC.collectButton.hero.id = self.editButton.hero.id
+        
+        self.present(detailVC, animated: true, completion: nil)
+    }
+    
+    func fusumaVideoCompleted(withFileURL fileURL: URL) {
+        
+    }
+    
+    func fusumaCameraRollUnauthorized() {
+        
     }
 }

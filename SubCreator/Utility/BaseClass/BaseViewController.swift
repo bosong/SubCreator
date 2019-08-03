@@ -51,7 +51,7 @@ class BaseViewController: UIViewController {
     // MARK: Adjusting Navigation Item
     
     func adjustLeftBarButtonItem(image: UIImage? =
-        nil) {
+        R.image.nav_item_back()) {
         if navigationController?.viewControllers.count ?? 0 > 1 { // pushed
             let barButtonItem = UIBarButtonItem(image: image, style: .plain, target: self, action: #selector(pop))
             navigationItem.leftBarButtonItem = barButtonItem
