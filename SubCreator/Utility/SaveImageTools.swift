@@ -53,7 +53,7 @@ class SaveImageTools {
             let albumChangeRequest = PHAssetCollectionChangeRequest.init(for: self.assetCollection)
             albumChangeRequest?.addAssets([assetPlaceholder!] as NSArray)
 
-        }) { (result, error) in
+        }) { (_, error) in
             completed?(error)
         }
     }

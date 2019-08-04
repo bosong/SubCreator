@@ -48,6 +48,26 @@ class BaseViewController: UIViewController {
         // Override point
     }
     
+    // MARK: - Empty page
+    lazy var emptyLabel: UILabel = {
+        let label = UILabel()
+        label.text = "暂无数据"
+        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        label.textColor = UIColor(hex: 0x999999)
+        return label
+    }()
+    open func empty(show: Bool) {
+        if show {
+            view.addSubview(emptyLabel)
+            emptyLabel.mt.layout { (make) in
+                make.center.equalToSuperview()
+            }
+            view.bringSubviewToFront(emptyLabel)
+        } else {
+            emptyLabel.removeFromSuperview()
+        }
+    }
+    
     // MARK: Adjusting Navigation Item
     
     func adjustLeftBarButtonItem(image: UIImage? =

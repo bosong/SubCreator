@@ -18,11 +18,21 @@ enum ToolBarItem {
 }
 
 class SubCreatorToolBar: BaseView {
+    enum TextAlignment {
+        case horizontal
+        case vertical
+    }
+    
     var currentSelected = BehaviorRelay<ToolBarItem>(value: .text)
+    lazy var textAlignmentObserVable = self.textAlignmentBehavior.asObservable().distinctUntilChanged()
     var toolBarInputView: UIView?
+    
     private let items: [ToolBarItem] = [.style, .text]
     private let disposeBag = DisposeBag()
     private var buttons: [UIButton] = []
+    private let textAlignmentH = UIButton(type: .custom)
+    private let textAlignmentV = UIButton(type: .custom)
+    private let textAlignmentBehavior = BehaviorRelay<TextAlignment>(value: .horizontal)
     
     override var inputView: UIView? {
         set {
@@ -56,14 +66,50 @@ class SubCreatorToolBar: BaseView {
                 })
             previousView = button
         }
-//        currentSelected
-//            .map { [unowned self] in self.items.firstIndex(of: $0) }
-//            .subscribe(onNext: { [unowned self] idx in
-//                self.buttons.enumerated().forEach({ (btnIdx, btn) in
-//                    btn.isSelected = idx == btnIdx
-//                })
-//            })
-//            .disposed(by: disposeBag)
+        
+        textAlignmentV
+            .mt.config { (button) in
+                button.setImage(R.image.btn_text_alignmentV_sel(), for: .selected)
+                button.setImage(R.image.btn_text_alignmentV_normal(), for: .normal)
+                button.sizeToFit()
+            }
+            .mt.adhere(toSuperView: self)
+            .mt.layout { (make) in
+                make.right.equalToSuperview().offset(-20)
+                make.height.equalToSuperview()
+        }
+        
+        textAlignmentH
+            .mt.config { (button) in
+                button.setImage(R.image.btn_text_alignmentH_sel(), for: .selected)
+                button.setImage(R.image.btn_text_alignmentH_normal(), for: .normal)
+                button.isSelected = true
+                button.sizeToFit()
+            }
+            .mt.adhere(toSuperView: self)
+            .mt.layout { (make) in
+                make.right.equalTo(textAlignmentV.snp.left).offset(-15)
+                make.height.equalToSuperview()
+        }
+        
+        let alignmentTapped = Observable.merge(
+            textAlignmentV.rx.tap.map { TextAlignment.vertical }.asObservable(),
+            textAlignmentH.rx.tap.map { TextAlignment.horizontal }.asObservable()
+        ).share()
+        
+        alignmentTapped
+            .map { $0 == .horizontal }
+            .bind(to: self.textAlignmentH.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        alignmentTapped
+            .map { $0 == .vertical }
+            .bind(to: self.textAlignmentV.rx.isSelected)
+            .disposed(by: disposeBag)
+        
+        alignmentTapped
+            .bind(to: textAlignmentBehavior)
+            .disposed(by: disposeBag)
     }
     
     private func prepareItem(_ item: ToolBarItem) -> UIButton {
@@ -111,7 +157,8 @@ class ToolBarStyleItemView: BaseView {
             formatter.maximumIntegerDigits = 3
             formatter.maximumFractionDigits = 0
             let string = formatter.string(from: (fraction * 100) as NSNumber) ?? ""
-            return NSAttributedString(string: string)
+            let attrStr = NSAttributedString(string: string, attributes: [.font: UIFont.systemFont(ofSize: 8)])
+            return attrStr
         }
         slider.setMinimumLabelAttributedText(NSAttributedString(string: "💤"))
         slider.setMaximumLabelAttributedText(NSAttributedString(string: "100"))
@@ -132,7 +179,8 @@ class ToolBarStyleItemView: BaseView {
         """
             帮助说明\n
             *可两指操作拖动、旋转文字\n
-            *文字颜色可更改
+            *文字颜色可更改\n
+            *可改变文字的横纵方向
         """
         
         let attrText = NSMutableAttributedString(string: text)
@@ -154,19 +202,6 @@ class ToolBarStyleItemView: BaseView {
                 make.left.equalTo(30)
         }
         
-        textDirectionButton
-            .mt.config { (button) in
-                button.setTitle("文字方向: 横", for: .normal)
-                button.setTitle("文字方向: 竖", for: .selected)
-                button.setTitleColor(.black, for: .normal)
-                button.sizeToFit()
-            }
-            .mt.adhere(toSuperView: self)
-            .mt.layout { (make) in
-                make.centerY.equalTo(helpLabel)
-                make.right.equalTo(-30)
-        }
-        
         colorSwitchView
             .mt.adhere(toSuperView: self)
             .mt.layout { (make) in
@@ -182,7 +217,7 @@ class ToolBarStyleItemView: BaseView {
                 make.top.equalTo(colorSwitchView.snp.bottom).offset(20)
                 make.centerX.equalToSuperview()
                 make.width.equalTo(colorSwitchView)
-                make.height.equalTo(40)
+                make.height.equalTo(20)
         }
     }
     
@@ -219,17 +254,6 @@ class ToolBarStyleItemView: BaseView {
                 .mt.layout { (make) in
                     make.edges.equalToSuperview()
             }
-//            var previousView: UIView?
-//            buttons.forEach { (btn) in
-//                btn
-//                    .mt.adhere(toSuperView: self)
-//                    .mt.layout(snapKitMaker: { (make) in
-//                        previousView.someDo {
-//                            make.left.equalToSuperview()
-//                        }
-//                    })
-//                previousView = btn
-//            }
         }
     }
 }

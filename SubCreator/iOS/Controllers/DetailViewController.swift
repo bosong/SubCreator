@@ -53,7 +53,8 @@ class DetailViewController: BaseViewController {
         $0.sizeToFit()
     }
     let collectButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.btn_collection(), for: .normal)
+        $0.setImage(R.image.btn_collection_normal(), for: .normal)
+        $0.setImage(R.image.btn_collection_sel(), for: .selected)
         $0.sizeToFit()
     }
     
@@ -91,7 +92,7 @@ class DetailViewController: BaseViewController {
                 guard let item = self.item else { return }
                 if isSelected {
                     CollectCacher.shared.add(item)
-                    message(.success, title: "已收藏")
+                    message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
                 } else {
                     CollectCacher.shared.remove(item)
                     message(.success, title: "已取消收藏")

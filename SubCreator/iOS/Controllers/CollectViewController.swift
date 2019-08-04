@@ -51,6 +51,9 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         if reactor.currentState.type == .collect {
             title = "我的收藏"
             reactor.state.map { $0.collectData }
+                .do(onNext: { [unowned self] in
+                    self.empty(show: $0.isEmpty)
+                })
                 .bind(to: collectionView.rx
                     .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
                 ) { _, model, cell in
@@ -60,6 +63,9 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         } else {
             title = "我的创作"
             reactor.state.map { $0.creationData }
+                .do(onNext: { [unowned self] in
+                    self.empty(show: $0.isEmpty)
+                })
                 .bind(to: collectionView.rx
                     .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
                 ) { _, model, cell in

@@ -9,6 +9,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import RxOptional
 
 class SubCreatorViewController: BaseViewController {
 
@@ -60,7 +61,8 @@ class SubCreatorViewController: BaseViewController {
         $0.sizeToFit()
     }
     let collectButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.btn_collection(), for: .normal)
+        $0.setImage(R.image.btn_collection_normal(), for: .normal)
+        $0.setImage(R.image.btn_collection_sel(), for: .selected)
         $0.isHidden = true
         $0.sizeToFit()
     }
@@ -115,23 +117,25 @@ class SubCreatorViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        inputTextView.textView.rx.text
-            .bind(to: textLabel.rx.text)
-            .disposed(by: disposeBag)
-        
-        toolBarStyleItemView.textDirectionButton
-            .rx.tap
-            .map { [unowned self] in !self.toolBarStyleItemView.textDirectionButton.isSelected }
-            .do(onNext: { (isSelected) in
-                if isSelected {
-                    let arr = Array(self.textLabel.text ?? "")
-                    self.textLabel.text = arr.map { $0.description }.joined(separator: "\n")
-                } else {
-                    let text = self.textLabel.text ?? ""
-                    self.textLabel.text = text.components(separatedBy: "\n").joined()
+        Observable
+            .combineLatest(
+                inputTextView.textView.rx.text.filterNil(),
+                toolBar.textAlignmentObserVable
+            )
+            .map({ (text, alignment) -> NSAttributedString in
+                var attrString: NSMutableAttributedString
+                switch alignment {
+                case .horizontal:
+                    attrString = NSMutableAttributedString(string: text.components(separatedBy: "\n").joined())
+                case .vertical:
+                    let arr = Array(text)
+                    attrString = NSMutableAttributedString(string: arr.map { $0.description }.joined(separator: "\n"))
                 }
+                attrString.addAttribute(.strokeWidth, value: -2, range: NSRange(location: 0, length: attrString.string.count))
+                attrString.addAttribute(.strokeColor, value: UIColor.white, range: NSRange(location: 0, length: attrString.string.count))
+                return attrString
             })
-            .bind(to: toolBarStyleItemView.textDirectionButton.rx.isSelected)
+            .bind(to: textLabel.rx.attributedText)
             .disposed(by: disposeBag)
         
         toolBarStyleItemView.colorSwitchView
@@ -170,7 +174,7 @@ class SubCreatorViewController: BaseViewController {
         self.doneButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
                 CreationCacher.shared.add(ImageWrapper(image: self.cardView.asImage()))
-                message(.success, title: "保存成功，可以再 ->我的创作 中查看")
+                message(.success, title: "保存成功，可以在”我的创作“中查看")
                 self.doneTapped = true
                 switch self.toolBarSel {
                 case .text:
