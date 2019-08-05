@@ -131,7 +131,7 @@ class SubCreatorViewController: BaseViewController {
                     let arr = Array(text)
                     attrString = NSMutableAttributedString(string: arr.map { $0.description }.joined(separator: "\n"))
                 }
-                attrString.addAttribute(.strokeWidth, value: -2, range: NSRange(location: 0, length: attrString.string.count))
+                attrString.addAttribute(.strokeWidth, value: -6, range: NSRange(location: 0, length: attrString.string.count))
                 attrString.addAttribute(.strokeColor, value: UIColor.white, range: NSRange(location: 0, length: attrString.string.count))
                 return attrString
             })
@@ -212,9 +212,12 @@ class SubCreatorViewController: BaseViewController {
     
     // MARK: - SEL
     @objc func panGesture(_ gesture: UIPanGestureRecognizer) {
-        let point = gesture.location(in: self.cardView)
-        self.textLabel.transform.tx = point.x - textLabel.center.x
-        self.textLabel.transform.ty = point.y - textLabel.center.y
+        let point = gesture.translation(in: self.cardView)
+        let tx = self.textLabel.transform.tx + point.x
+        let ty = self.textLabel.transform.ty + point.y
+        self.textLabel.transform.tx = tx
+        self.textLabel.transform.ty = ty
+        gesture.setTranslation(.zero, in: self.cardView)
         if textLabel.transform.tx < -cardView.width / 2 + self.textLabel.width / 2 {
             textLabel.transform.tx = -cardView.width / 2 + self.textLabel.width / 2
         }
@@ -227,9 +230,6 @@ class SubCreatorViewController: BaseViewController {
         if textLabel.transform.ty > cardView.height / 2 - self.textLabel.height / 2 {
             textLabel.transform.ty = cardView.height / 2 - self.textLabel.height / 2
         }
-        
-        print(self.textLabel.transform.tx)
-        print(self.textLabel.transform.ty)
     }
     
     var textLabelRotation: CGFloat = 0

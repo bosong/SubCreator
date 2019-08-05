@@ -21,6 +21,15 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     private var maxAnimateIp = IndexPath(item: 0, section: 0)
     
     // MARK: - Initialized
+    init(reactor: HomepageViewReactor) {
+        defer { self.reactor = reactor }
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
     // MARK: - UI properties
     let titleView = HomePageTitleView()
     lazy var collectionView: UICollectionView = {
@@ -67,14 +76,6 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         button.sizeToFit()
         return button
     }()
-    lazy var fusuma = FusumaViewController().then { (fusuma) in
-        fusuma.delegate = self
-        fusuma.availableModes = [FusumaMode.library, FusumaMode.camera]
-        fusuma.cropHeightRatio = 1
-        fusuma.allowMultipleSelection = false
-        fusumaCameraRollTitle = "相册"
-        fusumaCameraTitle = "拍照"
-    }
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
@@ -187,6 +188,14 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     }
     
     @objc func showPhoto() {
+        let fusuma = FusumaViewController().then { (fusuma) in
+            fusuma.delegate = self
+            fusuma.availableModes = [FusumaMode.library, FusumaMode.camera]
+            fusuma.cropHeightRatio = 1
+            fusuma.allowMultipleSelection = false
+            fusumaCameraRollTitle = "相册"
+            fusumaCameraTitle = "拍照"
+        }
         self.present(fusuma, animated: true, completion: nil)
     }
     

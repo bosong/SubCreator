@@ -1,0 +1,37 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Description of what the lane does"
+  lane :test do
+   # 开始打包
+    gym(
+    scheme: "SubCreator",
+    export_xcargs: "-allowProvisioningUpdates",
+    #输出的ipa名称
+    output_name: "SubCreator",
+    # 是否清空以前的编译信息 true：是
+    clean:true,
+    # 指定打包方式，Release 或者 Debug
+    configuration:"Release",
+    # 指定打包所使用的输出方式，目前支持app-store, package, ad-hoc, enterprise, development
+    export_method:"enterprise",
+    # 指定输出文件夹
+    output_directory:"./fastlane/build",
+    )
+  end
+end

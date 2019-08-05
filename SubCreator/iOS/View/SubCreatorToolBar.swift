@@ -160,12 +160,9 @@ class ToolBarStyleItemView: BaseView {
             let attrStr = NSAttributedString(string: string, attributes: [.font: UIFont.systemFont(ofSize: 8)])
             return attrStr
         }
-        slider.setMinimumLabelAttributedText(NSAttributedString(string: "💤"))
-        slider.setMaximumLabelAttributedText(NSAttributedString(string: "100"))
+        slider.setMinimumLabelAttributedText(NSAttributedString(string: "0", attributes: [.font: UIFont.systemFont(ofSize: 8)]))
+        slider.setMaximumLabelAttributedText(NSAttributedString(string: "100", attributes: [.font: UIFont.systemFont(ofSize: 8)]))
         slider.fraction = 0.3
-        slider.shadowOffset = CGSize(width: 0, height: 10)
-        slider.shadowBlur = 5
-        slider.shadowColor = UIColor(white: 0, alpha: 0.1)
         slider.contentViewColor = UIColor.mt.theme
         slider.valueViewColor = .white
     }
@@ -204,6 +201,12 @@ class ToolBarStyleItemView: BaseView {
         
         colorSwitchView
             .mt.adhere(toSuperView: self)
+            .mt.config({ (switchView) in
+                switchView.layer.applySketchShadow(color: UIColor(hex: 0xDFE3E9), alpha: 1, x: 0, y: 0, blur: 4, spread: 0)
+                switchView.layer.borderWidth = 4
+                switchView.layer.borderColor = UIColor.white.cgColor
+                switchView.layer.cornerRadius = 14
+            })
             .mt.layout { (make) in
                 make.top.equalTo(helpLabel.snp.bottom).offset(20)
                 make.centerX.equalToSuperview()
@@ -213,6 +216,12 @@ class ToolBarStyleItemView: BaseView {
         
         fontSliderView
             .mt.adhere(toSuperView: self)
+            .mt.config({ (sliderView) in
+                sliderView.layer.applySketchShadow(color: UIColor(hex: 0xDFE3E9), alpha: 1, x: 0, y: 0, blur: 4, spread: 0)
+                sliderView.layer.borderWidth = 4
+                sliderView.layer.borderColor = UIColor.white.cgColor
+                sliderView.layer.cornerRadius = 10
+            })
             .mt.layout { (make) in
                 make.top.equalTo(colorSwitchView.snp.bottom).offset(20)
                 make.centerX.equalToSuperview()
@@ -244,6 +253,21 @@ class ToolBarStyleItemView: BaseView {
                     .disposed(by: disposeBag)
                 return button
             }
+            let firstImg = UIImage
+                .resizable()
+                .corner(topLeft: 14)
+                .corner(bottomLeft: 14)
+                .color(colors.first ?? UIColor.white)
+                .image
+            buttons.first?.setBackgroundImage(firstImg, for: .normal)
+            let lastImg = UIImage
+                .resizable()
+                .corner(topRight: 14)
+                .corner(bottomRight: 14)
+                .color(colors.last ?? UIColor.white)
+                .image
+            buttons.last?.setBackgroundImage(lastImg, for: .normal)
+            
             let stackView = UIStackView(arrangedSubviews: buttons)
             stackView.alignment = .center
             stackView.spacing = 0
@@ -252,7 +276,9 @@ class ToolBarStyleItemView: BaseView {
             stackView
                 .mt.adhere(toSuperView: self)
                 .mt.layout { (make) in
-                    make.edges.equalToSuperview()
+                    make.left.equalTo(1)
+                    make.right.equalTo(-1)
+                    make.top.bottom.equalToSuperview()
             }
         }
     }

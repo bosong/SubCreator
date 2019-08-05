@@ -29,4 +29,10 @@ extension CALayer {
                 shadowPath = UIBezierPath(rect: rect).cgPath
             }
     }
+    
+    func applyBorder(color: UIColor = .white, width: CGFloat, cornerRadius: CGFloat) {
+        borderColor = color.cgColor
+        borderWidth = width
+        self.cornerRadius = cornerRadius
+    }
 }
