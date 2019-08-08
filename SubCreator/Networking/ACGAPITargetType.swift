@@ -10,9 +10,9 @@ import Moya
 
 var kBaseURL: URL {
     #if DEBUG
-    return URL(string: "http://draw.voidtech.com.cn:8765")!
+    return URL(string: "https://draw.voidtech.com.cn")!
     #else
-    return URL(string: "http://draw.voidtech.com.cn:8765")!
+    return URL(string: "https://draw.voidtech.com.cn")!
     #endif
 }
 

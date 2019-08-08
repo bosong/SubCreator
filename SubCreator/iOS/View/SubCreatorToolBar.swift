@@ -63,6 +63,7 @@ class SubCreatorToolBar: BaseView {
                         make.left.equalToSuperview().offset(15)
                     }
                     make.height.equalToSuperview()
+                    make.centerY.equalToSuperview()
                 })
             previousView = button
         }
@@ -77,6 +78,7 @@ class SubCreatorToolBar: BaseView {
             .mt.layout { (make) in
                 make.right.equalToSuperview().offset(-20)
                 make.height.equalToSuperview()
+                make.centerY.equalToSuperview()
         }
         
         textAlignmentH
@@ -90,6 +92,7 @@ class SubCreatorToolBar: BaseView {
             .mt.layout { (make) in
                 make.right.equalTo(textAlignmentV.snp.left).offset(-15)
                 make.height.equalToSuperview()
+                make.centerY.equalToSuperview()
         }
         
         let alignmentTapped = Observable.merge(
