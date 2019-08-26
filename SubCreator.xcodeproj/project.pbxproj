@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		46B903ABE7A17C09316C4561 /* Pods_SubCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220D7B3FBEE54FC890C12E20 /* Pods_SubCreator.framework */; };
+		580F561E2313927A00894EF8 /* MaterialRefersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */; };
+		580F56202313944A00894EF8 /* MaterialRefersViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */; };
 		586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE12522EFEBB200A0EF82 /* AppDelegate.swift */; };
 		586FE12D22EFEBB300A0EF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 586FE12C22EFEBB300A0EF82 /* Assets.xcassets */; };
 		586FE13B22EFEBB300A0EF82 /* SubCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE13A22EFEBB300A0EF82 /* SubCreatorTests.swift */; };
@@ -48,7 +50,6 @@
 		586FE21122F28A4B00A0EF82 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE20D22F28A4B00A0EF82 /* Device.swift */; };
 		586FE21322F28DCF00A0EF82 /* NSAttributedString+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21222F28DCF00A0EF82 /* NSAttributedString+Ex.swift */; };
 		586FE21722F28E7600A0EF82 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */; };
-		586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21822F297A700A0EF82 /* TaskViewController.swift */; };
 		58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF556D22F41557009E8CCC /* UIView+Extension.swift */; };
 		58FF557022F4344B009E8CCC /* GJJHPJW--GB1-0.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */; };
 		58FF557322F524EE009E8CCC /* Cacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58FF557222F524EE009E8CCC /* Cacher.swift */; };
@@ -96,6 +97,8 @@
 
 /* Begin PBXFileReference section */
 		220D7B3FBEE54FC890C12E20 /* Pods_SubCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SubCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialRefersViewController.swift; sourceTree = "<group>"; };
+		580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialRefersViewReactor.swift; sourceTree = "<group>"; };
 		586FE12222EFEBB200A0EF82 /* SubCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		586FE12522EFEBB200A0EF82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		586FE12C22EFEBB300A0EF82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -144,7 +147,6 @@
 		586FE21422F28E7500A0EF82 /* SubCreator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SubCreator-Bridging-Header.h"; sourceTree = "<group>"; };
 		586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		586FE21622F28E7600A0EF82 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
-		586FE21822F297A700A0EF82 /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
 		58FF556D22F41557009E8CCC /* UIView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 		58FF556F22F4344B009E8CCC /* GJJHPJW--GB1-0.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GJJHPJW--GB1-0.ttf"; sourceTree = "<group>"; };
 		58FF557222F524EE009E8CCC /* Cacher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cacher.swift; sourceTree = "<group>"; };
@@ -244,7 +246,6 @@
 			children = (
 				586FE12522EFEBB200A0EF82 /* AppDelegate.swift */,
 				586FE15322EFF4F500A0EF82 /* CompositionRoot.swift */,
-				586FE21822F297A700A0EF82 /* TaskViewController.swift */,
 				58FF559522F57D1C009E8CCC /* Networking */,
 				586FE18222EFF96800A0EF82 /* iOS */,
 				586FE17422EFF79E00A0EF82 /* Namespace */,
@@ -373,6 +374,8 @@
 			children = (
 				586FE15522EFF58900A0EF82 /* HomepageViewController.swift */,
 				586FE17222EFF69800A0EF82 /* HomepageViewReactor.swift */,
+				580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */,
+				580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */,
 				586FE19022F1390900A0EF82 /* DetailViewController.swift */,
 				586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */,
 				58FF557622F52F8A009E8CCC /* CollectViewController.swift */,
@@ -732,10 +735,11 @@
 				586FE17922EFF79F00A0EF82 /* UIViewChain.swift in Sources */,
 				586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */,
 				586FE18722F0217600A0EF82 /* SwiftyImage.swift in Sources */,
-				586FE21922F297A700A0EF82 /* TaskViewController.swift in Sources */,
 				58FF557B22F55383009E8CCC /* Share.swift in Sources */,
 				58FF55D722F5A6D4009E8CCC /* CollectCacher.swift in Sources */,
+				580F56202313944A00894EF8 /* MaterialRefersViewReactor.swift in Sources */,
 				586FE15C22EFF5A100A0EF82 /* BaseTableViewCell.swift in Sources */,
+				580F561E2313927A00894EF8 /* MaterialRefersViewController.swift in Sources */,
 				58FF558722F564B0009E8CCC /* PermissionUtilities.swift in Sources */,
 				58FF557722F52F8A009E8CCC /* CollectViewController.swift in Sources */,
 				58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */,

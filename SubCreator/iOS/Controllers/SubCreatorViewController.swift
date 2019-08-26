@@ -10,6 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 import RxOptional
+import Moya
 
 class SubCreatorViewController: BaseViewController {
 
@@ -22,15 +23,17 @@ class SubCreatorViewController: BaseViewController {
     }
     // MARK: - Properties
     private var doneTapped = false
+    let item: HomeItem
     
     // MARK: - Initialized
-    init(image: UIImage) {
+    init(image: UIImage, item: HomeItem) {
+        self.item = item
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
     }
     
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError()
     }
     
     // MARK: - UI properties
@@ -169,6 +172,16 @@ class SubCreatorViewController: BaseViewController {
                     }
                 })
             })
+            .disposed(by: disposeBag)
+        
+        self.doneButton.rx.tap
+            .map { [weak self] in self?.cardView.asImage().pngData() }
+            .filterNil()
+            .flatMap { [weak self] (data) -> Observable<Response> in
+                guard let self = self else { return .empty() }
+                return Service.shared.upload(id: self.item.uid, data: data).asObservable()
+            }
+            .subscribe()
             .disposed(by: disposeBag)
         
         self.doneButton.rx.tap

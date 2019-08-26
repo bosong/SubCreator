@@ -8,9 +8,13 @@
 
 import RxSwift
 import Foundation
+import Moya
 
 protocol ServiceType {
     func homeList(limit: Int, skip: Int) -> Single<[HomeItem]>
+    func materialList(limit: Int, skip: Int) -> Single<[HomeItem]>
+    func materialRefers(id: String, limit: Int, skip: Int) -> Single<[HomeItem]>
+    func upload(id: String, data: Data) -> Single<Response>
 }
 
 class Service: ServiceType {
@@ -22,5 +26,25 @@ class Service: ServiceType {
         return networkng
             .request(.homeList(limit: limit, skip: skip))
             .mapCommonable([HomeItem].self)
+            .catchErrorJustReturn([])
+    }
+    
+    func materialList(limit: Int, skip: Int) -> Single<[HomeItem]> {
+        return networkng
+            .request(.materialList(limit: limit, skip: skip))
+            .mapCommonable([HomeItem].self)
+            .catchErrorJustReturn([])
+    }
+    
+    func materialRefers(id: String, limit: Int, skip: Int) -> Single<[HomeItem]> {
+        return networkng
+            .request(.materialRefers(id: id, limit: limit, skip: skip))
+            .mapCommonable([HomeItem].self)
+            .catchErrorJustReturn([])
+    }
+    
+    func upload(id: String, data: Data) -> Single<Response> {
+        return networkng
+            .request(.upload(id: id, data: data))
     }
 }

@@ -18,6 +18,7 @@ class DetailViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
         self.collectButton.isHidden = item.isNone
+        self.materialRefersButton.isHidden = item.isNone
         if let item = item {
             self.item = item
             self.collectButton.isSelected = CollectCacher.shared.loads().contains(item)
@@ -37,12 +38,12 @@ class DetailViewController: BaseViewController {
         $0.setImage(R.image.navigation_bar_back(), for: .normal)
         $0.sizeToFit()
     }
+    let materialRefersButton = UIButton(type: .custom).then {
+        $0.setImage(R.image.btn_material_refers(), for: .normal)
+        $0.sizeToFit()
+    }
     let subCreatorButton = UIButton(type: .custom).then {
-        $0.setTitle("我来制作", for: .normal)
-        $0.setTitleColor(.black, for: .normal)
-        $0.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        $0.setBackgroundImage(UIImage.resizable().color(UIColor.mt.theme).corner(radius: 40).image, for: .normal)
-        $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
+        $0.setImage(R.image.btn_make(), for: .normal)
     }
     let saveButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_save(), for: .normal)
@@ -72,10 +73,20 @@ class DetailViewController: BaseViewController {
         self.backButton.rx.tap
             .bind(to: self.rx.dismiss())
             .disposed(by: disposeBag)
+        
+        self.materialRefersButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                guard let id = self?.item?.uid, id.isNotEmpty else { return }
+                let vc = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: id))
+                self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
+        
         self.subCreatorButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
                 guard let image = self.cardView.image else { return }
-                let subCreatorVC = SubCreatorViewController(image: image)
+                guard let item = self.item else { return }
+                let subCreatorVC = SubCreatorViewController(image: image, item: item)
                 subCreatorVC.cardView.hero.id = self.cardView.hero.id
                 subCreatorVC.backButton.hero.id = self.backButton.hero.id
                 subCreatorVC.doneButton.hero.id = self.backButton.hero.id
@@ -140,6 +151,13 @@ class DetailViewController: BaseViewController {
                 make.top.equalTo(25)
         }
         
+        materialRefersButton
+            .mt.adhere(toSuperView: view)
+            .mt.layout { (make) in
+                make.right.equalTo(-5)
+                make.centerY.equalTo(backButton)
+        }
+        
         cardView
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
@@ -172,9 +190,8 @@ class DetailViewController: BaseViewController {
         subCreatorButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.bottom.equalTo(-80 - safeAreaBottomMargin)
+                make.bottom.equalTo(-60 - safeAreaBottomMargin)
                 make.centerX.equalToSuperview()
-                make.size.equalTo(CGSize(width: 80, height: 80))
         }
     }
     // MARK: - Private Functions

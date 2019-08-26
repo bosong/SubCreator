@@ -22,9 +22,7 @@ public final class CompositionRoot {
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = .white
         let homepageVC = HomepageViewController(reactor: HomepageViewReactor())
-//        homepageVC.reactor = HomepageViewReactor()
         window.rootViewController = UINavigationController(rootViewController: homepageVC)
-//        window.rootViewController = UINavigationController(rootViewController: TaskViewController())
         window.makeKeyAndVisible()
         
         return AppDependency(window: window,
