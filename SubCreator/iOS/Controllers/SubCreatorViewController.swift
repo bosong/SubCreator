@@ -23,13 +23,13 @@ class SubCreatorViewController: BaseViewController {
     }
     // MARK: - Properties
     private var doneTapped = false
-    let item: HomeItem
+    var item: HomeItem?
     
     // MARK: - Initialized
-    init(image: UIImage, item: HomeItem) {
-        self.item = item
+    init(image: UIImage, item: HomeItem?) {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
+        self.item = item
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,10 +37,7 @@ class SubCreatorViewController: BaseViewController {
     }
     
     // MARK: - UI properties
-    let cardView = UIImageView(frame: CGRect(origin: .zero, size: Metric.cardViewSize)).then {
-        $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
-        $0.isUserInteractionEnabled = true
-    }
+    let cardView = CardView(frame: CGRect(origin: .zero, size: Metric.cardViewSize))
     let textLabel = UILabel().then {
         $0.textColor = UIColor.black
         $0.font = Metric.textLableFont(size: 28)
@@ -179,7 +176,7 @@ class SubCreatorViewController: BaseViewController {
             .filterNil()
             .flatMap { [weak self] (data) -> Observable<Response> in
                 guard let self = self else { return .empty() }
-                return Service.shared.upload(id: self.item.uid, data: data).asObservable()
+                return Service.shared.upload(id: self.item?.uid ?? "", data: data).asObservable()
             }
             .subscribe()
             .disposed(by: disposeBag)

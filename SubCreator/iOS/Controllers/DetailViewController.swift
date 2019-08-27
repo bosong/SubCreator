@@ -31,9 +31,7 @@ class DetailViewController: BaseViewController {
     }
     
     // MARK: - UI properties
-    let cardView = UIImageView().then {
-        $0.layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
-    }
+    let cardView = CardView()
     let backButton = UIButton(type: .custom).then {
         $0.setImage(R.image.navigation_bar_back(), for: .normal)
         $0.sizeToFit()
@@ -85,8 +83,7 @@ class DetailViewController: BaseViewController {
         self.subCreatorButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
                 guard let image = self.cardView.image else { return }
-                guard let item = self.item else { return }
-                let subCreatorVC = SubCreatorViewController(image: image, item: item)
+                let subCreatorVC = SubCreatorViewController(image: image, item: self.item)
                 subCreatorVC.cardView.hero.id = self.cardView.hero.id
                 subCreatorVC.backButton.hero.id = self.backButton.hero.id
                 subCreatorVC.doneButton.hero.id = self.backButton.hero.id
@@ -196,4 +193,32 @@ class DetailViewController: BaseViewController {
     }
     // MARK: - Private Functions
 
+}
+
+class CardView: BaseView {
+    var image: UIImage? {
+        set {
+            self.imageView.image = newValue
+        }
+        get {
+            return self.imageView.image
+        }
+    }
+    let imageView = UIImageView().then {
+        $0.contentMode = .scaleAspectFill
+        $0.layer.cornerRadius = 3
+        $0.clipsToBounds = true
+        $0.isUserInteractionEnabled = true
+    }
+    override func setupSubviews() {
+        layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
+        layer.cornerRadius = 3
+        backgroundColor = .white
+        isUserInteractionEnabled = true
+        imageView
+            .mt.adhere(toSuperView: self)
+            .mt.layout { (make) in
+                make.edges.equalToSuperview()
+        }
+    }
 }

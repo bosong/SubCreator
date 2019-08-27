@@ -15,5 +15,5 @@ extension NamespaceWrapper where T: UIColor {
     /// 0xD8D8D8
     static var lightGray: UIColor { return UIColor(hex: 0xD8D8D8) }
     /// 0xEFEFEF
-    static var shadow: UIColor { return UIColor(hex: 0xEFEFEF) }
+    static var shadow: UIColor { return UIColor(hex: 0x000000).withAlphaComponent(0.1) }
 }

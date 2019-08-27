@@ -19,6 +19,7 @@ class HomePageCollectionViewCell: BaseCollectionViewCell {
             .mt.config({ (imgV) in
                 imgV.layer.cornerRadius = 6
                 imgV.clipsToBounds = true
+                imgV.contentMode = .scaleAspectFill
             })
             .mt.layout { (make) in
                 make.edges.equalToSuperview()
