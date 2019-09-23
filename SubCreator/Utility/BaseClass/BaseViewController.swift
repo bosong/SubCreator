@@ -58,6 +58,7 @@ class BaseViewController: UIViewController {
     }()
     open func empty(show: Bool) {
         if show {
+            guard emptyLabel.superview == nil else { return }
             view.addSubview(emptyLabel)
             emptyLabel.mt.layout { (make) in
                 make.center.equalToSuperview()

@@ -29,9 +29,7 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
     }
     
     // MARK: - UI properties
-    let titleView = HomePageTitleView().then {
-        $0.titleLabel.text = "作品集"
-    }
+    let titleView = HomePageTitleView("作品集")
     lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
         cv.backgroundColor = .white

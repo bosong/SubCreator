@@ -23,10 +23,10 @@ class SubCreatorViewController: BaseViewController {
     }
     // MARK: - Properties
     private var doneTapped = false
-    var item: HomeItem?
+    var item: Materials?
     
     // MARK: - Initialized
-    init(image: UIImage, item: HomeItem?) {
+    init(image: UIImage, item: Materials?) {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
         self.item = item
@@ -176,7 +176,7 @@ class SubCreatorViewController: BaseViewController {
             .filterNil()
             .flatMap { [weak self] (data) -> Observable<Response> in
                 guard let self = self else { return .empty() }
-                return Service.shared.upload(id: self.item?.uid ?? "", data: data).asObservable()
+                return Service.shared.upload(id: self.item?.teleplayId ?? "", data: data).asObservable()
             }
             .subscribe()
             .disposed(by: disposeBag)

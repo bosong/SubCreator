@@ -16,9 +16,15 @@ import MJRefresh
 import Fusuma
 
 class HomepageViewController: BaseViewController, ReactorKit.View {
-
+    typealias Section = SectionModel<Material, Materials>
+    
+    struct Metric {
+        static let ItemRatio: CGFloat = 3 / 4
+    }
+    
     // MARK: - Properties
     private var maxAnimateIp = IndexPath(item: 0, section: 0)
+    private lazy var dataSource = self.prepareDataSource()
     
     // MARK: - Initialized
     init(reactor: HomepageViewReactor) {
@@ -31,11 +37,12 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     }
     
     // MARK: - UI properties
-    let titleView = HomePageTitleView()
     lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
         cv.backgroundColor = .white
         cv.registerItemClass(HomePageCollectionViewCell.self)
+        cv.registerforSupplementary(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader)
+        cv.registerforSupplementary(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter)
         let refreshHeader = MJRefreshNormalHeader()
         refreshHeader.lastUpdatedTimeLabel.isHidden = true
         cv.mj_header = refreshHeader
@@ -46,8 +53,12 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 1
-        layout.itemSize = CGSize(width: (screenWidth - 11 * 2 - 15 * 2) / 3, height: (screenWidth - 11 * 2 - 15 * 2) / 3)
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+        let itemWidth = (screenWidth - 11 * 2 - 15 * 2) / 3
+        let itemHeight = itemWidth * Metric.ItemRatio
+        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+        layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
+        layout.footerReferenceSize = CGSize(width: screenWidth, height: 1)
         return layout
     }()
     let editButton: UIButton = {
@@ -76,13 +87,21 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         button.sizeToFit()
         return button
     }()
+    let uploadButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setImage(R.image.btn_upload(), for: .normal)
+        button.sizeToFit()
+        button.isHidden = true
+        return button
+    }()
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: titleView)
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "本地上传", style: .done, target: self, action: #selector(showPhoto))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: HomePageTitleView("广场"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: R.image.bar_item_search(), style: .done, target: self, action: #selector(searchClicked))
         editButton.hero.id = "bottomButton"
+        uploadButton.hero.id = "uploadButton"
     }
     
     // MARK: - SEL
@@ -111,11 +130,8 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.data }
-            .bind(to: collectionView.rx
-                .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
-            ) { _, model, cell in
-                cell.imgV.kf.setImage(with: URL(string: model.url))
-            }
+            .map { $0.map { Section(model: $0, items: $0.materials) } }
+            .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         collectionView.rx.willDisplayCell
@@ -136,67 +152,59 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
-            .do(onNext: { [unowned self] _ in
-                self.editButtonTapped(false)
-            })
+//            .do(onNext: { [unowned self] _ in
+//                self.editButtonTapped(false)
+//            })
             .subscribe(onNext: { [unowned self] (ip) in
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.item)"
-                let detailVC = DetailViewController(image: image, item: reactor.currentState.data[ip.item])
-                detailVC.subCreatorButton.hero.id = self.editButton.hero.id
+                let detailVC = DetailViewController(image: image, item: self.dataSource[ip])
+                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
                 detailVC.cardView.hero.id = cell?.hero.id
-                detailVC.shareButton.hero.id = self.editButton.hero.id
-                detailVC.saveButton.hero.id = self.editButton.hero.id
-                detailVC.collectButton.hero.id = self.editButton.hero.id
+                detailVC.shareButton.hero.id = self.uploadButton.hero.id
+                detailVC.saveButton.hero.id = self.uploadButton.hero.id
+                detailVC.collectButton.hero.id = self.uploadButton.hero.id
                 self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
         
-        editButton.rx.tap
-            .map { [unowned self] in !self.editButton.isSelected }
-            .throttle(0.6, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] (isSelected) in
-                self.editButtonTapped(isSelected)
-            })
-            .disposed(by: disposeBag)
-        
-        Observable.merge(
-            myCollectionButton.rx.tap.asObservable(),
-            myCreationButton.rx.tap.asObservable()
-            )
-            .subscribe(onNext: { [unowned self] (_) in
-                self.editButtonTapped(false)
-            })
-            .disposed(by: disposeBag)
-        
-        myCreationButton.rx.tap
-            .subscribe(onNext: { [unowned self] (_) in
-                let collectVC = CollectViewController()
-                collectVC.reactor = CollectViewReactor(.creation)
-                self.navigationController?.pushViewController(collectVC, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        myCollectionButton.rx.tap
-            .subscribe(onNext: { (_) in
-                let collectVC = CollectViewController()
-                collectVC.reactor = CollectViewReactor(.collect)
-                self.navigationController?.pushViewController(collectVC, animated: true)
-            })
-            .disposed(by: disposeBag)
+//        editButton.rx.tap
+//            .map { [unowned self] in !self.editButton.isSelected }
+//            .throttle(0.6, scheduler: MainScheduler.instance)
+//            .subscribe(onNext: { [unowned self] (isSelected) in
+//                self.editButtonTapped(isSelected)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        Observable.merge(
+//            myCollectionButton.rx.tap.asObservable(),
+//            myCreationButton.rx.tap.asObservable()
+//            )
+//            .subscribe(onNext: { [unowned self] (_) in
+//                self.editButtonTapped(false)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        myCreationButton.rx.tap
+//            .subscribe(onNext: { [unowned self] (_) in
+//                let collectVC = CollectViewController()
+//                collectVC.reactor = CollectViewReactor(.creation)
+//                self.navigationController?.pushViewController(collectVC, animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        myCollectionButton.rx.tap
+//            .subscribe(onNext: { (_) in
+//                let collectVC = CollectViewController()
+//                collectVC.reactor = CollectViewReactor(.collect)
+//                self.navigationController?.pushViewController(collectVC, animated: true)
+//            })
+//            .disposed(by: disposeBag)
     }
     
-    @objc func showPhoto() {
-        let fusuma = FusumaViewController().then { (fusuma) in
-            fusuma.delegate = self
-            fusuma.availableModes = [FusumaMode.library, FusumaMode.camera]
-            fusuma.cropHeightRatio = 1
-            fusuma.allowMultipleSelection = false
-            fusumaCameraRollTitle = "相册"
-            fusumaCameraTitle = "拍照"
-        }
-        self.present(fusuma, animated: true, completion: nil)
+    @objc func searchClicked() {
+        
     }
     
     // MARK: - Layout
@@ -207,26 +215,33 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 make.edges.equalToSuperview()
         }
         
-        editButton
+        uploadButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.right.equalTo(-10)
-                make.bottom.equalTo(-safeAreaBottomMargin - 30)
+                make.centerX.equalToSuperview()
+                make.bottom.equalTo(-24)
         }
         
-        view.insertSubview(myCreationButton, belowSubview: editButton)
-        myCreationButton
-            .mt.layout { (make) in
-                make.right.equalTo(-12)
-                make.centerY.equalTo(editButton)
-        }
-        
-        view.insertSubview(myCollectionButton, belowSubview: editButton)
-        myCollectionButton
-            .mt.layout { (make) in
-                make.right.equalTo(-12)
-                make.centerY.equalTo(editButton)
-        }
+//        editButton
+//            .mt.adhere(toSuperView: view)
+//            .mt.layout { (make) in
+//                make.right.equalTo(-10)
+//                make.bottom.equalTo(-safeAreaBottomMargin - 30)
+//        }
+//
+//        view.insertSubview(myCreationButton, belowSubview: editButton)
+//        myCreationButton
+//            .mt.layout { (make) in
+//                make.right.equalTo(-12)
+//                make.centerY.equalTo(editButton)
+//        }
+//
+//        view.insertSubview(myCollectionButton, belowSubview: editButton)
+//        myCollectionButton
+//            .mt.layout { (make) in
+//                make.right.equalTo(-12)
+//                make.centerY.equalTo(editButton)
+//        }
     }
     
     private func editButtonTapped(_ isSelected: Bool) {
@@ -266,12 +281,49 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     }
     
     // MARK: - Private Functions
+    private func prepareDataSource() -> RxCollectionViewSectionedReloadDataSource<Section> {
+        return RxCollectionViewSectionedReloadDataSource<Section>.init(configureCell: { (ds, cv, ip, e) -> UICollectionViewCell in
+            let cell = cv.dequeueItem(HomePageCollectionViewCell.self, for: ip)
+            cell.imgV.kf.setImage(with: URL(string: e.url))
+            return cell
+        }, configureSupplementaryView: { (ds, cv, id, ip) -> UICollectionReusableView in
+            switch id {
+            case UICollectionView.elementKindSectionHeader:
+                let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
+                view.titleLabel.text = ds[ip.section].model.teleplayName
+                return view
+            default:
+                let view = cv.dequeueReusableView(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter, for: ip)
+                view.backgroundColor = UIColor(hex: 0xEFEFEF)
+                return view
+            }
+        })
+    }
 }
 
-class HomePageTitleView: BaseView {
+class HomePageSectionHeaderView: UICollectionReusableView {
     let imgV = UIImageView()
     let titleLabel = UILabel()
-    override func setupSubviews() {
+    let accessbilityBtn = UIButton(type: .custom)
+    
+    private(set) var reuseDisposeBag = DisposeBag()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .white
+        prepareSubviews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        reuseDisposeBag = DisposeBag()
+    }
+    
+    private func prepareSubviews() {
         imgV
             .mt.adhere(toSuperView: self)
             .mt.config({ (imgV) in
@@ -285,18 +337,54 @@ class HomePageTitleView: BaseView {
             .mt.layout { (make) in
                 make.size.equalTo(CGSize(width: 8, height: 16))
                 make.centerY.equalToSuperview()
-                make.left.equalToSuperview()
+                make.left.equalTo(15)
         }
         
         titleLabel
             .mt.adhere(toSuperView: self)
             .mt.config { (label) in
                 label.text = "资源库"
-                label.font = UIFont.systemFont(ofSize: 20, weight: .heavy)
+                label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+                label.textColor = UIColor(hex: 0x4F3B04)
+            }
+            .mt.layout { (make) in
+                make.left.equalTo(imgV.snp.right).offset(5)
+                make.centerY.equalToSuperview()
+        }
+        
+        accessbilityBtn
+            .mt.adhere(toSuperView: self)
+            .mt.config { (btn) in
+                btn.setImage(R.image.homepage_accessbility(), for: .normal)
+            }
+            .mt.layout { (make) in
+                make.right.equalTo(-15)
+                make.centerY.equalToSuperview()
+        }
+    }
+}
+
+class HomePageTitleView: BaseView {
+    let titleLabel = UILabel()
+    
+    init(_ title: String) {
+        super.init(frame: .zero)
+        self.titleLabel.text = title
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func setupSubviews() {
+        titleLabel
+            .mt.adhere(toSuperView: self)
+            .mt.config { (label) in
+                label.font = UIFont.systemFont(ofSize: 24, weight: .semibold)
                 label.textColor = .black
             }
             .mt.layout { (make) in
-                make.left.equalTo(imgV.snp.right).offset(8)
+                make.left.equalToSuperview()
                 make.centerY.equalToSuperview()
         }
     }

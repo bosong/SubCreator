@@ -5,7 +5,6 @@
 //  Created by rpple_k on 2019/8/3.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
-//  swiftlint:disable type_name
 
 import Foundation
 import Moya
@@ -23,7 +22,7 @@ extension API: APITargetType {
         case .homeList:
             return .get("/home")
         case .materialList:
-            return .get("v1/user/material")
+            return .get("v1/teleplay/material")
         case .materialRefers:
             return .get("v1/user/material/refers")
         case .upload:

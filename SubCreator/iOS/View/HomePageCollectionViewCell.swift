@@ -13,7 +13,7 @@ class HomePageCollectionViewCell: BaseCollectionViewCell {
     let imgV = UIImageView()
     
     override func setupSubviews() {
-//        self.layer.applySketchShadow(color: UIColor.lightGray, alpha: 1, x: 0, y: 0, blur: 3, spread: 1)
+        self.layer.applySketchShadow(color: UIColor.black, alpha: 0.5, x: 0, y: 2, blur: 4, spread: 0)
         imgV
             .mt.adhere(toSuperView: contentView)
             .mt.config({ (imgV) in

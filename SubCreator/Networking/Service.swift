@@ -12,7 +12,7 @@ import Moya
 
 protocol ServiceType {
     func homeList(limit: Int, skip: Int) -> Single<[HomeItem]>
-    func materialList(limit: Int, skip: Int) -> Single<[HomeItem]>
+    func materialList(limit: Int, skip: Int) -> Single<[Material]>
     func materialRefers(id: String, limit: Int, skip: Int) -> Single<[HomeItem]>
     func upload(id: String, data: Data) -> Single<Response>
 }
@@ -29,10 +29,13 @@ class Service: ServiceType {
             .catchErrorJustReturn([])
     }
     
-    func materialList(limit: Int, skip: Int) -> Single<[HomeItem]> {
+    func materialList(limit: Int, skip: Int) -> Single<[Material]> {
         return networkng
             .request(.materialList(limit: limit, skip: skip))
-            .mapCommonable([HomeItem].self)
+            .do(onSuccess: { (rsp) in
+                log.info(try? rsp.mapJSON())
+            })
+            .mapCommonable([Material].self)
             .catchErrorJustReturn([])
     }
     

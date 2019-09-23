@@ -18,13 +18,13 @@ class HomepageViewReactor: Reactor {
     }
     
     enum Mutation {
-        case setData([HomeItem])
-        case addData([HomeItem])
+        case setData([Material])
+        case addData([Material])
         case setLoading(Bool)
     }
     
     struct State {
-        var data: [HomeItem] = []
+        var data: [Material] = []
         var isLoading = false
     }
     
@@ -41,9 +41,9 @@ class HomepageViewReactor: Reactor {
             let start = Observable.just(Mutation.setLoading(true))
             let end = Observable.just(Mutation.setLoading(false))
             let data = Service.shared
-                .materialList(limit: 50, skip: 0)
+                .materialList(limit: 30, skip: 0)
                 .asObservable()
-                .map { Mutation.setData($0) }
+                .map(Mutation.setData)
             return .concat([start, data, end])
             
         case .loadMore:
@@ -51,9 +51,9 @@ class HomepageViewReactor: Reactor {
             let start = Observable.just(Mutation.setLoading(true))
             let end = Observable.just(Mutation.setLoading(false))
             let data = Service.shared
-                .materialList(limit: 50, skip: currentState.data.count)
+                .materialList(limit: 30, skip: currentState.data.count)
                 .asObservable()
-                .map { Mutation.addData($0) }
+                .map(Mutation.addData)
             return .concat([start, data, end])
         }
     }

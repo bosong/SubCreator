@@ -80,7 +80,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
                 guard let image = cell?.imgV.image else { return }
                 
                 cell?.hero.id = "homepageCell\(ip.item)"
-                var item: HomeItem?
+                var item: Materials?
                 
                 if reactor.currentState.type == .collect {
                     item = reactor.currentState.collectData[ip.item]

@@ -24,11 +24,11 @@ public class CollectCacher {
     /// loadImageWrappers
     ///
     /// - Returns: ImageWrapper
-    func loads() -> [HomeItem] {
+    func loads() -> [Materials] {
         
-        var result: [HomeItem] = []
+        var result: [Materials] = []
         for file in _cacher.findFiles(path: path) {
-            if let model: HomeItem = _cacher.load(fileName: file) {
+            if let model: Materials = _cacher.load(fileName: file) {
                 result.append(model)
             }
         }
@@ -38,7 +38,7 @@ public class CollectCacher {
     /// addImageWrapper
     ///
     /// - Parameter draft: ImageWrapper
-    func add(_ model: HomeItem) {
+    func add(_ model: Materials) {
         _cacher.persist(item: model) { (_, error) in
             if let error = error {
                 log.error(error.localizedDescription)
@@ -49,7 +49,7 @@ public class CollectCacher {
     /// removeImageWrapper
     ///
     /// - Parameter draft: ImageWrapper
-    func remove(_ model: HomeItem) {
+    func remove(_ model: Materials) {
         _cacher.remove(fileName: model.fileName)
     }
     

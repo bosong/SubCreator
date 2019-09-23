@@ -19,6 +19,8 @@ target 'SubCreator' do
   pod 'fluid-slider'
   pod 'SwiftMessages'
   pod 'Fusuma'
+  pod 'ESTabBarController-swift'
+  pod 'LookinServer', :configurations => ['Debug']
   # Pods for SubCreator
 
   target 'SubCreatorTests' do

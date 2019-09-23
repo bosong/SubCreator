@@ -24,7 +24,7 @@ class CollectViewReactor: Reactor {
     
     struct State {
         var creationData: [ImageWrapper]
-        var collectData: [HomeItem]
+        var collectData: [Materials]
         let type: ReactorType
     }
     

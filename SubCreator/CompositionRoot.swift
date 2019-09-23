@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import ESTabBarController_swift
+import Fusuma
 
 public struct AppDependency {
     public let window: UIWindow
@@ -21,8 +23,9 @@ public final class CompositionRoot {
         
         let window = UIWindow(frame: UIScreen.main.bounds)
         window.backgroundColor = .white
-        let homepageVC = HomepageViewController(reactor: HomepageViewReactor())
-        window.rootViewController = UINavigationController(rootViewController: homepageVC)
+        
+//        let homepageVC = HomepageViewController(reactor: HomepageViewReactor())
+        window.rootViewController = TabBarController()
         window.makeKeyAndVisible()
         
         return AppDependency(window: window,
@@ -40,8 +43,9 @@ public final class CompositionRoot {
     /// ConfigureAppearance for App
     static func configureAppearance() {
         UINavigationBar.appearance().tintColor = .black
-        UINavigationBar.appearance().shadowImage = UIImage.resizable().color(.white).image
-        UINavigationBar.appearance().backgroundColor = UIColor.white
+        UINavigationBar.appearance().shadowImage = UIImage.resizable().color(UIColor.white).image
+        UINavigationBar.appearance().backgroundColor = .white
+        UINavigationBar.appearance().isTranslucent = false
     }
     
     /// ConfigurePreferences for App

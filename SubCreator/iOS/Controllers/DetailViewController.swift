@@ -12,9 +12,9 @@ import Hero
 class DetailViewController: BaseViewController {
 
     // MARK: - Properties
-    private var item: HomeItem?
+    private var item: Materials?
     // MARK: - Initialized
-    init(image: UIImage, item: HomeItem? = nil) {
+    init(image: UIImage, item: Materials? = nil) {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
         self.collectButton.isHidden = item.isNone
@@ -74,7 +74,7 @@ class DetailViewController: BaseViewController {
         
         self.materialRefersButton.rx.tap
             .subscribe(onNext: { [weak self] in
-                guard let id = self?.item?.uid, id.isNotEmpty else { return }
+                guard let id = self?.item?.materialId, id.isNotEmpty else { return }
                 let vc = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: id))
                 self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
             })

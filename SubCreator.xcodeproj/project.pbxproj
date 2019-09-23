@@ -10,6 +10,11 @@
 		46B903ABE7A17C09316C4561 /* Pods_SubCreator.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 220D7B3FBEE54FC890C12E20 /* Pods_SubCreator.framework */; };
 		580F561E2313927A00894EF8 /* MaterialRefersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */; };
 		580F56202313944A00894EF8 /* MaterialRefersViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */; };
+		582623C12334B42100FADB14 /* BaseNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582623C02334B42100FADB14 /* BaseNavigationViewController.swift */; };
+		582627002338B90700FADB14 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582626FF2338B90700FADB14 /* GalleryViewController.swift */; };
+		582627022338C83300FADB14 /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582627012338C83300FADB14 /* MeViewController.swift */; };
+		5846B3D82330C2F30033524F /* IrregularityContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D72330C2F30033524F /* IrregularityContentView.swift */; };
+		5846B3DA2330C5220033524F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D92330C5220033524F /* TabBarController.swift */; };
 		586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE12522EFEBB200A0EF82 /* AppDelegate.swift */; };
 		586FE12D22EFEBB300A0EF82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 586FE12C22EFEBB300A0EF82 /* Assets.xcassets */; };
 		586FE13B22EFEBB300A0EF82 /* SubCreatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE13A22EFEBB300A0EF82 /* SubCreatorTests.swift */; };
@@ -99,6 +104,11 @@
 		220D7B3FBEE54FC890C12E20 /* Pods_SubCreator.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SubCreator.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialRefersViewController.swift; sourceTree = "<group>"; };
 		580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialRefersViewReactor.swift; sourceTree = "<group>"; };
+		582623C02334B42100FADB14 /* BaseNavigationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationViewController.swift; sourceTree = "<group>"; };
+		582626FF2338B90700FADB14 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
+		582627012338C83300FADB14 /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
+		5846B3D72330C2F30033524F /* IrregularityContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularityContentView.swift; sourceTree = "<group>"; };
+		5846B3D92330C5220033524F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		586FE12222EFEBB200A0EF82 /* SubCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		586FE12522EFEBB200A0EF82 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		586FE12C22EFEBB300A0EF82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -308,6 +318,7 @@
 				586FE15822EFF5A100A0EF82 /* BaseTableViewCell.swift */,
 				586FE15722EFF5A100A0EF82 /* BaseView.swift */,
 				586FE15922EFF5A100A0EF82 /* BaseViewController.swift */,
+				582623C02334B42100FADB14 /* BaseNavigationViewController.swift */,
 			);
 			path = BaseClass;
 			sourceTree = "<group>";
@@ -365,6 +376,7 @@
 				586FE18C22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift */,
 				586FE20322F287CB00A0EF82 /* SubCreatorToolBar.swift */,
 				586FE20722F2899400A0EF82 /* InputTextView.swift */,
+				5846B3D72330C2F30033524F /* IrregularityContentView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -372,8 +384,11 @@
 		586FE20622F2891700A0EF82 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				5846B3D92330C5220033524F /* TabBarController.swift */,
 				586FE15522EFF58900A0EF82 /* HomepageViewController.swift */,
+				582626FF2338B90700FADB14 /* GalleryViewController.swift */,
 				586FE17222EFF69800A0EF82 /* HomepageViewReactor.swift */,
+				582627012338C83300FADB14 /* MeViewController.swift */,
 				580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */,
 				580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */,
 				586FE19022F1390900A0EF82 /* DetailViewController.swift */,
@@ -695,6 +710,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				586FE17B22EFF79F00A0EF82 /* UIColorChain.swift in Sources */,
+				5846B3DA2330C5220033524F /* TabBarController.swift in Sources */,
 				586FE15422EFF4F500A0EF82 /* CompositionRoot.swift in Sources */,
 				586FE17A22EFF79F00A0EF82 /* Namespace.swift in Sources */,
 				586FE16822EFF5B400A0EF82 /* UIAlertController+Rx.swift in Sources */,
@@ -706,6 +722,7 @@
 				586FE16722EFF5B400A0EF82 /* Codable.swift in Sources */,
 				586FE21022F28A4B00A0EF82 /* Version.swift in Sources */,
 				58FF557922F53011009E8CCC /* CollectViewReactor.swift in Sources */,
+				582623C12334B42100FADB14 /* BaseNavigationViewController.swift in Sources */,
 				58FF557F22F561B1009E8CCC /* SwiftyMessageHelper.swift in Sources */,
 				586FE17322EFF69800A0EF82 /* HomepageViewReactor.swift in Sources */,
 				58FF559922F57EC9009E8CCC /* API.swift in Sources */,
@@ -723,8 +740,10 @@
 				58FF559122F57D14009E8CCC /* Networking.swift in Sources */,
 				58FF559B22F57FC3009E8CCC /* Service.swift in Sources */,
 				58FF558322F5646D009E8CCC /* Permission.swift in Sources */,
+				582627022338C83300FADB14 /* MeViewController.swift in Sources */,
 				586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */,
 				58FF559022F57D14009E8CCC /* ACGAPITargetType.swift in Sources */,
+				582627002338B90700FADB14 /* GalleryViewController.swift in Sources */,
 				586FE20422F287CB00A0EF82 /* SubCreatorToolBar.swift in Sources */,
 				586FE19122F1390900A0EF82 /* DetailViewController.swift in Sources */,
 				586FE16E22EFF5B400A0EF82 /* MJRefresh+Rx.swift in Sources */,
@@ -750,6 +769,7 @@
 				586FE15B22EFF5A100A0EF82 /* BaseView.swift in Sources */,
 				586FE21722F28E7600A0EF82 /* UITextView+Placeholder.m in Sources */,
 				586FE16A22EFF5B400A0EF82 /* UIViewController+Rx.swift in Sources */,
+				5846B3D82330C2F30033524F /* IrregularityContentView.swift in Sources */,
 				58FF559322F57D14009E8CCC /* Mapping.swift in Sources */,
 				586FE18D22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift in Sources */,
 				586FE15D22EFF5A100A0EF82 /* BaseViewController.swift in Sources */,
