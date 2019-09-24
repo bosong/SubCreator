@@ -41,6 +41,25 @@ class MeViewController: BaseViewController {
                 }
             }
             .disposed(by: disposeBag)
+        
+        tableView.rx.modelSelected(Item.self)
+            .subscribe(onNext: { [weak self] (element) in
+                switch element {
+                case .collect:
+                    let collectVC = CollectViewController()
+                    collectVC.reactor = CollectViewReactor()
+                    self?.navigationController?.pushViewController(collectVC, animated: true)
+                case .gallery:
+                    break
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        tableView.rx.itemSelected
+            .subscribe(onNext: { [weak self] ip in
+                self?.tableView.deselectRow(at: ip, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func setupConstraints() {

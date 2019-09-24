@@ -12,16 +12,16 @@ import Hero
 class DetailViewController: BaseViewController {
 
     // MARK: - Properties
-    private var item: Materials?
+    private var item: Subtitles?
     // MARK: - Initialized
-    init(image: UIImage, item: Materials? = nil) {
+    init(image: UIImage, item: Subtitles? = nil) {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
         self.collectButton.isHidden = item.isNone
-        self.materialRefersButton.isHidden = item.isNone
+//        self.materialRefersButton.isHidden = item.isNone
         if let item = item {
             self.item = item
-            self.collectButton.isSelected = CollectCacher.shared.loads().contains(item)
+            self.collectButton.isSelected = CollectSubtitlesCacher.shared.loads().contains(item)
         }
         
     }
@@ -32,17 +32,17 @@ class DetailViewController: BaseViewController {
     
     // MARK: - UI properties
     let cardView = CardView()
-    let backButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.navigation_bar_back(), for: .normal)
-        $0.sizeToFit()
-    }
-    let materialRefersButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.btn_material_refers(), for: .normal)
-        $0.sizeToFit()
-    }
-    let subCreatorButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.btn_make(), for: .normal)
-    }
+//    let backButton = UIButton(type: .custom).then {
+//        $0.setImage(R.image.navigation_bar_back(), for: .normal)
+//        $0.sizeToFit()
+//    }
+//    let materialRefersButton = UIButton(type: .custom).then {
+//        $0.setImage(R.image.btn_material_refers(), for: .normal)
+//        $0.sizeToFit()
+//    }
+//    let subCreatorButton = UIButton(type: .custom).then {
+//        $0.setImage(R.image.btn_make(), for: .normal)
+//    }
     let saveButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_save(), for: .normal)
         $0.sizeToFit()
@@ -56,53 +56,55 @@ class DetailViewController: BaseViewController {
         $0.setImage(R.image.btn_collection_sel(), for: .selected)
         $0.sizeToFit()
     }
+    let dismissTapGesture = UITapGestureRecognizer()
     
     // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hero.isEnabled = true
-        backButton.hero.id = "navigationItem"
+//        backButton.hero.id = "navigationItem"
         cardView.hero.modifiers = [.arc()]
         shareButton.hero.modifiers = [.arc()]
         saveButton.hero.modifiers = [.arc()]
         collectButton.hero.modifiers = [.arc()]
-        subCreatorButton.hero.modifiers = [.arc()]
+        view.addGestureRecognizer(dismissTapGesture)
+//        subCreatorButton.hero.modifiers = [.arc()]
 //        cardView.image = R.image.图()
-        self.backButton.rx.tap
-            .bind(to: self.rx.dismiss())
-            .disposed(by: disposeBag)
-        
-        self.materialRefersButton.rx.tap
-            .subscribe(onNext: { [weak self] in
-                guard let id = self?.item?.materialId, id.isNotEmpty else { return }
-                let vc = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: id))
-                self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
-        
-        self.subCreatorButton.rx.tap
-            .subscribe(onNext: { [unowned self] (_) in
-                guard let image = self.cardView.image else { return }
-                let subCreatorVC = SubCreatorViewController(image: image, item: self.item)
-                subCreatorVC.cardView.hero.id = self.cardView.hero.id
-                subCreatorVC.backButton.hero.id = self.backButton.hero.id
-                subCreatorVC.doneButton.hero.id = self.backButton.hero.id
-                subCreatorVC.saveButton.hero.id = self.saveButton.hero.id
-                subCreatorVC.shareButton.hero.id = self.shareButton.hero.id
-                subCreatorVC.collectButton.hero.id = self.collectButton.hero.id
-                self.present(subCreatorVC, animated: true, completion: nil)
-            })
-            .disposed(by: disposeBag)
+//        self.backButton.rx.tap
+//            .bind(to: self.rx.dismiss())
+//            .disposed(by: disposeBag)
+//
+//        self.materialRefersButton.rx.tap
+//            .subscribe(onNext: { [weak self] in
+//                guard let id = self?.item?.materialId, id.isNotEmpty else { return }
+//                let vc = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: id))
+//                self?.present(UINavigationController(rootViewController: vc), animated: true, completion: nil)
+//            })
+//            .disposed(by: disposeBag)
+//
+//        self.subCreatorButton.rx.tap
+//            .subscribe(onNext: { [unowned self] (_) in
+//                guard let image = self.cardView.image else { return }
+//                let subCreatorVC = SubCreatorViewController(image: image, item: self.item)
+//                subCreatorVC.cardView.hero.id = self.cardView.hero.id
+//                subCreatorVC.backButton.hero.id = self.backButton.hero.id
+//                subCreatorVC.doneButton.hero.id = self.backButton.hero.id
+//                subCreatorVC.saveButton.hero.id = self.saveButton.hero.id
+//                subCreatorVC.shareButton.hero.id = self.shareButton.hero.id
+//                subCreatorVC.collectButton.hero.id = self.collectButton.hero.id
+//                self.present(subCreatorVC, animated: true, completion: nil)
+//            })
+//            .disposed(by: disposeBag)
         
         self.collectButton.rx.tap
             .map { [unowned self] in !self.collectButton.isSelected }
             .do(onNext: { (isSelected) in
                 guard let item = self.item else { return }
                 if isSelected {
-                    CollectCacher.shared.add(item)
+                    CollectSubtitlesCacher.shared.add(item)
                     message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
                 } else {
-                    CollectCacher.shared.remove(item)
+                    CollectSubtitlesCacher.shared.remove(item)
                     message(.success, title: "已取消收藏")
                 }
             })
@@ -126,11 +128,19 @@ class DetailViewController: BaseViewController {
                 })
             })
             .disposed(by: disposeBag)
+        
+        dismissTapGesture
+            .rx.event
+            .subscribe(onNext: { [weak self] (tap) in
+                self?.dismiss(animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.7)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -141,39 +151,41 @@ class DetailViewController: BaseViewController {
     // MARK: - SEL
     // MARK: - Layout
     override func setupConstraints() {
-        backButton
-            .mt.adhere(toSuperView: view)
-            .mt.layout { (make) in
-                make.left.equalTo(5)
-                make.top.equalTo(25)
-        }
-        
-        materialRefersButton
-            .mt.adhere(toSuperView: view)
-            .mt.layout { (make) in
-                make.right.equalTo(-5)
-                make.centerY.equalTo(backButton)
-        }
+//        backButton
+//            .mt.adhere(toSuperView: view)
+//            .mt.layout { (make) in
+//                make.left.equalTo(5)
+//                make.top.equalTo(25)
+//        }
+//
+//        materialRefersButton
+//            .mt.adhere(toSuperView: view)
+//            .mt.layout { (make) in
+//                make.right.equalTo(-5)
+//                make.centerY.equalTo(backButton)
+//        }
         
         cardView
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.centerX.equalToSuperview()
                 make.centerY.equalToSuperview().offset(-50)
-                make.size.equalTo(screenWidth - 45 * 2)
+                let cardWidth = screenWidth - 30 * 2
+                let cardHeight = cardWidth * HomepageViewController.Metric.ItemRatio
+                make.size.equalTo(CGSize(width: cardWidth, height: cardHeight))
         }
         
         shareButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
-                make.centerY.equalTo(cardView.snp.bottom)
+                make.centerX.equalTo(cardView).offset((screenWidth - 30 * 2) / 3)
+                make.top.equalTo(cardView.snp.bottom).offset(20)
         }
         
         saveButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset(-(screenWidth - 45 * 2) / 4)
+                make.centerX.equalTo(cardView).offset(-(screenWidth - 30 * 2) / 3)
                 make.centerY.equalTo(shareButton)
         }
         
@@ -184,12 +196,12 @@ class DetailViewController: BaseViewController {
                 make.centerY.equalTo(shareButton)
         }
         
-        subCreatorButton
-            .mt.adhere(toSuperView: view)
-            .mt.layout { (make) in
-                make.bottom.equalTo(-60 - safeAreaBottomMargin)
-                make.centerX.equalToSuperview()
-        }
+//        subCreatorButton
+//            .mt.adhere(toSuperView: view)
+//            .mt.layout { (make) in
+//                make.bottom.equalTo(-60 - safeAreaBottomMargin)
+//                make.centerX.equalToSuperview()
+//        }
     }
     // MARK: - Private Functions
 
@@ -213,7 +225,7 @@ class CardView: BaseView {
     override func setupSubviews() {
         layer.applySketchShadow(color: UIColor.mt.shadow, alpha: 1, x: 0, y: 0, blur: 10, spread: 0)
         layer.cornerRadius = 3
-        backgroundColor = .white
+        backgroundColor = UIColor.black.withAlphaComponent(0.7)
         isUserInteractionEnabled = true
         imageView
             .mt.adhere(toSuperView: self)

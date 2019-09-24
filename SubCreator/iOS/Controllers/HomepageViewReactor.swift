@@ -13,18 +13,23 @@ import RxCocoa
 class HomepageViewReactor: Reactor {
     
     enum Action {
-        case loadData
-        case loadMore
+        case materialList
+        case materialListMore
+        case subtitleList
+        case subtitleListMore
     }
     
     enum Mutation {
-        case setData([Material])
-        case addData([Material])
+        case setMaterial([Material])
+        case addMaterial([Material])
+        case setSubtitle([Subtitle])
+        case addSubtitle([Subtitle])
         case setLoading(Bool)
     }
     
     struct State {
-        var data: [Material] = []
+        var material: [Material] = []
+        var subtitle: [Subtitle] = []
         var isLoading = false
     }
     
@@ -36,24 +41,43 @@ class HomepageViewReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .loadData:
+        case .materialList:
             guard !currentState.isLoading else { return .empty() }
             let start = Observable.just(Mutation.setLoading(true))
             let end = Observable.just(Mutation.setLoading(false))
             let data = Service.shared
                 .materialList(limit: 30, skip: 0)
                 .asObservable()
-                .map(Mutation.setData)
+                .map(Mutation.setMaterial)
             return .concat([start, data, end])
             
-        case .loadMore:
+        case .materialListMore:
             guard !currentState.isLoading else { return .empty() }
             let start = Observable.just(Mutation.setLoading(true))
             let end = Observable.just(Mutation.setLoading(false))
             let data = Service.shared
-                .materialList(limit: 30, skip: currentState.data.count)
+                .materialList(limit: 30, skip: currentState.material.count)
                 .asObservable()
-                .map(Mutation.addData)
+                .map(Mutation.addMaterial)
+            return .concat([start, data, end])
+            
+        case .subtitleList:
+            guard !currentState.isLoading else { return .empty() }
+            let start = Observable.just(Mutation.setLoading(true))
+            let end = Observable.just(Mutation.setLoading(false))
+            let data = Service.shared
+                .subtitleList(limit: 30, skip: 0)
+                .asObservable()
+                .map(Mutation.setSubtitle)
+            return .concat([start, data, end])
+        case .subtitleListMore:
+            guard !currentState.isLoading else { return .empty() }
+            let start = Observable.just(Mutation.setLoading(true))
+            let end = Observable.just(Mutation.setLoading(false))
+            let data = Service.shared
+                .subtitleList(limit: 30, skip: currentState.subtitle.count)
+                .asObservable()
+                .map(Mutation.addSubtitle)
             return .concat([start, data, end])
         }
     }
@@ -61,10 +85,14 @@ class HomepageViewReactor: Reactor {
     func reduce(state: State, mutation: Mutation) -> State {
         var state = state
         switch mutation {
-        case .setData(let data):
-            state.data = data
-        case .addData(let data):
-            state.data += data
+        case .setMaterial(let data):
+            state.material = data
+        case .addMaterial(let data):
+            state.material += data
+        case .setSubtitle(let data):
+            state.subtitle = data
+        case .addSubtitle(let data):
+            state.subtitle += data
         case .setLoading(let loading):
             state.isLoading = loading
         }

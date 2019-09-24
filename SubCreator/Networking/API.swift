@@ -12,6 +12,7 @@ import Moya
 enum API {
     case homeList(limit: Int, skip: Int)
     case materialList(limit: Int, skip: Int)
+    case subtitleList(limit: Int, skip: Int)
     case materialRefers(id: String, limit: Int, skip: Int)
     case upload(id: String, data: Data)
 }
@@ -23,6 +24,8 @@ extension API: APITargetType {
             return .get("/home")
         case .materialList:
             return .get("v1/teleplay/material")
+        case .subtitleList:
+            return .get("v1/teleplay/subtitle")
         case .materialRefers:
             return .get("v1/user/material/refers")
         case .upload:
@@ -36,6 +39,8 @@ extension API: APITargetType {
         case let .homeList(limit, skip):
             return ["limit": limit, "skip": skip]
         case let .materialList(limit, skip):
+            return ["limit": limit, "skip": skip]
+        case let .subtitleList(limit, skip):
             return ["limit": limit, "skip": skip]
         case let .materialRefers(id, limit, skip):
             return ["mid": id, "limit": limit, "skip": skip]

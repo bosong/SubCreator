@@ -117,7 +117,7 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
                 cell?.hero.id = "homepageCell\(ip.item)"
                 let detailVC = DetailViewController(image: image)
                 detailVC.cardView.hero.id = cell?.hero.id
-                detailVC.subCreatorButton.isHidden = true
+//                detailVC.subCreatorButton.isHidden = true
                 self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)

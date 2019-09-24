@@ -16,7 +16,7 @@ class SubCreatorViewController: BaseViewController {
 
     struct Metric {
         static let styleItemViewHeight: CGFloat = 217
-        static let cardViewSize = CGSize(width: screenWidth - 45 * 2, height: screenWidth - 45 * 2)
+        static let cardViewSize = CGSize(width: screenWidth - 30 * 2, height: (screenWidth - 30 * 2) * HomepageViewController.Metric.ItemRatio)
         static func textLableFont(size: CGFloat) -> UIFont {
             return UIFont(name: "GJJHPJW--GB1-0", size: size) ?? UIFont.systemFont(ofSize: size)
         }
@@ -30,6 +30,10 @@ class SubCreatorViewController: BaseViewController {
         super.init(nibName: nil, bundle: nil)
         cardView.image = image
         self.item = item
+        if let item = item {
+            self.item = item
+            self.collectButton.isSelected = CollectMaterialsCacher.shared.loads().contains(item)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -63,7 +67,6 @@ class SubCreatorViewController: BaseViewController {
     let collectButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_collection_normal(), for: .normal)
         $0.setImage(R.image.btn_collection_sel(), for: .selected)
-        $0.isHidden = true
         $0.sizeToFit()
     }
     let toolBar = SubCreatorToolBar(frame: CGRect(x: 0, y: screenHeight - 50, width: screenWidth, height: 50))
@@ -208,6 +211,21 @@ class SubCreatorViewController: BaseViewController {
                 Share.shareShow(controller: self, items: [self.cardView.asImage()])
             })
             .disposed(by: disposeBag)
+        
+        self.collectButton.rx.tap
+            .map { [unowned self] in !self.collectButton.isSelected }
+            .do(onNext: { (isSelected) in
+                guard let item = self.item else { return }
+                if isSelected {
+                    CollectMaterialsCacher.shared.add(item)
+                    message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
+                } else {
+                    CollectMaterialsCacher.shared.remove(item)
+                    message(.success, title: "已取消收藏")
+                }
+            })
+            .bind(to: self.collectButton.rx.isSelected)
+            .disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -254,21 +272,21 @@ class SubCreatorViewController: BaseViewController {
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.left.equalTo(5)
-                make.top.equalTo(25)
+                make.centerY.equalTo(safeAreaNavTop/2 + statusBarHeight/2)
         }
         
         doneButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.right.equalTo(-5)
-                make.top.equalTo(25)
+                make.top.equalTo(safeAreaNavTop/2 + statusBarHeight/2)
         }
         
         view.insertSubview(cardView, belowSubview: backButton)
         cardView
             .mt.layout { (make) in
                 make.centerX.equalToSuperview()
-                make.top.equalTo(backButton.snp.centerY)
+                make.top.equalTo(57 + statusBarHeight)
                 make.size.equalTo(Metric.cardViewSize)
         }
         
@@ -282,21 +300,21 @@ class SubCreatorViewController: BaseViewController {
         shareButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
-                make.centerY.equalTo(cardView.snp.bottom)
+                make.centerX.equalTo(cardView).offset((screenWidth - 30 * 2) / 3)
+                make.top.equalTo(cardView.snp.bottom).offset(5)
         }
         
         saveButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset(-(screenWidth - 45 * 2) / 4)
+                make.centerX.equalTo(cardView).offset(-(screenWidth - 30 * 2) / 3)
                 make.centerY.equalTo(shareButton)
         }
         
         collectButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalTo(cardView).offset((screenWidth - 45 * 2) / 4)
+                make.centerX.equalTo(cardView)
                 make.centerY.equalTo(shareButton)
         }
         

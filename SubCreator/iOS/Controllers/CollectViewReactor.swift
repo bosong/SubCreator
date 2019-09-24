@@ -9,36 +9,27 @@
 import ReactorKit
 
 class CollectViewReactor: Reactor {
-    enum ReactorType {
-        case collect
-        case creation
-    }
-    
-    enum Action {
-        
-    }
-    
-    enum Mutation {
-        
-    }
+    typealias Action = NoEvent
+    typealias Item = CollectViewController.Item
+    typealias Section = CollectViewController.Section
     
     struct State {
-        var creationData: [ImageWrapper]
-        var collectData: [Materials]
-        let type: ReactorType
+        var data: [Section]
     }
     
     var initialState: State
     
-    init(_ type: ReactorType) {
-        
-        switch type {
-        case .collect:
-            let images = CollectCacher.shared.loads()
-            initialState = State(creationData: [], collectData: images, type: type)
-        case .creation:
-            let images = CreationCacher.shared.loads()
-            initialState = State(creationData: images, collectData: [], type: type)
+    init() {
+        var sections: [Section] = []
+        let materialItems = CollectMaterialsCacher.shared.loads().map { Item.material($0) }
+        let subtitleItems = CollectSubtitlesCacher.shared.loads().map { Item.subtitle($0) }
+        if materialItems.isNotEmpty {
+            sections.append(Section(model: "模板", items: materialItems))
         }
+        if subtitleItems.isNotEmpty {
+            sections.append(Section(model: "作品", items: subtitleItems))
+        }
+        
+        initialState = State(data: sections)
     }
 }

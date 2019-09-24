@@ -16,14 +16,14 @@ import MJRefresh
 import Fusuma
 
 class HomepageViewController: BaseViewController, ReactorKit.View {
-    typealias Section = SectionModel<Material, Materials>
+    private typealias Section = SectionModel<Subtitle, Subtitles>
     
     struct Metric {
         static let ItemRatio: CGFloat = 3 / 4
     }
     
     // MARK: - Properties
-    private var maxAnimateIp = IndexPath(item: 0, section: 0)
+    var maxAnimateIp = IndexPath(item: 0, section: 0)
     private lazy var dataSource = self.prepareDataSource()
     
     // MARK: - Initialized
@@ -106,10 +106,12 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     
     // MARK: - SEL
     func bind(reactor: HomepageViewReactor) {
-        reactor.action.onNext(.loadData)
+        Observable.just(Reactor.Action.subtitleList)
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
         
         collectionView.mj_header.rx.event
-            .map { _ in Reactor.Action.loadData }
+            .map { _ in Reactor.Action.subtitleList }
             .do(onNext: { [unowned self] (_) in
                 self.maxAnimateIp = IndexPath(item: 0, section: 0)
             })
@@ -117,7 +119,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         collectionView.mj_footer.rx.event
-            .map { _ in Reactor.Action.loadMore }
+            .map { _ in Reactor.Action.subtitleListMore }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -129,8 +131,8 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .bind(to: collectionView.mj_footer.rx.endRefresh)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.data }
-            .map { $0.map { Section(model: $0, items: $0.materials) } }
+        reactor.state.map { $0.subtitle }
+            .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
@@ -160,11 +162,12 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.item)"
                 let detailVC = DetailViewController(image: image, item: self.dataSource[ip])
-                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
+//                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = self.uploadButton.hero.id
                 detailVC.saveButton.hero.id = self.uploadButton.hero.id
                 detailVC.collectButton.hero.id = self.uploadButton.hero.id
+                detailVC.modalPresentationStyle = .overFullScreen
                 self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
@@ -401,7 +404,7 @@ extension HomepageViewController: FusumaDelegate {
     
     func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
         let detailVC = DetailViewController(image: image)
-        detailVC.subCreatorButton.hero.id = self.editButton.hero.id
+//        detailVC.subCreatorButton.hero.id = self.editButton.hero.id
 //        detailVC.cardView.hero.id = fusuma.view.hero.id
         detailVC.shareButton.hero.id = self.editButton.hero.id
         detailVC.saveButton.hero.id = self.editButton.hero.id
