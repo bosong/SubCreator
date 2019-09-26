@@ -19,6 +19,8 @@
 		58262824233B61A400FADB14 /* SearchViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262823233B61A400FADB14 /* SearchViewReactor.swift */; };
 		58262826233C61A600FADB14 /* SubtitleRefersViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262825233C61A600FADB14 /* SubtitleRefersViewReactor.swift */; };
 		58262828233C620B00FADB14 /* SubtitleRefersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262827233C620B00FADB14 /* SubtitleRefersViewController.swift */; };
+		5826282A233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262829233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift */; };
+		5826282C233CA6AC00FADB14 /* SearchHistoryCacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5826282B233CA6AC00FADB14 /* SearchHistoryCacher.swift */; };
 		5846B3D82330C2F30033524F /* IrregularityContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D72330C2F30033524F /* IrregularityContentView.swift */; };
 		5846B3DA2330C5220033524F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D92330C5220033524F /* TabBarController.swift */; };
 		586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE12522EFEBB200A0EF82 /* AppDelegate.swift */; };
@@ -119,6 +121,8 @@
 		58262823233B61A400FADB14 /* SearchViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewReactor.swift; sourceTree = "<group>"; };
 		58262825233C61A600FADB14 /* SubtitleRefersViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleRefersViewReactor.swift; sourceTree = "<group>"; };
 		58262827233C620B00FADB14 /* SubtitleRefersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleRefersViewController.swift; sourceTree = "<group>"; };
+		58262829233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewLeftAlignedLayout.swift; sourceTree = "<group>"; };
+		5826282B233CA6AC00FADB14 /* SearchHistoryCacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHistoryCacher.swift; sourceTree = "<group>"; };
 		5846B3D72330C2F30033524F /* IrregularityContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularityContentView.swift; sourceTree = "<group>"; };
 		5846B3D92330C5220033524F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		586FE12222EFEBB200A0EF82 /* SubCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -376,6 +380,7 @@
 				586FE18A22F02E9900A0EF82 /* Constant.swift */,
 				58FF557422F5255D009E8CCC /* CreationCacher.swift */,
 				58FF55D622F5A6D4009E8CCC /* CollectCacher.swift */,
+				5826282B233CA6AC00FADB14 /* SearchHistoryCacher.swift */,
 				586FE20622F2891700A0EF82 /* Controllers */,
 				586FE20522F2890100A0EF82 /* View */,
 			);
@@ -413,6 +418,7 @@
 				58262819233A1B0400FADB14 /* ProductionViewReactor.swift */,
 				58262821233B545500FADB14 /* SearchViewController.swift */,
 				58262823233B61A400FADB14 /* SearchViewReactor.swift */,
+				58262829233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -769,12 +775,14 @@
 				586FE16E22EFF5B400A0EF82 /* MJRefresh+Rx.swift in Sources */,
 				58FF558122F563CF009E8CCC /* SaveImageTools.swift in Sources */,
 				586FE18922F02B1300A0EF82 /* UIColor+Ex.swift in Sources */,
+				5826282C233CA6AC00FADB14 /* SearchHistoryCacher.swift in Sources */,
 				586FE21122F28A4B00A0EF82 /* Device.swift in Sources */,
 				586FE15622EFF58900A0EF82 /* HomepageViewController.swift in Sources */,
 				586FE17922EFF79F00A0EF82 /* UIViewChain.swift in Sources */,
 				586FE19522F172C700A0EF82 /* SubCreatorViewController.swift in Sources */,
 				586FE18722F0217600A0EF82 /* SwiftyImage.swift in Sources */,
 				58FF557B22F55383009E8CCC /* Share.swift in Sources */,
+				5826282A233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift in Sources */,
 				58FF55D722F5A6D4009E8CCC /* CollectCacher.swift in Sources */,
 				580F56202313944A00894EF8 /* MaterialRefersViewReactor.swift in Sources */,
 				58262822233B545500FADB14 /* SearchViewController.swift in Sources */,

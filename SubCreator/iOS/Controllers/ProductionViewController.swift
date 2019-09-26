@@ -70,29 +70,6 @@ class ProductionViewController: BaseViewController, View {
                 self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
-        
-        //        collectionView.rx.itemSelected
-        //            .subscribe(onNext: { [unowned self] (ip) in
-        //                let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
-        //                guard let image = cell?.imgV.image else { return }
-        //
-        //                cell?.hero.id = "homepageCell\(ip.item)"
-        //                var item: Materials?
-        //
-        //                if reactor.currentState.type == .collect {
-        //                    item = reactor.currentState.collectData[ip.item]
-        //                }
-        //
-        //                let detailVC = DetailViewController(image: image, item: item)
-        //                detailVC.shareButton.hero.id = self.heroId
-        //                detailVC.saveButton.hero.id = self.heroId
-        //                detailVC.collectButton.hero.id = self.heroId
-        //                detailVC.cardView.hero.id = cell?.hero.id
-        ////                detailVC.subCreatorButton.isHidden = reactor.currentState.type == .creation
-        //
-        //                self.present(detailVC, animated: true, completion: nil)
-        //            })
-        //            .disposed(by: disposeBag)
     }
     
     // MARK: - Layout

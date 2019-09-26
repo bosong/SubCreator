@@ -88,10 +88,19 @@ extension Subtitles: Cachable, Equatable {
 struct SearchResult: Codable {
     let teleplayId: String
     let teleplayName: String
+    var timestamp: TimeInterval
     
     private enum CodingKeys: String, CodingKey {
         case teleplayId
         case teleplayName = "name"
+        case timestamp
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        teleplayId = try container.decodeIfPresent(String.self, forKey: .teleplayId) ?? ""
+        teleplayName = try container.decodeIfPresent(String.self, forKey: .teleplayName) ?? ""
+        timestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .timestamp) ?? 0
     }
 }
 
