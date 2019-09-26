@@ -16,13 +16,12 @@ class SubCreatorViewController: BaseViewController {
 
     struct Metric {
         static let styleItemViewHeight: CGFloat = 217
-        static let cardViewSize = CGSize(width: screenWidth - 30 * 2, height: (screenWidth - 30 * 2) * HomepageViewController.Metric.ItemRatio)
+        static let cardViewSize = CGSize(width: screenWidth - 30 * 2, height: (screenWidth - 30 * 2) * HomepageViewController.Metric.itemRatio)
         static func textLableFont(size: CGFloat) -> UIFont {
             return UIFont(name: "GJJHPJW--GB1-0", size: size) ?? UIFont.systemFont(ofSize: size)
         }
     }
     // MARK: - Properties
-    private var doneTapped = false
     var item: Materials?
     
     // MARK: - Initialized
@@ -81,13 +80,7 @@ class SubCreatorViewController: BaseViewController {
         self.hero.isEnabled = true
         cardView.hero.modifiers = [.scale()]
         self.backButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
-                if self.doneTapped {
-                    self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
-                } else {
-                    self.dismiss(animated: true, completion: nil)
-                }
-            })
+            .bind(to: rx.dismiss())
             .disposed(by: disposeBag)
         
         toolBar.currentSelected
@@ -174,21 +167,31 @@ class SubCreatorViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        self.doneButton.rx.tap
-            .map { [weak self] in self?.cardView.asImage().pngData() }
+        let doneButtonTapped = self.doneButton.rx.tap
+            .map { [weak self] in self?.cardView.asImage() }
+            .observeOn(SerialDispatchQueueScheduler.init(internalSerialQueueName: "image_resize_queue"))
+            .map { $0?.resizeImage(maxSize: 315) }
+            .observeOn(MainScheduler.instance)
+            .filterNil()
+            .share()
+            
+        doneButtonTapped
+            .map { $0.jpegData(compressionQuality: 0.1) }
             .filterNil()
             .flatMap { [weak self] (data) -> Observable<Response> in
+                let a = Double(data.count)
+                log.info("img length \(a/1024/1024)M")
                 guard let self = self else { return .empty() }
-                return Service.shared.upload(id: self.item?.teleplayId ?? "", data: data).asObservable()
+                
+                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
             }
             .subscribe()
             .disposed(by: disposeBag)
         
-        self.doneButton.rx.tap
-            .subscribe(onNext: { [unowned self] (_) in
-                CreationCacher.shared.add(ImageWrapper(image: self.cardView.asImage()))
+        doneButtonTapped
+            .subscribe(onNext: { [unowned self] (image) in
+                CreationCacher.shared.add(ImageWrapper(image: image))
                 message(.success, title: "保存成功，可以在”我的创作“中查看")
-                self.doneTapped = true
                 switch self.toolBarSel {
                 case .text:
                     self.inputTextView.textView.resignFirstResponder()
@@ -279,7 +282,7 @@ class SubCreatorViewController: BaseViewController {
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.right.equalTo(-5)
-                make.top.equalTo(safeAreaNavTop/2 + statusBarHeight/2)
+                make.centerY.equalTo(backButton)
         }
         
         view.insertSubview(cardView, belowSubview: backButton)

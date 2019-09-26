@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import ReactorKit
 
-class ProductionViewController: BaseViewController {
+class ProductionViewController: BaseViewController, View {
     // MARK: - Properties
     // MARK: - Initialized
     // MARK: - UI properties
@@ -42,31 +43,33 @@ class ProductionViewController: BaseViewController {
     
     // MARK: - SEL
     func bind(reactor: ProductionViewReactor) {
-        if reactor.currentState.type == .collect {
-            title = "我的收藏"
-            reactor.state.map { $0.collectData }
-                .do(onNext: { [unowned self] in
-                    self.empty(show: $0.isEmpty)
-                })
-                .bind(to: collectionView.rx
-                    .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
-                ) { _, model, cell in
-                    cell.imgV.kf.setImage(with: URL(string: model.url))
-                }
-                .disposed(by: disposeBag)
-        } else {
-            title = "我的创作"
-            reactor.state.map { $0.creationData }
-                .do(onNext: { [unowned self] in
-                    self.empty(show: $0.isEmpty)
-                })
-                .bind(to: collectionView.rx
-                    .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
-                ) { _, model, cell in
-                    cell.imgV.image = model.image
-                }
-                .disposed(by: disposeBag)
-        }
+        title = "我的创作"
+        reactor.state.map { $0.creationData }
+            .do(onNext: { [unowned self] in
+                self.empty(show: $0.isEmpty)
+            })
+            .bind(to: collectionView.rx
+                .items(cellIdentifier: getClassName(HomePageCollectionViewCell.self), cellType: HomePageCollectionViewCell.self)
+            ) { _, model, cell in
+                cell.imgV.image = model.image
+            }
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] (ip) in
+                guard let self = self else { return }
+                let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
+                guard let image = cell?.imgV.image else { return }
+                cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
+                let detailVC = DetailViewController(image: image, item: nil)
+                detailVC.cardView.hero.id = cell?.hero.id
+                detailVC.shareButton.hero.id = cell?.hero.id
+                detailVC.saveButton.hero.id = cell?.hero.id
+                detailVC.collectButton.hero.id = cell?.hero.id
+                detailVC.modalPresentationStyle = .overFullScreen
+                self.present(detailVC, animated: true, completion: nil)
+            })
+            .disposed(by: disposeBag)
         
         //        collectionView.rx.itemSelected
         //            .subscribe(onNext: { [unowned self] (ip) in

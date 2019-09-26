@@ -1,8 +1,8 @@
 //
-//  MaterialRefersViewController.swift
+//  SubtitleRefersViewController.swift
 //  SubCreator
 //
-//  Created by rpple_k on 2019/8/26.
+//  Created by ripple_k on 2019/9/26.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 
@@ -10,17 +10,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 import ReactorKit
-import RxDataSources
-import Kingfisher
 import MJRefresh
+import Kingfisher
 
-class MaterialRefersViewController: BaseViewController, ReactorKit.View {
+class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
     typealias Metric = HomepageViewController.Metric
     // MARK: - Properties
     private var maxAnimateIp = IndexPath(item: 0, section: 0)
     
     // MARK: - Initialized
-    init(reactor: MaterialRefersViewReactor) {
+    init(reactor: SubtitleRefersViewReactor) {
         defer { self.reactor = reactor }
         super.init(nibName: nil, bundle: nil)
     }
@@ -59,7 +58,7 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
     
     // MARK: - SEL
     
-    func bind(reactor: MaterialRefersViewReactor) {
+    func bind(reactor: SubtitleRefersViewReactor) {
         reactor.action.onNext(.loadData)
         
         collectionView.mj_header.rx.event
@@ -117,14 +116,14 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 
-                let subCreatorVC = SubCreatorViewController(image: image, item: reactor.currentState.data[ip.item])
-                subCreatorVC.cardView.hero.id = cell?.hero.id
-                subCreatorVC.backButton.hero.id = cell?.hero.id
-                subCreatorVC.doneButton.hero.id = cell?.hero.id
-                subCreatorVC.saveButton.hero.id = cell?.hero.id
-                subCreatorVC.shareButton.hero.id = cell?.hero.id
-                subCreatorVC.collectButton.hero.id = cell?.hero.id
-                self.present(subCreatorVC, animated: true, completion: nil)
+                let detailVC = DetailViewController(image: image, item: reactor.currentState.data[ip.item])
+                //                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
+                detailVC.cardView.hero.id = cell?.hero.id
+                detailVC.shareButton.hero.id = cell?.hero.id
+                detailVC.saveButton.hero.id = cell?.hero.id
+                detailVC.collectButton.hero.id = cell?.hero.id
+                detailVC.modalPresentationStyle = .overFullScreen
+                self.present(detailVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)
     }

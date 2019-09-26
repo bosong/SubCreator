@@ -9,11 +9,35 @@
 import UIKit
 
 class BaseNavigationViewController: UINavigationController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        navigationBar.tintColor = .black
-        navigationBar.shadowImage = UIImage.resizable().color(.white).image
-        navigationBar.backgroundColor = UIColor.white
+    
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    deinit {
+        log.verbose("SoapNavigationController deinit")
+    }
+    
+    override open func pushViewController(_ viewController: UIViewController, animated: Bool) {
+        if self.viewControllers.count > 0 {
+            viewController.hidesBottomBarWhenPushed = true
+        }
+        super.pushViewController(viewController, animated: true)
+    }
+    
+    open override var shouldAutorotate: Bool {
+        return self.topViewController?.shouldAutorotate ?? false
+    }
+    
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return self.topViewController?
+            .supportedInterfaceOrientations ??
+            .portrait
+    }
+    
+    open override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation {
+        return self.topViewController?
+            .preferredInterfaceOrientationForPresentation ??
+            .portrait
     }
 }

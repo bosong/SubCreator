@@ -50,7 +50,9 @@ class MeViewController: BaseViewController {
                     collectVC.reactor = CollectViewReactor()
                     self?.navigationController?.pushViewController(collectVC, animated: true)
                 case .gallery:
-                    break
+                    let productionVC = ProductionViewController()
+                    productionVC.reactor = ProductionViewReactor()
+                    self?.navigationController?.pushViewController(productionVC, animated: true)
                 }
             })
             .disposed(by: disposeBag)

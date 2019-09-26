@@ -44,7 +44,7 @@ class TabBarController: ESTabBarController {
 //        }
         
         let viewControllers = [home, middle, me]
-            .map { UINavigationController(rootViewController: $0) }
+            .map { BaseNavigationViewController(rootViewController: $0) }
         self.viewControllers = viewControllers
     }
 }

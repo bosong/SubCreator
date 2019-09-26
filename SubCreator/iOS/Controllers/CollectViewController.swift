@@ -43,9 +43,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 1
-        let itemWidth = (screenWidth - 11 * 2 - 15 * 2) / 3
-        let itemHeight = itemWidth * Metric.ItemRatio
-        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        layout.itemSize = Metric.itemSize
         layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
         layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
         layout.footerReferenceSize = CGSize(width: screenWidth, height: 1)
@@ -70,6 +68,34 @@ class CollectViewController: BaseViewController, ReactorKit.View {
     func bind(reactor: CollectViewReactor) {
         reactor.state.map { $0.data }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] (ip) in
+                guard let self = self else { return }
+                let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
+                guard let image = cell?.imgV.image else { return }
+                cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
+                switch self.dataSource[ip] {
+                case .subtitle(let model):
+                    let detailVC = DetailViewController(image: image, item: model)
+                    detailVC.cardView.hero.id = cell?.hero.id
+                    detailVC.shareButton.hero.id = cell?.hero.id
+                    detailVC.saveButton.hero.id = cell?.hero.id
+                    detailVC.collectButton.hero.id = cell?.hero.id
+                    detailVC.modalPresentationStyle = .overFullScreen
+                    self.present(detailVC, animated: true, completion: nil)
+                case .material(let model):
+                    let subCreatorVC = SubCreatorViewController(image: image, item: model)
+                    subCreatorVC.cardView.hero.id = cell?.hero.id
+                    subCreatorVC.backButton.hero.id = cell?.hero.id
+                    subCreatorVC.doneButton.hero.id = cell?.hero.id
+                    subCreatorVC.saveButton.hero.id = cell?.hero.id
+                    subCreatorVC.shareButton.hero.id = cell?.hero.id
+                    subCreatorVC.collectButton.hero.id = cell?.hero.id
+                    self.present(subCreatorVC, animated: true, completion: nil)
+                }
+            })
             .disposed(by: disposeBag)
         
 //        collectionView.rx.itemSelected

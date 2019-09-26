@@ -19,7 +19,10 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     private typealias Section = SectionModel<Subtitle, Subtitles>
     
     struct Metric {
-        static let ItemRatio: CGFloat = 3 / 4
+        static let itemRatio: CGFloat = 2 / 3
+        static let itemWidth = (screenWidth - 11 * 2 - 15 * 2) / 3
+        static let itemHeight = Metric.itemWidth * Metric.itemRatio
+        static let itemSize: CGSize = CGSize(width: itemWidth, height: itemHeight)
     }
     
     // MARK: - Properties
@@ -53,9 +56,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 1
-        let itemWidth = (screenWidth - 11 * 2 - 15 * 2) / 3
-        let itemHeight = itemWidth * Metric.ItemRatio
-        layout.itemSize = CGSize(width: itemWidth, height: itemHeight)
+        layout.itemSize = Metric.itemSize
         layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
         layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
         layout.footerReferenceSize = CGSize(width: screenWidth, height: 1)
@@ -160,7 +161,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .subscribe(onNext: { [unowned self] (ip) in
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
                 guard let image = cell?.imgV.image else { return }
-                cell?.hero.id = "homepageCell\(ip.item)"
+                cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 let detailVC = DetailViewController(image: image, item: self.dataSource[ip])
 //                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
                 detailVC.cardView.hero.id = cell?.hero.id
@@ -207,7 +208,9 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     }
     
     @objc func searchClicked() {
-        
+        let searchVC = SearchViewController(from: .subtitle)
+        searchVC.reactor = SearchViewReactor()
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     // MARK: - Layout
@@ -294,6 +297,12 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             case UICollectionView.elementKindSectionHeader:
                 let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
                 view.titleLabel.text = ds[ip.section].model.teleplayName
+                view.accessbilityBtn.rx.tap
+                    .subscribe(onNext: { [weak self] _ in
+                        let moreVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: ds[ip.section].model.teleplayId))
+                        self?.navigationController?.pushViewController(moreVC, animated: true)
+                    })
+                    .disposed(by: view.reuseDisposeBag)
                 return view
             default:
                 let view = cv.dequeueReusableView(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter, for: ip)
@@ -390,34 +399,5 @@ class HomePageTitleView: BaseView {
                 make.left.equalToSuperview()
                 make.centerY.equalToSuperview()
         }
-    }
-}
-
-extension HomepageViewController: FusumaDelegate {
-    func fusumaMultipleImageSelected(_ images: [UIImage], source: FusumaMode) {
-        
-    }
-    
-    func fusumaImageSelected(_ image: UIImage, source: FusumaMode) {
-        
-    }
-    
-    func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
-        let detailVC = DetailViewController(image: image)
-//        detailVC.subCreatorButton.hero.id = self.editButton.hero.id
-//        detailVC.cardView.hero.id = fusuma.view.hero.id
-        detailVC.shareButton.hero.id = self.editButton.hero.id
-        detailVC.saveButton.hero.id = self.editButton.hero.id
-        detailVC.collectButton.hero.id = self.editButton.hero.id
-        
-        self.present(detailVC, animated: true, completion: nil)
-    }
-    
-    func fusumaVideoCompleted(withFileURL fileURL: URL) {
-        
-    }
-    
-    func fusumaCameraRollUnauthorized() {
-        
     }
 }

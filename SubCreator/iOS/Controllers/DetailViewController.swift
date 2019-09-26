@@ -171,7 +171,7 @@ class DetailViewController: BaseViewController {
                 make.centerX.equalToSuperview()
                 make.centerY.equalToSuperview().offset(-50)
                 let cardWidth = screenWidth - 30 * 2
-                let cardHeight = cardWidth * HomepageViewController.Metric.ItemRatio
+                let cardHeight = cardWidth * HomepageViewController.Metric.itemRatio
                 make.size.equalTo(CGSize(width: cardWidth, height: cardHeight))
         }
         

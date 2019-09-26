@@ -14,8 +14,10 @@ protocol ServiceType {
     func homeList(limit: Int, skip: Int) -> Single<[HomeItem]>
     func materialList(limit: Int, skip: Int) -> Single<[Material]>
     func subtitleList(limit: Int, skip: Int) -> Single<[Subtitle]>
-    func materialRefers(id: String, limit: Int, skip: Int) -> Single<[HomeItem]>
-    func upload(id: String, data: Data) -> Single<Response>
+    func materialListMore(id: String, limit: Int, skip: Int) -> Single<[Material]>
+    func subtitleListMore(id: String, limit: Int, skip: Int) -> Single<[Subtitle]>
+    func search(keyword: String) -> Single<[SearchResult]>
+    func upload(name: String, tid: String, mid: String, data: Data) -> Single<Response>
 }
 
 class Service: ServiceType {
@@ -44,15 +46,29 @@ class Service: ServiceType {
             .catchErrorJustReturn([])
     }
     
-    func materialRefers(id: String, limit: Int, skip: Int) -> Single<[HomeItem]> {
+    func materialListMore(id: String, limit: Int, skip: Int) -> Single<[Material]> {
         return networkng
-            .request(.materialRefers(id: id, limit: limit, skip: skip))
-            .mapCommonable([HomeItem].self)
+            .request(.materialMoreList(tid: id, limit: limit, skip: skip))
+            .mapCommonable([Material].self)
             .catchErrorJustReturn([])
     }
     
-    func upload(id: String, data: Data) -> Single<Response> {
+    func subtitleListMore(id: String, limit: Int, skip: Int) -> Single<[Subtitle]> {
         return networkng
-            .request(.upload(id: id, data: data))
+            .request(.subtitleMoreList(tid: id, limit: limit, skip: skip))
+            .mapCommonable([Subtitle].self)
+            .catchErrorJustReturn([])
+    }
+    
+    func search(keyword: String) -> Single<[SearchResult]> {
+        return networkng
+            .request(.search(keyword: keyword))
+            .mapCommonable([SearchResult].self)
+            .catchErrorJustReturn([])
+    }
+    
+    func upload(name: String, tid: String, mid: String, data: Data) -> Single<Response> {
+        return networkng
+            .request(.upload(name: name, tid: tid, mid: mid, data: data))
     }
 }

@@ -15,6 +15,10 @@
 		582627022338C83300FADB14 /* MeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 582627012338C83300FADB14 /* MeViewController.swift */; };
 		5826281A233A1B0400FADB14 /* ProductionViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262819233A1B0400FADB14 /* ProductionViewReactor.swift */; };
 		5826281C233A1B2000FADB14 /* ProductionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5826281B233A1B2000FADB14 /* ProductionViewController.swift */; };
+		58262822233B545500FADB14 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262821233B545500FADB14 /* SearchViewController.swift */; };
+		58262824233B61A400FADB14 /* SearchViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262823233B61A400FADB14 /* SearchViewReactor.swift */; };
+		58262826233C61A600FADB14 /* SubtitleRefersViewReactor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262825233C61A600FADB14 /* SubtitleRefersViewReactor.swift */; };
+		58262828233C620B00FADB14 /* SubtitleRefersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58262827233C620B00FADB14 /* SubtitleRefersViewController.swift */; };
 		5846B3D82330C2F30033524F /* IrregularityContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D72330C2F30033524F /* IrregularityContentView.swift */; };
 		5846B3DA2330C5220033524F /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5846B3D92330C5220033524F /* TabBarController.swift */; };
 		586FE12622EFEBB200A0EF82 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE12522EFEBB200A0EF82 /* AppDelegate.swift */; };
@@ -111,6 +115,10 @@
 		582627012338C83300FADB14 /* MeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeViewController.swift; sourceTree = "<group>"; };
 		58262819233A1B0400FADB14 /* ProductionViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionViewReactor.swift; sourceTree = "<group>"; };
 		5826281B233A1B2000FADB14 /* ProductionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductionViewController.swift; sourceTree = "<group>"; };
+		58262821233B545500FADB14 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
+		58262823233B61A400FADB14 /* SearchViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewReactor.swift; sourceTree = "<group>"; };
+		58262825233C61A600FADB14 /* SubtitleRefersViewReactor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleRefersViewReactor.swift; sourceTree = "<group>"; };
+		58262827233C620B00FADB14 /* SubtitleRefersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleRefersViewController.swift; sourceTree = "<group>"; };
 		5846B3D72330C2F30033524F /* IrregularityContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularityContentView.swift; sourceTree = "<group>"; };
 		5846B3D92330C5220033524F /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		586FE12222EFEBB200A0EF82 /* SubCreator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SubCreator.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -395,12 +403,16 @@
 				582627012338C83300FADB14 /* MeViewController.swift */,
 				580F561D2313927A00894EF8 /* MaterialRefersViewController.swift */,
 				580F561F2313944A00894EF8 /* MaterialRefersViewReactor.swift */,
+				58262827233C620B00FADB14 /* SubtitleRefersViewController.swift */,
+				58262825233C61A600FADB14 /* SubtitleRefersViewReactor.swift */,
 				586FE19022F1390900A0EF82 /* DetailViewController.swift */,
 				586FE19422F172C700A0EF82 /* SubCreatorViewController.swift */,
 				58FF557622F52F8A009E8CCC /* CollectViewController.swift */,
 				58FF557822F53011009E8CCC /* CollectViewReactor.swift */,
 				5826281B233A1B2000FADB14 /* ProductionViewController.swift */,
 				58262819233A1B0400FADB14 /* ProductionViewReactor.swift */,
+				58262821233B545500FADB14 /* SearchViewController.swift */,
+				58262823233B61A400FADB14 /* SearchViewReactor.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -765,11 +777,13 @@
 				58FF557B22F55383009E8CCC /* Share.swift in Sources */,
 				58FF55D722F5A6D4009E8CCC /* CollectCacher.swift in Sources */,
 				580F56202313944A00894EF8 /* MaterialRefersViewReactor.swift in Sources */,
+				58262822233B545500FADB14 /* SearchViewController.swift in Sources */,
 				586FE15C22EFF5A100A0EF82 /* BaseTableViewCell.swift in Sources */,
 				580F561E2313927A00894EF8 /* MaterialRefersViewController.swift in Sources */,
 				58FF558722F564B0009E8CCC /* PermissionUtilities.swift in Sources */,
 				58FF557722F52F8A009E8CCC /* CollectViewController.swift in Sources */,
 				58FF556E22F41557009E8CCC /* UIView+Extension.swift in Sources */,
+				58262826233C61A600FADB14 /* SubtitleRefersViewReactor.swift in Sources */,
 				586FE20E22F28A4B00A0EF82 /* DeviceSize.swift in Sources */,
 				586FE16922EFF5B400A0EF82 /* UICollectionView+Ex.swift in Sources */,
 				586FE20822F2899400A0EF82 /* InputTextView.swift in Sources */,
@@ -780,10 +794,12 @@
 				5846B3D82330C2F30033524F /* IrregularityContentView.swift in Sources */,
 				58FF559322F57D14009E8CCC /* Mapping.swift in Sources */,
 				586FE18D22F02FAF00A0EF82 /* HomePageCollectionViewCell.swift in Sources */,
+				58262828233C620B00FADB14 /* SubtitleRefersViewController.swift in Sources */,
 				586FE15D22EFF5A100A0EF82 /* BaseViewController.swift in Sources */,
 				586FE20222F2850900A0EF82 /* Optional+Ex.swift in Sources */,
 				586FE19322F139F500A0EF82 /* CALayer+Ex.swift in Sources */,
 				58FF558822F564B0009E8CCC /* PermissionAlert.swift in Sources */,
+				58262824233B61A400FADB14 /* SearchViewReactor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -84,3 +84,19 @@ extension Subtitles: Cachable, Equatable {
         return subtitleId
     }
 }
+
+struct SearchResult: Codable {
+    let teleplayId: String
+    let teleplayName: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case teleplayId
+        case teleplayName = "name"
+    }
+}
+
+extension SearchResult: Cachable, Equatable {
+    var fileName: String {
+        return teleplayId + teleplayName
+    }
+}

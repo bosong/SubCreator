@@ -79,7 +79,7 @@ class GalleryViewControler: HomepageViewController {
             .subscribe(onNext: { [unowned self] (ip) in
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
                 guard let image = cell?.imgV.image else { return }
-                cell?.hero.id = "homepageCell\(ip.item)"
+                cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 
                 let subCreatorVC = SubCreatorViewController(image: image, item: self.dataSource[ip])
                 subCreatorVC.cardView.hero.id = cell?.hero.id
@@ -102,14 +102,20 @@ class GalleryViewControler: HomepageViewController {
     // MARK: - SEL
     private func showPhoto() {
         let fusuma = FusumaViewController().then { (fusuma) in
-            fusuma.delegate = self
             fusuma.availableModes = [FusumaMode.library, FusumaMode.camera]
-            fusuma.cropHeightRatio = Metric.ItemRatio
+            fusuma.cropHeightRatio = Metric.itemRatio
             fusuma.allowMultipleSelection = false
             fusumaCameraRollTitle = "相册"
             fusumaCameraTitle = "拍照"
         }
+        fusuma.delegate = self
         self.present(fusuma, animated: true, completion: nil)
+    }
+    
+    override func searchClicked() {
+        let searchVC = SearchViewController(from: .material)
+        searchVC.reactor = SearchViewReactor()
+        navigationController?.pushViewController(searchVC, animated: true)
     }
     
     // MARK: - Private Functions
@@ -123,6 +129,12 @@ class GalleryViewControler: HomepageViewController {
             case UICollectionView.elementKindSectionHeader:
                 let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
                 view.titleLabel.text = ds[ip.section].model.teleplayName
+                view.accessbilityBtn.rx.tap
+                    .subscribe(onNext: { [weak self] _ in
+                        let moreVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: ds[ip.section].model.teleplayId))
+                        self?.navigationController?.pushViewController(moreVC, animated: true)
+                    })
+                    .disposed(by: view.reuseDisposeBag)
                 return view
             default:
                 let view = cv.dequeueReusableView(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter, for: ip)
@@ -130,5 +142,34 @@ class GalleryViewControler: HomepageViewController {
                 return view
             }
         })
+    }
+}
+
+extension GalleryViewControler: FusumaDelegate {
+    func fusumaMultipleImageSelected(_ images: [UIImage], source: FusumaMode) {
+        
+    }
+    
+    func fusumaImageSelected(_ image: UIImage, source: FusumaMode) {
+        
+    }
+    
+    func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
+        let subCreatorVC = SubCreatorViewController(image: image, item: nil)
+        subCreatorVC.cardView.hero.id = self.uploadButton.hero.id
+        subCreatorVC.backButton.hero.id = self.uploadButton.hero.id
+        subCreatorVC.doneButton.hero.id = self.uploadButton.hero.id
+        subCreatorVC.saveButton.hero.id = self.uploadButton.hero.id
+        subCreatorVC.shareButton.hero.id = self.uploadButton.hero.id
+        subCreatorVC.collectButton.hero.id = self.uploadButton.hero.id
+        self.present(subCreatorVC, animated: true, completion: nil)
+    }
+    
+    func fusumaVideoCompleted(withFileURL fileURL: URL) {
+        
+    }
+    
+    func fusumaCameraRollUnauthorized() {
+        
     }
 }
