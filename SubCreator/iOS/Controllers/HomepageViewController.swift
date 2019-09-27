@@ -57,6 +57,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         layout.minimumLineSpacing = 10
         layout.minimumInteritemSpacing = 1
         layout.itemSize = Metric.itemSize
+        layout.estimatedItemSize = .zero
         layout.sectionInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
         layout.headerReferenceSize = CGSize(width: screenWidth, height: 50)
         layout.footerReferenceSize = CGSize(width: screenWidth, height: 1)
@@ -133,12 +134,14 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.subtitle }
+            .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         collectionView.rx.willDisplayCell
-            .subscribe(onNext: { (cell, ip) in
+            .subscribe(onNext: { [weak self] (cell, ip) in
+                guard let self = self else { return }
                 guard ip > self.maxAnimateIp else { return }
                 let col = ip.item % 3
                 let delayTime = Double(col) / Double(10)

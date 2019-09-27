@@ -56,7 +56,7 @@ class SubtitleRefersViewReactor: Reactor {
             let start = Observable.just(Mutation.setLoading(true))
             let end = Observable.just(Mutation.setLoading(false))
             let data = Service.shared
-                .subtitleListMore(id: currentState.id, limit: 50, skip: 0)
+                .subtitleListMore(id: currentState.id, limit: 50, skip: currentState.data.count)
                 .asObservable()
                 .map { $0.first?.subtitles }
                 .filterNil()

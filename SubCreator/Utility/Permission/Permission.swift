@@ -17,22 +17,19 @@ class Permission: NSObject {
     
     /// The permission status.
     var status: PermissionStatus {
-        get {
-            
-            if case .camera = type {
-                return statusCamera
-            }
-            
-            if case .photos = type {
-                return statusPhotos
-            }
-            
-            if case .nonePermission = type {
-                return .denied
-            }
-            
-            fatalError()
+        if case .camera = type {
+            return statusCamera
         }
+        
+        if case .photos = type {
+            return statusPhotos
+        }
+        
+        if case .nonePermission = type {
+            return .denied
+        }
+        
+        fatalError()
     }
     
     /// Determines whether to present the pre-permission alert.
@@ -156,7 +153,7 @@ extension Permission {
     }
     
     fileprivate func requestCamera(_ callback: @escaping Callback) {
-        guard let _ = Bundle.main.object(forInfoDictionaryKey: .cameraUsageDescription) else {
+        guard Bundle.main.object(forInfoDictionaryKey: .cameraUsageDescription) != nil else {
             print("WARNING: \(String.cameraUsageDescription) not found in Info.plist")
             return
         }
@@ -182,7 +179,7 @@ extension Permission {
     }
     
     fileprivate func requestPhotos(_ callback: @escaping Callback) {
-        guard let _ = Bundle.main.object(forInfoDictionaryKey: .photoLibraryUsageDescription) else {
+        guard Bundle.main.object(forInfoDictionaryKey: .photoLibraryUsageDescription) != nil else {
             print("WARNING: \(String.photoLibraryUsageDescription) not found in Info.plist")
             return
         }

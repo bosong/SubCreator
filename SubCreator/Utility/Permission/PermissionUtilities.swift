@@ -23,7 +23,9 @@ extension Bundle {
 }
 
 extension UIControl.State: Hashable {
-    public var hashValue: Int { return Int(rawValue) }
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(rawValue)
+    }
 }
 
 extension String {

@@ -54,6 +54,7 @@ class GalleryViewControler: HomepageViewController {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.material }
+            .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.materials) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)

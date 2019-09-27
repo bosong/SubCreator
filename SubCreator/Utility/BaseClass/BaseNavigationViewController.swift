@@ -11,7 +11,7 @@ import UIKit
 class BaseNavigationViewController: UINavigationController {
     
     open override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+        return .default
     }
     
     deinit {

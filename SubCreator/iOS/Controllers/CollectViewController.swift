@@ -33,10 +33,6 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         cv.registerItemClass(HomePageCollectionViewCell.self)
         cv.registerforSupplementary(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader)
         cv.registerforSupplementary(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter)
-        let refreshHeader = MJRefreshNormalHeader()
-        refreshHeader.lastUpdatedTimeLabel.isHidden = true
-        cv.mj_header = refreshHeader
-        cv.mj_footer = MJRefreshAutoFooter()
         return cv
     }()
     lazy var flowLayout: UICollectionViewFlowLayout = {
@@ -67,6 +63,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
     // MARK: - SEL
     func bind(reactor: CollectViewReactor) {
         reactor.state.map { $0.data }
+            .do(onNext: { [weak self] data in self?.empty(show: data.isEmpty) })
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
@@ -85,6 +82,10 @@ class CollectViewController: BaseViewController, ReactorKit.View {
                     detailVC.collectButton.hero.id = cell?.hero.id
                     detailVC.modalPresentationStyle = .overFullScreen
                     self.present(detailVC, animated: true, completion: nil)
+                    detailVC.rx.deallocated
+                        .map { _ in Reactor.Action.reload }
+                        .bind(to: reactor.action)
+                        .disposed(by: self.disposeBag)
                 case .material(let model):
                     let subCreatorVC = SubCreatorViewController(image: image, item: model)
                     subCreatorVC.cardView.hero.id = cell?.hero.id
@@ -94,32 +95,13 @@ class CollectViewController: BaseViewController, ReactorKit.View {
                     subCreatorVC.shareButton.hero.id = cell?.hero.id
                     subCreatorVC.collectButton.hero.id = cell?.hero.id
                     self.present(subCreatorVC, animated: true, completion: nil)
+                    subCreatorVC.rx.deallocated
+                        .map { _ in Reactor.Action.reload }
+                        .bind(to: reactor.action)
+                        .disposed(by: self.disposeBag)
                 }
             })
             .disposed(by: disposeBag)
-        
-//        collectionView.rx.itemSelected
-//            .subscribe(onNext: { [unowned self] (ip) in
-//                let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
-//                guard let image = cell?.imgV.image else { return }
-//                
-//                cell?.hero.id = "homepageCell\(ip.item)"
-//                var item: Materials?
-//                
-//                if reactor.currentState.type == .collect {
-//                    item = reactor.currentState.collectData[ip.item]
-//                }
-//                
-//                let detailVC = DetailViewController(image: image, item: item)
-//                detailVC.shareButton.hero.id = self.heroId
-//                detailVC.saveButton.hero.id = self.heroId
-//                detailVC.collectButton.hero.id = self.heroId
-//                detailVC.cardView.hero.id = cell?.hero.id
-////                detailVC.subCreatorButton.isHidden = reactor.currentState.type == .creation
-//                
-//                self.present(detailVC, animated: true, completion: nil)
-//            })
-//            .disposed(by: disposeBag)
     }
     
     // MARK: - Layout
@@ -147,6 +129,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
             case UICollectionView.elementKindSectionHeader:
                 let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
                 view.titleLabel.text = ds[ip.section].model
+                view.accessbilityBtn.isHidden = true
                 return view
             default:
                 let view = cv.dequeueReusableView(UICollectionReusableView.self, kind: UICollectionView.elementKindSectionFooter, for: ip)

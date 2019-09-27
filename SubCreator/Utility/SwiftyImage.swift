@@ -257,7 +257,6 @@ open class ImageDrawer {
         }
     }
     
-    // swiftlint:disable function_body_length
     // swiftlint:disable cyclomatic_complexity
     private func imageWithSize(_ size: CGSize, useCache: Bool = true) -> UIImage {
         if useCache {

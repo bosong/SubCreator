@@ -49,23 +49,21 @@ class BaseViewController: UIViewController {
     }
     
     // MARK: - Empty page
-    lazy var emptyLabel: UILabel = {
-        let label = UILabel()
-        label.text = "暂无数据"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        label.textColor = UIColor(hex: 0x999999)
-        return label
+    lazy var emptyView: UIImageView = {
+        let imgV = UIImageView(image: R.image.placeholder_nodata())
+        return imgV
     }()
     open func empty(show: Bool) {
         if show {
-            guard emptyLabel.superview == nil else { return }
-            view.addSubview(emptyLabel)
-            emptyLabel.mt.layout { (make) in
+            guard emptyView.superview == nil else { return }
+            view.addSubview(emptyView)
+            emptyView.mt.layout { (make) in
                 make.center.equalToSuperview()
             }
-            view.bringSubviewToFront(emptyLabel)
+            view.bringSubviewToFront(emptyView)
         } else {
-            emptyLabel.removeFromSuperview()
+            guard emptyView.superview != nil else { return }
+            emptyView.removeFromSuperview()
         }
     }
     

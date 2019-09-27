@@ -16,7 +16,7 @@ class DetailViewController: BaseViewController {
     // MARK: - Initialized
     init(image: UIImage, item: Subtitles? = nil) {
         super.init(nibName: nil, bundle: nil)
-        cardView.image = image
+        self.cardView.image = image
         self.collectButton.isHidden = item.isNone
 //        self.materialRefersButton.isHidden = item.isNone
         if let item = item {
@@ -98,8 +98,8 @@ class DetailViewController: BaseViewController {
         
         self.collectButton.rx.tap
             .map { [unowned self] in !self.collectButton.isSelected }
-            .do(onNext: { (isSelected) in
-                guard let item = self.item else { return }
+            .do(onNext: { [weak self] (isSelected) in
+                guard let item = self?.item else { return }
                 if isSelected {
                     CollectSubtitlesCacher.shared.add(item)
                     message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
@@ -118,7 +118,7 @@ class DetailViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         self.saveButton.rx.tap
-            .subscribe(onNext: { (_) in
+            .subscribe(onNext: { [unowned self] (_) in
                 SaveImageTools.shared.saveImage(self.cardView.asImage(), completed: { (error) in
                     error.noneDo {
                         DispatchQueue.main.async {

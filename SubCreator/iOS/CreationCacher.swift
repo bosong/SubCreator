@@ -63,7 +63,7 @@ public class CreationCacher {
 
 extension ImageWrapper: Cachable {
     public var fileName: String {
-        return timeStamp.description
+        return timestamp.description
     }
 }
 
@@ -75,16 +75,17 @@ public struct ImageWrapper: Codable {
     
     public typealias Image = UIImage
     public let image: Image
-    public let timeStamp: TimeInterval
+    public let timestamp: TimeInterval
     
     public enum CodingKeys: String, CodingKey {
         case image
+        case timestamp
     }
     
     // Image is a standard UI/NSImage conditional typealias
-    public init(image: Image) {
+    public init(image: Image, timestamp: TimeInterval) {
         self.image = image
-        self.timeStamp = Date().timeIntervalSince1970
+        self.timestamp = timestamp
     }
     
     public init(from decoder: Decoder) throws {
@@ -95,7 +96,7 @@ public struct ImageWrapper: Codable {
         }
         
         self.image = image
-        self.timeStamp = Date().timeIntervalSince1970
+        timestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .timestamp) ?? 0
     }
     
     // cache_toData() wraps UIImagePNG/JPEGRepresentation around some conditional logic with some whipped cream and sprinkles.
@@ -106,5 +107,6 @@ public struct ImageWrapper: Codable {
         }
         
         try container.encode(data, forKey: CodingKeys.image)
+        try container.encode(timestamp, forKey: CodingKeys.timestamp)
     }
 }

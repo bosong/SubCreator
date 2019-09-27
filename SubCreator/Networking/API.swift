@@ -49,11 +49,11 @@ extension API: APITargetType {
         case let .materialList(limit, skip):
             return ["limit": limit, "skip": skip]
         case let .materialMoreList(tid, limit, skip):
-            return ["tid": tid,  "limit": limit, "skip": skip]
+            return ["tid": tid, "limit": limit, "skip": skip]
         case let .subtitleList(limit, skip):
             return ["limit": limit, "skip": skip]
         case let .subtitleMoreList(tid, limit, skip):
-            return ["tid": tid,  "limit": limit, "skip": skip]
+            return ["tid": tid, "limit": limit, "skip": skip]
         case let .materialRefers(id, limit, skip):
             return ["mid": id, "limit": limit, "skip": skip]
         case let .search(keyword):

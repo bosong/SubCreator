@@ -94,7 +94,8 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         collectionView.rx.willDisplayCell
-            .subscribe(onNext: { (cell, ip) in
+            .subscribe(onNext: { [weak self] (cell, ip) in
+                guard let self = self else { return }
                 guard ip > self.maxAnimateIp else { return }
                 let col = ip.item % 3
                 let delayTime = Double(col) / Double(10)

@@ -32,7 +32,7 @@ class SearchViewController: BaseViewController, View {
     }
     
     // MARK: - UI properties
-    let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 277, height: 30))
+    let searchBar = UISearchBar(frame: CGRect(x: 0, y: 0, width: 260, height: 30))
     let tableView = UITableView()
     let historyView = SearchHistoryView()
     let historyCache = SearchHistoryCacher.shared
@@ -41,6 +41,9 @@ class SearchViewController: BaseViewController, View {
     override func viewDidLoad() {
         super.viewDidLoad()
         adjustLeftBarButtonItem()
+        if #available(iOS 11.0, *) {
+            searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
+        }
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "输入您想要搜索的影视名称"
         if let searchField = searchBar.value(forKey: "_searchField") as? UITextField {
@@ -101,6 +104,12 @@ class SearchViewController: BaseViewController, View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.result }
+            .do(onNext: { [weak self] (data) in
+                if self?.searchBar.text?.isNotEmpty ?? false {
+                    self?.empty(show: data.isEmpty)
+                    self?.tableView.isHidden = data.isEmpty
+                }
+            })
             .bind(to: tableView.rx.items(cellIdentifier: getClassName(UITableViewCell.self), cellType: UITableViewCell.self)) { ip, element, cell in
                 cell.textLabel?.text = element.teleplayName
                 cell.selectionStyle = .none

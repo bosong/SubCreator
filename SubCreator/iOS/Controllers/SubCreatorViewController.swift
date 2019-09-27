@@ -156,7 +156,7 @@ class SubCreatorViewController: BaseViewController {
         cardView.addGestureRecognizer(rotate)
         
         self.saveButton.rx.tap
-            .subscribe(onNext: { (_) in
+            .subscribe(onNext: { [unowned self] (_) in
                 SaveImageTools.shared.saveImage(self.cardView.asImage(), completed: { (error) in
                     error.noneDo {
                         DispatchQueue.main.async {
@@ -190,7 +190,7 @@ class SubCreatorViewController: BaseViewController {
         
         doneButtonTapped
             .subscribe(onNext: { [unowned self] (image) in
-                CreationCacher.shared.add(ImageWrapper(image: image))
+                CreationCacher.shared.add(ImageWrapper(image: image, timestamp: Date().timeIntervalSince1970))
                 message(.success, title: "保存成功，可以在”我的创作“中查看")
                 switch self.toolBarSel {
                 case .text:
@@ -217,8 +217,8 @@ class SubCreatorViewController: BaseViewController {
         
         self.collectButton.rx.tap
             .map { [unowned self] in !self.collectButton.isSelected }
-            .do(onNext: { (isSelected) in
-                guard let item = self.item else { return }
+            .do(onNext: { [weak self] (isSelected) in
+                guard let item = self?.item else { return }
                 if isSelected {
                     CollectMaterialsCacher.shared.add(item)
                     message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")

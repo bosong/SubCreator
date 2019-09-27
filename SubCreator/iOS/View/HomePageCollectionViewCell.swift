@@ -11,6 +11,12 @@ import Hero
 
 class HomePageCollectionViewCell: BaseCollectionViewCell {
     let imgV = UIImageView()
+    private let selImgV = UIImageView(image: R.image.icon_sel())
+    var isSel = false {
+        didSet {
+            selImgV.isHidden = !self.isSel
+        }
+    }
     
     override func setupSubviews() {
         self.layer.applySketchShadow(color: UIColor.black, alpha: 0.5, x: 0, y: 2, blur: 4, spread: 0)
@@ -24,10 +30,21 @@ class HomePageCollectionViewCell: BaseCollectionViewCell {
             .mt.layout { (make) in
                 make.edges.equalToSuperview()
         }
+        selImgV
+            .mt.config({ (imgV) in
+                imgV.isHidden = true
+            })
+            .mt.adhere(toSuperView: contentView)
+            .mt.layout { (make) in
+                make.right.equalTo(-10)
+                make.top.equalTo(10)
+        }
     }
     
     override func prepareForReuse() {
         super.prepareForReuse()
         self.hero.id = nil
+        self.selImgV.isHidden = true
+        isSel = false
     }
 }

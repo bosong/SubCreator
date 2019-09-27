@@ -46,6 +46,8 @@ public final class CompositionRoot {
         UINavigationBar.appearance().shadowImage = UIImage.resizable().color(UIColor.white).image
         UINavigationBar.appearance().backgroundColor = .white
         UINavigationBar.appearance().isTranslucent = false
+        UINavigationBar.appearance()
+            .setBackgroundImage(UIImage.resizable().color(UIColor.white).image, for: .default)
     }
     
     /// ConfigurePreferences for App
