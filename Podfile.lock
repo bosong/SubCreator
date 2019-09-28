@@ -22,6 +22,7 @@ PODS:
   - R.swift (5.0.3):
     - R.swift.Library (~> 5.0.0)
   - R.swift.Library (5.0.1)
+  - ReachabilitySwift (4.3.1)
   - ReactorKit (1.2.1):
     - RxSwift (>= 4.0.0)
   - Result (4.1.0)
@@ -51,6 +52,7 @@ DEPENDENCIES:
   - MJRefresh
   - Moya/RxSwift
   - R.swift
+  - ReachabilitySwift
   - ReactorKit
   - RxCocoa
   - RxDataSources
@@ -75,6 +77,7 @@ SPEC REPOS:
     - pop
     - R.swift
     - R.swift.Library
+    - ReachabilitySwift
     - ReactorKit
     - Result
     - RxCocoa
@@ -99,6 +102,7 @@ SPEC CHECKSUMS:
   pop: d582054913807fd11fd50bfe6a539d91c7e1a55a
   R.swift: f5a87643b91ea569d23d6afb3eee9c743edde239
   R.swift.Library: cfe85d569d9bae6cb262922db130e7c3a7a5fad1
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   ReactorKit: 8be57f0527ad1ac2963cd5c338274a46a01e57a3
   Result: bd966fac789cc6c1563440b348ab2598cc24d5c7
   RxCocoa: cbf70265dc65a981d4ac982e513c10cf23df24a0
@@ -108,6 +112,6 @@ SPEC CHECKSUMS:
   SnapKit: fd22d10eb9aff484d79a8724eab922c1ddf89bcf
   SwiftMessages: a952f7a9103d9aeab93730a2861d2d8fcdd8758f
 
-PODFILE CHECKSUM: a2cdcb96fba667d495d595f9d1dc73a914b16ec4
+PODFILE CHECKSUM: adc46f11539186b5deb85594f4d458e056f76b8d
 
 COCOAPODS: 1.7.5

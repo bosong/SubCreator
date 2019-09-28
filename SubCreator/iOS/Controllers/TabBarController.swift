@@ -6,10 +6,20 @@
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 
+import RxSwift
+import RxCocoa
 import ESTabBarController_swift
-import Fusuma
 
 class TabBarController: ESTabBarController {
+    static let selectedIndex = TabBarController._selectedIndex.asObservable()
+    private static let _selectedIndex = BehaviorSubject(value: 0)
+    
+    override var selectedIndex: Int {
+        didSet {
+            TabBarController._selectedIndex.onNext(self.selectedIndex)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tabBar.isTranslucent = false

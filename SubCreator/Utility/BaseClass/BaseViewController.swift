@@ -53,17 +53,40 @@ class BaseViewController: UIViewController {
         let imgV = UIImageView(image: R.image.placeholder_nodata())
         return imgV
     }()
+    lazy var noConnectView: UIImageView = {
+        let imgV = UIImageView(image: R.image.placeholder_nonetwork())
+        return imgV
+    }()
     open func empty(show: Bool) {
         if show {
+            if reachabilityManager?.isReach == false {
+                guard noConnectView.superview == nil else { return }
+                view.addSubview(noConnectView)
+                noConnectView.mt.layout { (make) in
+                    make.center.equalToSuperview()
+                }
+                view.bringSubviewToFront(noConnectView)
+                emptyView.superview.someDo {
+                    emptyView.removeFromSuperview()
+                }
+                return
+            }
             guard emptyView.superview == nil else { return }
             view.addSubview(emptyView)
             emptyView.mt.layout { (make) in
                 make.center.equalToSuperview()
             }
             view.bringSubviewToFront(emptyView)
+            noConnectView.superview.someDo {
+                noConnectView.removeFromSuperview()
+            }
         } else {
-            guard emptyView.superview != nil else { return }
-            emptyView.removeFromSuperview()
+            noConnectView.superview.someDo {
+                noConnectView.removeFromSuperview()
+            }
+            emptyView.superview.someDo {
+                emptyView.removeFromSuperview()
+            }
         }
     }
     

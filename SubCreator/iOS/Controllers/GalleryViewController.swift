@@ -11,6 +11,7 @@ import Fusuma
 import RxSwift
 import RxCocoa
 import RxDataSources
+import Kingfisher
 
 class GalleryViewControler: HomepageViewController {
     typealias Section = SectionModel<Material, Materials>
@@ -27,7 +28,27 @@ class GalleryViewControler: HomepageViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: HomePageTitleView("创作"))
     }
     
+    private func uploadButton(show: Bool) {
+        if show {
+            UIView.animate(withDuration: 0.5,
+                           delay: 0,
+                           usingSpringWithDamping: 0.5,
+                           initialSpringVelocity: 1,
+                           options: UIView.AnimationOptions.curveEaseInOut,
+                           animations: {
+                            self.uploadButton.transform = CGAffineTransform(translationX: 0, y: -self.uploadButton.height - 24)
+            })
+        } else {
+            self.uploadButton.transform = .identity
+        }
+    }
+    
     override func bind(reactor: HomepageViewReactor) {
+        TabBarController.selectedIndex
+            .distinctUntilChanged()
+            .subscribe(onNext: { [weak self] in self?.uploadButton(show: $0 == 1) })
+            .disposed(by: disposeBag)
+        
         Observable.just(Reactor.Action.materialList)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -91,6 +112,16 @@ class GalleryViewControler: HomepageViewController {
                 subCreatorVC.collectButton.hero.id = self.uploadButton.hero.id
                 self.present(subCreatorVC, animated: true, completion: nil)
             })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.prefetchItems
+            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+            .subscribe(onNext: { ImagePrefetcher(urls: $0).start() })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.cancelPrefetchingForItems
+            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
             .disposed(by: disposeBag)
         
         self.uploadButton.rx.tap

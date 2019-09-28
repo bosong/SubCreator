@@ -65,8 +65,8 @@ struct Subtitle: Codable {
 struct Subtitles: Codable {
     let teleplayId: String
     let subtitleId: String
-    let materialId: String
-    let materialUrl: String
+    let materialId: String?
+    let materialUrl: String?
     let url: String
 //    let createAt: Date
     //        private enum CodingKeys: String, CodingKey {

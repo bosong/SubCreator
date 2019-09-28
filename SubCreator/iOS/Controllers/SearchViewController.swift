@@ -41,9 +41,6 @@ class SearchViewController: BaseViewController, View {
     override func viewDidLoad() {
         super.viewDidLoad()
         adjustLeftBarButtonItem()
-        if #available(iOS 11.0, *) {
-            searchBar.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        }
         searchBar.searchBarStyle = .minimal
         searchBar.placeholder = "输入您想要搜索的影视名称"
         if let searchField = searchBar.value(forKey: "_searchField") as? UITextField {
@@ -57,6 +54,14 @@ class SearchViewController: BaseViewController, View {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         adjustLeftBarButtonItem()
+        navigationController?.view.setNeedsLayout()
+        navigationController?.view.layoutIfNeeded()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.view.setNeedsLayout()
+        navigationController?.view.layoutIfNeeded()
     }
     
     func bind(reactor: SearchViewReactor) {
@@ -88,6 +93,7 @@ class SearchViewController: BaseViewController, View {
         searchBar.rx.text
             .map { $0?.isEmpty }
             .filterNil()
+            .do(onNext: { [weak self] _ in self?.empty(show: false) })
             .bind(to: tableView.rx.isHidden)
             .disposed(by: disposeBag)
         

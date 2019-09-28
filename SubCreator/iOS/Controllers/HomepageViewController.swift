@@ -166,7 +166,6 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 let detailVC = DetailViewController(image: image, item: self.dataSource[ip])
-//                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = self.uploadButton.hero.id
                 detailVC.saveButton.hero.id = self.uploadButton.hero.id
@@ -174,6 +173,16 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 detailVC.modalPresentationStyle = .overFullScreen
                 self.present(detailVC, animated: true, completion: nil)
             })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.prefetchItems
+            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+            .subscribe(onNext: { ImagePrefetcher(urls: $0).start() })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.cancelPrefetchingForItems
+            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
             .disposed(by: disposeBag)
         
 //        editButton.rx.tap
@@ -228,7 +237,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
                 make.centerX.equalToSuperview()
-                make.bottom.equalTo(-24)
+                make.bottom.equalTo(uploadButton.height)
         }
         
 //        editButton
