@@ -66,7 +66,7 @@ extension API: APITargetType {
     var task: Task {
         switch self {
         case let .upload(name, tid, mid, data):
-            let multipart = MultipartFormData(provider: .data(data), name: "file", fileName: "\(name)\(mid)\(tid).jpg", mimeType: "")
+            let multipart = MultipartFormData(provider: .data(data), name: "file", fileName: "\(name)\(mid)\(tid).png", mimeType: "")
             return .uploadCompositeMultipart([multipart], urlParameters: parametersDefault.values)
         default:
             return .requestParameters(parameters: parametersDefault.values, encoding: parametersDefault.encoding)

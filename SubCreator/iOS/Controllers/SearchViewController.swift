@@ -42,7 +42,9 @@ class SearchViewController: BaseViewController, View {
         super.viewDidLoad()
         adjustLeftBarButtonItem()
         searchBar.searchBarStyle = .minimal
-        searchBar.placeholder = "输入您想要搜索的影视名称"
+        searchBar.placeholder = "请输入您想要搜索的影视名称"
+        searchBar.delegate = self
+        
         if let searchField = searchBar.value(forKey: "_searchField") as? UITextField {
             searchField.leftViewMode = .never
         }
@@ -56,6 +58,7 @@ class SearchViewController: BaseViewController, View {
         adjustLeftBarButtonItem()
         navigationController?.view.setNeedsLayout()
         navigationController?.view.layoutIfNeeded()
+        searchBar.text = searchBar.text // 解决 pop searchbar 文字显示不全
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,24 +68,24 @@ class SearchViewController: BaseViewController, View {
     }
     
     func bind(reactor: SearchViewReactor) {
-        historyView.historySelectedObservable
-            .bind(to: searchBar.rx.text)
-            .disposed(by: disposeBag)
+//        historyView.historySelectedObservable
+//            .bind(to: searchBar.rx.text)
+//            .disposed(by: disposeBag)
+//
+//        historyView.historySelectedObservable
+//            .flatMapLatest { Observable.just(Reactor.Action.search(keyword: $0.teleplayName)) }
+//            .bind(to: reactor.action)
+//            .disposed(by: disposeBag)
         
-        historyView.historySelectedObservable
-            .flatMapLatest { Observable.just(Reactor.Action.search(keyword: $0)) }
-            .bind(to: reactor.action)
-            .disposed(by: disposeBag)
-        
-        historyView.historySelectedObservable
-            .map { _ in false }
-            .bind(to: tableView.rx.isHidden)
-            .disposed(by: disposeBag)
-
-        historyView.historySelectedObservable
-            .map { _ in true }
-            .bind(to: historyView.rx.isHidden)
-            .disposed(by: disposeBag)
+//        historyView.historySelectedObservable
+//            .map { _ in false }
+//            .bind(to: tableView.rx.isHidden)
+//            .disposed(by: disposeBag)
+//
+//        historyView.historySelectedObservable
+//            .map { _ in true }
+//            .bind(to: historyView.rx.isHidden)
+//            .disposed(by: disposeBag)
         
         searchBar.rx.text
             .filterNil()
@@ -102,7 +105,7 @@ class SearchViewController: BaseViewController, View {
             .filterNil()
             .do(onNext: { [weak self] (bool) in
                 if !bool, let data = self?.historyCache.loads() {
-                    let history = data.sorted(by: { $0.timestamp > $1.timestamp }).map { $0.teleplayName }
+                    let history = data.sorted(by: { $0.timestamp > $1.timestamp })
                     self?.historyView.historys.accept(history)
                 }
             })
@@ -122,7 +125,15 @@ class SearchViewController: BaseViewController, View {
             }
             .disposed(by: disposeBag)
         
-        tableView.rx.modelSelected(SearchResult.self)
+        tableView.rx.didScroll
+            .filter { [weak self] in self!.searchBar.isFirstResponder }
+            .subscribe(onNext: { [weak self] in
+                self?.searchBar.resignFirstResponder()
+            })
+            .disposed(by: disposeBag)
+        
+        Observable.merge(historyView.historySelectedObservable,
+                         tableView.rx.modelSelected(SearchResult.self).asObservable())
             .subscribe(onNext: { [weak self] (model) in
                 var model = model
                 guard let self = self else { return }
@@ -158,7 +169,7 @@ class SearchViewController: BaseViewController, View {
             .subscribe(onNext: { [weak self] (_) in
                 self?.historyCache.clear()
                 if let data = self?.historyCache.loads() {
-                    let history = data.map { $0.teleplayName }
+                    let history = data
                     self?.historyView.historys.accept(history)
                 }
             })
@@ -167,7 +178,7 @@ class SearchViewController: BaseViewController, View {
     
     // MARK: - SEL
     @objc func searchClicked() {
-        
+        self.searchBar.resignFirstResponder()
     }
     
     // MARK: - Private Functions
@@ -191,13 +202,30 @@ class SearchViewController: BaseViewController, View {
     }
 }
 
+extension SearchViewController: UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text.isEmpty {
+            return true
+        }
+        
+        guard let searchBarText = searchBar.text, searchBarText.count <= 20 else {
+            return false
+        }
+        
+        if text == "\n" {
+            searchBar.resignFirstResponder()
+        }
+        return true
+    }
+}
+
 class SearchHistoryView: BaseView {
-    let historys = BehaviorRelay<[String]>(value: [])
+    let historys = BehaviorRelay<[SearchResult]>(value: [])
     let clearButton = UIButton(type: .custom)
-    lazy var historySelectedObservable: Observable<String> = self.historySelected.asObservable().share()
+    lazy var historySelectedObservable: Observable<SearchResult> = self.historySelected.asObservable().share()
     
     private let historyLabel = UIButton()
-    private let historySelected = PublishRelay<String>()
+    private let historySelected = PublishRelay<SearchResult>()
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewLeftAlignedLayout()
         layout.estimatedItemSize = CGSize(width: 100, height: 22)
@@ -245,14 +273,15 @@ class SearchHistoryView: BaseView {
                 make.left.right.bottom.equalToSuperview()
         }
         
-        collectionView.rx.modelSelected(String.self)
+        collectionView.rx.modelSelected(SearchResult.self)
             .bind(to: historySelected)
             .disposed(by: disposeBag)
         
-        historys.asObservable()
+        historys
+            .asObservable()
             .bind(to: collectionView.rx.items(cellIdentifier: getClassName(HistoryCell.self), cellType: HistoryCell.self)) { ip, element, cell in
 //                cell.label.text = element
-                cell.label.setTitle(element, for: .normal)
+                cell.label.setTitle(element.teleplayName, for: .normal)
             }
             .disposed(by: disposeBag)
     }

@@ -176,22 +176,24 @@ class SubCreatorViewController: BaseViewController {
             .share()
             
         doneButtonTapped
-            .map { $0.jpegData(compressionQuality: 0.1) }
-            .filterNil()
-            .flatMap { [weak self] (data) -> Observable<Response> in
+            .flatMap { (image) -> Observable<UIImage> in
+//                guard let self = self else { return .empty() }
+                
+//                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
+                guard reachabilityManager?.isReach == true else {
+                    message(.warning, title: "哎呀，我没连上网！")
+                    return .empty()
+                }
+                guard let data = image.resizeImage()?.pngData() else { return .empty() }
                 let a = Double(data.count)
                 log.info("img length \(a/1024/1024)M")
-                guard let self = self else { return .empty() }
-                
-                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
+                return Service.shared.upload(name: "", tid: "", mid: "", data: data)
+                    .asObservable()
+                    .map { _ in image }
             }
-            .subscribe()
-            .disposed(by: disposeBag)
-        
-        doneButtonTapped
-            .subscribe(onNext: { [unowned self] (image) in
+            .subscribe(onNext: { (image) in
                 CreationCacher.shared.add(ImageWrapper(image: image, timestamp: Date().timeIntervalSince1970))
-                message(.success, title: "保存成功，可以在”我的创作“中查看")
+                message(.success, title: "保存成功", body: "请在”我的创作“中进行查看")
                 switch self.toolBarSel {
                 case .text:
                     self.inputTextView.textView.resignFirstResponder()
@@ -205,9 +207,32 @@ class SubCreatorViewController: BaseViewController {
                 case .face:
                     break
                 }
-                
+            }, onError: { (error) in
+                log.error(error)
+                message(.error, title: "保存失败")
             })
             .disposed(by: disposeBag)
+        
+//        doneButtonTapped
+//            .subscribe(onNext: { [unowned self] (image) in
+//                CreationCacher.shared.add(ImageWrapper(image: image, timestamp: Date().timeIntervalSince1970))
+//                message(.success, title: "保存成功，可以在”我的创作“中查看")
+//                switch self.toolBarSel {
+//                case .text:
+//                    self.inputTextView.textView.resignFirstResponder()
+//                case .style:
+//                    UIView.animate(withDuration: 0.3, animations: {
+//                        self.toolBarStyleItemView.y = screenHeight
+//                        self.toolBar.bottom = screenHeight
+//                    }, completion: { (_) in
+//                        self.toolBarStyleItemView.removeFromSuperview()
+//                    })
+//                case .face:
+//                    break
+//                }
+//
+//            })
+//            .disposed(by: disposeBag)
         
         self.shareButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
@@ -221,7 +246,7 @@ class SubCreatorViewController: BaseViewController {
                 guard let item = self?.item else { return }
                 if isSelected {
                     CollectMaterialsCacher.shared.add(item)
-                    message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
+                    message(.success, title: "已成功收藏", body: "请在“我的收藏”中进行查看")
                 } else {
                     CollectMaterialsCacher.shared.remove(item)
                     message(.success, title: "已取消收藏")
@@ -296,7 +321,7 @@ class SubCreatorViewController: BaseViewController {
         textLabel
             .mt.adhere(toSuperView: cardView)
             .mt.layout { (make) in
-                make.center.equalToSuperview()
+                make.centerY.leading.equalToSuperview()
                 make.size.lessThanOrEqualTo(cardView)
         }
         

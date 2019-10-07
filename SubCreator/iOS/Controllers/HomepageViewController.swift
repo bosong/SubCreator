@@ -157,6 +157,14 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             })
             .disposed(by: disposeBag)
         
+        collectionView.rx.willDisplaySupplementaryView
+            .subscribe(onNext: { (supplementaryView, elementKind, ip) in
+                if elementKind == UICollectionView.elementKindSectionHeader {
+                    supplementaryView.layer.zPosition = 0
+                }
+            })
+            .disposed(by: disposeBag)
+        
         collectionView.rx.itemSelected
 //            .do(onNext: { [unowned self] _ in
 //                self.editButtonTapped(false)
@@ -309,7 +317,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             case UICollectionView.elementKindSectionHeader:
                 let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
                 view.titleLabel.text = ds[ip.section].model.teleplayName
-                view.accessbilityBtn.rx.tap
+                view.tapGesture.rx.event
                     .subscribe(onNext: { [weak self] _ in
                         let moreVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: ds[ip.section].model.teleplayId))
                         self?.navigationController?.pushViewController(moreVC, animated: true)
@@ -329,6 +337,7 @@ class HomePageSectionHeaderView: UICollectionReusableView {
     let imgV = UIImageView()
     let titleLabel = UILabel()
     let accessbilityBtn = UIButton(type: .custom)
+    let tapGesture = UITapGestureRecognizer()
     
     private(set) var reuseDisposeBag = DisposeBag()
     
@@ -336,6 +345,7 @@ class HomePageSectionHeaderView: UICollectionReusableView {
         super.init(frame: frame)
         backgroundColor = .white
         prepareSubviews()
+        addGestureRecognizer(tapGesture)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -380,6 +390,7 @@ class HomePageSectionHeaderView: UICollectionReusableView {
             .mt.adhere(toSuperView: self)
             .mt.config { (btn) in
                 btn.setImage(R.image.homepage_accessbility(), for: .normal)
+                btn.isUserInteractionEnabled = false
             }
             .mt.layout { (make) in
                 make.right.equalTo(-15)

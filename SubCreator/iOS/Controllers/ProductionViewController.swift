@@ -15,7 +15,11 @@ class ProductionViewController: BaseViewController, View {
     // MARK: - Properties
     // MARK: - Initialized
     private var isItemEdit = false
-    private var selectedIp: [IndexPath] = []
+    private var selectedIp: [IndexPath] = [] {
+        didSet {
+            self.deleteButton.isEnabled = self.selectedIp.isNotEmpty
+        }
+    }
     
     // MARK: - UI properties
     lazy var collectionView: UICollectionView = {

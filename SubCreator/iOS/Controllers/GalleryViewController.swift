@@ -97,6 +97,14 @@ class GalleryViewControler: HomepageViewController {
             })
             .disposed(by: disposeBag)
         
+        collectionView.rx.willDisplaySupplementaryView
+            .subscribe(onNext: { (supplementaryView, elementKind, ip) in
+                if elementKind == UICollectionView.elementKindSectionHeader {
+                    supplementaryView.layer.zPosition = 0
+                }
+            })
+            .disposed(by: disposeBag)
+        
         collectionView.rx.itemSelected
             .subscribe(onNext: { [unowned self] (ip) in
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
@@ -161,7 +169,7 @@ class GalleryViewControler: HomepageViewController {
             case UICollectionView.elementKindSectionHeader:
                 let view = cv.dequeueReusableView(HomePageSectionHeaderView.self, kind: UICollectionView.elementKindSectionHeader, for: ip)
                 view.titleLabel.text = ds[ip.section].model.teleplayName
-                view.accessbilityBtn.rx.tap
+                view.tapGesture.rx.event
                     .subscribe(onNext: { [weak self] _ in
                         let moreVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: ds[ip.section].model.teleplayId))
                         self?.navigationController?.pushViewController(moreVC, animated: true)

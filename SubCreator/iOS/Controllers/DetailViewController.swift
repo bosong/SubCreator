@@ -102,7 +102,7 @@ class DetailViewController: BaseViewController {
                 guard let item = self?.item else { return }
                 if isSelected {
                     CollectSubtitlesCacher.shared.add(item)
-                    message(.success, title: "已成功收藏，请在“我的收藏”中进行查看")
+                    message(.success, title: "已成功收藏", body: "请在“我的收藏”中进行查看")
                 } else {
                     CollectSubtitlesCacher.shared.remove(item)
                     message(.success, title: "已取消收藏")
