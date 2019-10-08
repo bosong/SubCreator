@@ -19,7 +19,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     private typealias Section = SectionModel<Subtitle, Subtitles>
     
     struct Metric {
-        static let itemRatio: CGFloat = 2 / 3
+        static let itemRatio: CGFloat = 1
         static let itemWidth = (screenWidth - 11 * 2 - 15 * 2) / 3
         static let itemHeight = Metric.itemWidth * Metric.itemRatio
         static let itemSize: CGSize = CGSize(width: itemWidth, height: itemHeight)
@@ -244,7 +244,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         uploadButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.centerX.equalToSuperview()
+                make.right.equalTo(-20)
                 make.bottom.equalTo(uploadButton.height)
         }
         
@@ -319,7 +319,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 view.titleLabel.text = ds[ip.section].model.teleplayName
                 view.tapGesture.rx.event
                     .subscribe(onNext: { [weak self] _ in
-                        let moreVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: ds[ip.section].model.teleplayId))
+                        let moreVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: ds[ip.section].model.teleplayId), title: ds[ip.section].model.teleplayName)
                         self?.navigationController?.pushViewController(moreVC, animated: true)
                     })
                     .disposed(by: view.reuseDisposeBag)

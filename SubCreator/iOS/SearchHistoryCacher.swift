@@ -32,7 +32,7 @@ public class SearchHistoryCacher {
                 result.append(model)
             }
         }
-        return result
+        return result.sorted(by: { $0.timestamp > $1.timestamp })
     }
     
     /// addImageWrapper

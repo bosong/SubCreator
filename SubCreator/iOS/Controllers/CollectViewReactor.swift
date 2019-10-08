@@ -15,6 +15,7 @@ class CollectViewReactor: Reactor {
     
     enum Action {
         case reload
+        case delete([IndexPath])
     }
     
     enum Mutation {
@@ -54,6 +55,12 @@ class CollectViewReactor: Reactor {
                 sections.append(Section(model: "作品", items: subtitleItems))
             }
             return Observable.just(Mutation.setData(sections))
+            
+        case .delete(let ip):
+            ip.map { CollectSubtitlesCacher.shared.loads()[$0.item] }
+                .forEach { CollectSubtitlesCacher.shared.remove($0) }
+            let subtitleItems = CollectSubtitlesCacher.shared.loads().map { Item.subtitle($0) }
+            return Observable.just(Mutation.setData([Section(model: "作品", items: subtitleItems)]))
         }
     }
     

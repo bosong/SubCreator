@@ -65,18 +65,29 @@ struct Subtitle: Codable {
 struct Subtitles: Codable {
     let teleplayId: String
     let subtitleId: String
-    let materialId: String?
-    let materialUrl: String?
+    let materialId: String
+    let materialUrl: String
     let url: String
+    var timestamp: TimeInterval
 //    let createAt: Date
-    //        private enum CodingKeys: String, CodingKey {
-    //            case teleplayId = "teleplay_id"
-    //            case subtitleId = "subtitle_id"
-    //            case materialId = "material_id"
-    //            case materialUrl = "material_url"
-    //            case url
-    //            case createAt = "create_at"
-    //        }
+    private enum CodingKeys: String, CodingKey {
+        case teleplayId
+        case subtitleId
+        case materialId
+        case materialUrl
+        case url
+        case timestamp
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        teleplayId = try container.decodeIfPresent(String.self, forKey: .teleplayId) ?? ""
+        subtitleId = try container.decodeIfPresent(String.self, forKey: .subtitleId) ?? ""
+        materialId = try container.decodeIfPresent(String.self, forKey: .materialId) ?? ""
+        materialUrl = try container.decodeIfPresent(String.self, forKey: .materialUrl) ?? ""
+        url = try container.decodeIfPresent(String.self, forKey: .url) ?? ""
+        timestamp = try container.decodeIfPresent(TimeInterval.self, forKey: .timestamp) ?? 0
+    }
 }
 
 extension Subtitles: Cachable, Equatable {

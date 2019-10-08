@@ -101,8 +101,7 @@ class SearchViewController: BaseViewController, View {
             .disposed(by: disposeBag)
         
         searchBar.rx.text
-            .map { $0?.isNotEmpty }
-            .filterNil()
+            .map { [unowned self] in ($0?.isNotEmpty ?? false) || self.historyCache.loads().isEmpty }
             .do(onNext: { [weak self] (bool) in
                 if !bool, let data = self?.historyCache.loads() {
                     let history = data.sorted(by: { $0.timestamp > $1.timestamp })
@@ -140,12 +139,16 @@ class SearchViewController: BaseViewController, View {
                 var detailVC: UIViewController
                 switch self.from {
                 case .material:
-                    detailVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: model.teleplayId))
+                    detailVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: model.teleplayId), title: model.teleplayName)
                 case .subtitle:
-                    detailVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: model.teleplayId))
+                    detailVC = SubtitleRefersViewController(reactor: SubtitleRefersViewReactor(id: model.teleplayId), title: model.teleplayName)
                 }
-                if self.historyCache.loads().contains(model) {
+                let historys = self.historyCache.loads()
+                if historys.contains(model) {
                     self.historyCache.remove(model)
+                }
+                if historys.count > 20 {
+                    self.historyCache.remove(historys.last!)
                 }
                 model.timestamp = Date().timeIntervalSince1970
                 self.historyCache.add(model)
@@ -305,6 +308,7 @@ private class HistoryCell: BaseCollectionViewCell {
             .mt.adhere(toSuperView: contentView)
             .mt.layout { (make) in
                 make.edges.equalToSuperview()
+                make.width.lessThanOrEqualTo(160)
         }
     }
 }

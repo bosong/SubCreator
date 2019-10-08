@@ -48,25 +48,30 @@ class SubCreatorViewController: BaseViewController {
         $0.isUserInteractionEnabled = true
     }
     let backButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.navigation_bar_back(), for: .normal)
+        $0.setImage(R.image.nav_item_back(), for: .normal)
         $0.sizeToFit()
     }
     let doneButton = UIButton(type: .custom).then {
-        $0.setImage(R.image.navigation_bar_save(), for: .normal)
+        $0.setTitle("发布", for: .normal)
+        $0.setTitleColor(.black, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 16)
         $0.sizeToFit()
     }
     let saveButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_save(), for: .normal)
         $0.sizeToFit()
+        $0.isHidden = true
     }
     let shareButton = UIButton(type: .custom).then {
         $0.setImage(R.image.share_wechat(), for: .normal)
         $0.sizeToFit()
+        $0.isHidden = true
     }
     let collectButton = UIButton(type: .custom).then {
         $0.setImage(R.image.btn_collection_normal(), for: .normal)
         $0.setImage(R.image.btn_collection_sel(), for: .selected)
         $0.sizeToFit()
+        $0.isHidden = true
     }
     let toolBar = SubCreatorToolBar(frame: CGRect(x: 0, y: screenHeight - 50, width: screenWidth, height: 50))
     let inputTextView = InputTextView()
@@ -191,9 +196,9 @@ class SubCreatorViewController: BaseViewController {
                     .asObservable()
                     .map { _ in image }
             }
-            .subscribe(onNext: { (image) in
+            .subscribe(onNext: { [unowned self] (image) in
                 CreationCacher.shared.add(ImageWrapper(image: image, timestamp: Date().timeIntervalSince1970))
-                message(.success, title: "保存成功", body: "请在”我的创作“中进行查看")
+                message(.success, title: "发布成功", body: "请在”我的创作“中进行查看")
                 switch self.toolBarSel {
                 case .text:
                     self.inputTextView.textView.resignFirstResponder()
@@ -207,9 +212,10 @@ class SubCreatorViewController: BaseViewController {
                 case .face:
                     break
                 }
+                self.dismiss(animated: true, completion: nil)
             }, onError: { (error) in
                 log.error(error)
-                message(.error, title: "保存失败")
+                message(.error, title: "发布失败")
             })
             .disposed(by: disposeBag)
         
@@ -299,14 +305,14 @@ class SubCreatorViewController: BaseViewController {
         backButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.left.equalTo(5)
+                make.left.equalTo(20)
                 make.centerY.equalTo(safeAreaNavTop/2 + statusBarHeight/2)
         }
         
         doneButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
-                make.right.equalTo(-5)
+                make.right.equalTo(-20)
                 make.centerY.equalTo(backButton)
         }
         

@@ -171,7 +171,7 @@ class GalleryViewControler: HomepageViewController {
                 view.titleLabel.text = ds[ip.section].model.teleplayName
                 view.tapGesture.rx.event
                     .subscribe(onNext: { [weak self] _ in
-                        let moreVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: ds[ip.section].model.teleplayId))
+                        let moreVC = MaterialRefersViewController(reactor: MaterialRefersViewReactor(id: ds[ip.section].model.teleplayId), title: ds[ip.section].model.teleplayName)
                         self?.navigationController?.pushViewController(moreVC, animated: true)
                     })
                     .disposed(by: view.reuseDisposeBag)

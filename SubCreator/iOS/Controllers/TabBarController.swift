@@ -36,12 +36,16 @@ class TabBarController: ESTabBarController {
                                        image: R.image.home_normal()?.withRenderingMode(.alwaysOriginal),
                                        selectedImage: R.image.home_sel()?.withRenderingMode(.alwaysOriginal))
         
-        let irregularity = IrregularityContentView()
-        irregularity.renderingMode = .alwaysOriginal
-        middle.tabBarItem = ESTabBarItem.init(irregularity,
-                                              title: nil,
-                                              image: R.image.middle_normal(),
-                                              selectedImage: R.image.middle_sel())
+//        let irregularity = IrregularityContentView()
+//        irregularity.renderingMode = .alwaysOriginal
+//        middle.tabBarItem = ESTabBarItem.init(irregularity,
+//                                              title: nil,
+//                                              image: R.image.middle_normal(),
+//                                              selectedImage: R.image.middle_sel())
+        middle.tabBarItem = UITabBarItem(title: nil,
+                                         image: R.image.tabbar_icon_create()?.withRenderingMode(.alwaysOriginal),
+                                         selectedImage: R.image.tabbar_icon_create_sel()?.withRenderingMode(.alwaysOriginal))
+        
         me.tabBarItem = UITabBarItem(title: nil,
                                      image: R.image.me_normal()?.withRenderingMode(.alwaysOriginal),
                                      selectedImage: R.image.me_sel()?.withRenderingMode(.alwaysOriginal))

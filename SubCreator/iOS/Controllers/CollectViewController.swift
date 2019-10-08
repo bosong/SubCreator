@@ -23,6 +23,13 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         case subtitle(Subtitles)
     }
     // MARK: - Properties
+    private var isItemEdit = false
+    private var selectedIp: [IndexPath] = [] {
+        didSet {
+            self.deleteButton.isEnabled = self.selectedIp.isNotEmpty
+        }
+    }
+    
     // MARK: - Initialized
     private lazy var dataSource = self.prepareDataSource()
     
@@ -45,6 +52,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         layout.footerReferenceSize = CGSize(width: screenWidth, height: 1)
         return layout
     }()
+    lazy var deleteButton = UIButton(type: .custom)
     let heroId = "collect"
     // MARK: - View Life Circle
     override func viewDidLoad() {
@@ -53,6 +61,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
         heroView.hero.id = heroId
         view.addSubview(heroView)
         title = "我的收藏"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "选择", style: .done, target: self, action: #selector(editItemClick))
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -61,15 +70,53 @@ class CollectViewController: BaseViewController, ReactorKit.View {
     }
     
     // MARK: - SEL
+    @objc func editItemClick() {
+        isItemEdit.toggle()
+        deleteButton.isHidden = !isItemEdit
+        let bottomInset = safeAreaBottomMargin + 20 + deleteButton.height
+        collectionView.contentInset.bottom = isItemEdit ? bottomInset : 0
+        if isItemEdit {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "取消", style: .done, target: self, action: #selector(editItemClick))
+        } else {
+            self.selectedIp = []
+            self.collectionView.reloadData()
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "选择", style: .done, target: self, action: #selector(editItemClick))
+        }
+    }
+    
     func bind(reactor: CollectViewReactor) {
         reactor.state.map { $0.data }
-            .do(onNext: { [weak self] data in self?.empty(show: data.isEmpty) })
+            .do(onNext: { [unowned self] data in
+                self.empty(show: data.isEmpty)
+                self.selectedIp = []
+                self.isItemEdit = false
+                self.deleteButton.isHidden = true
+                self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "选择", style: .done, target: self, action: #selector(self.editItemClick))
+            })
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
         collectionView.rx.itemSelected
             .subscribe(onNext: { [weak self] (ip) in
                 guard let self = self else { return }
+                guard self.isItemEdit else { return }
+                guard let cell = self.collectionView.cellForItem(at: ip)  as? HomePageCollectionViewCell else { return }
+                cell.isSel = !self.selectedIp.contains(ip)
+                if cell.isSel {
+                    self.selectedIp.append(ip)
+                } else {
+                    if let idx = self.selectedIp.firstIndex(of: ip) {
+                        self.selectedIp.remove(at: idx)
+                    }
+                }
+                self.collectionView.reloadItems(at: [ip])
+            })
+            .disposed(by: disposeBag)
+        
+        collectionView.rx.itemSelected
+            .subscribe(onNext: { [weak self] (ip) in
+                guard let self = self else { return }
+                guard !self.isItemEdit else { return }
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
@@ -102,6 +149,23 @@ class CollectViewController: BaseViewController, ReactorKit.View {
                 }
             })
             .disposed(by: disposeBag)
+        
+        deleteButton.rx.tap
+            .flatMap { [weak self] _ -> Observable<Int> in
+                guard let self = self else { return .empty() }
+                return UIAlertController.present(in: self,
+                                                 title: "提示",
+                                                 message: "你确定要删除吗？",
+                                                 style: .alert,
+                                                 actions: [
+                                                    UIAlertController.AlertAction.action(title: "确定"),
+                                                    UIAlertController.AlertAction.action(title: "取消", style: .cancel)
+                    ])
+            }
+            .filter { $0 == 0 }
+            .map { [unowned self] _ in Reactor.Action.delete(self.selectedIp) }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Layout
@@ -111,11 +175,27 @@ class CollectViewController: BaseViewController, ReactorKit.View {
             .mt.layout { (make) in
                 make.edges.equalToSuperview()
         }
+        
+        deleteButton
+            .mt.config { (button) in
+                button.setTitle("删除", for: .normal)
+                button.setTitleColor(.white, for: .normal)
+                button.setBackgroundImage(UIImage.resizable().color(UIColor.mt.theme).image, for: .normal)
+                button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+                button.isHidden = true
+                button.layerCornerRadius = 8
+            }
+            .mt.adhere(toSuperView: view)
+            .mt.layout { (make) in
+                make.bottom.equalTo(-safeAreaBottomMargin - 20)
+                make.centerX.equalToSuperview()
+                make.size.equalTo(CGSize(width: 200, height: 38))
+        }
     }
     
     // MARK: - Private Functions
     private func prepareDataSource() -> RxCollectionViewSectionedReloadDataSource<Section> {
-        return RxCollectionViewSectionedReloadDataSource<Section>.init(configureCell: { (ds, cv, ip, e) -> UICollectionViewCell in
+        return RxCollectionViewSectionedReloadDataSource<Section>.init(configureCell: { [weak self] (ds, cv, ip, e) -> UICollectionViewCell in
             let cell = cv.dequeueItem(HomePageCollectionViewCell.self, for: ip)
             switch e {
             case .subtitle(let model):
@@ -123,6 +203,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
             case .material(let model):
                 cell.imgV.kf.setImage(with: URL(string: model.url))
             }
+            cell.isSel = self?.selectedIp.contains(ip) ?? false
             return cell
         }, configureSupplementaryView: { (ds, cv, id, ip) -> UICollectionReusableView in
             switch id {

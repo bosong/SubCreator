@@ -99,8 +99,9 @@ class DetailViewController: BaseViewController {
         self.collectButton.rx.tap
             .map { [unowned self] in !self.collectButton.isSelected }
             .do(onNext: { [weak self] (isSelected) in
-                guard let item = self?.item else { return }
+                guard var item = self?.item else { return }
                 if isSelected {
+                    item.timestamp = Date().timeIntervalSince1970
                     CollectSubtitlesCacher.shared.add(item)
                     message(.success, title: "已成功收藏", body: "请在“我的收藏”中进行查看")
                 } else {

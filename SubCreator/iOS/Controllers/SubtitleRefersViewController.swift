@@ -19,9 +19,10 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
     private var maxAnimateIp = IndexPath(item: 0, section: 0)
     
     // MARK: - Initialized
-    init(reactor: SubtitleRefersViewReactor) {
+    init(reactor: SubtitleRefersViewReactor, title: String) {
         defer { self.reactor = reactor }
         super.init(nibName: nil, bundle: nil)
+        self.title = title
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -29,7 +30,7 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
     }
     
     // MARK: - UI properties
-    let titleView = HomePageTitleView("作品集")
+    let titleView = HomePageTitleView("")
     lazy var collectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.flowLayout)
         cv.backgroundColor = .white
