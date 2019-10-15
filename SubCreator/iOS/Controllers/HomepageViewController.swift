@@ -108,7 +108,8 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     
     // MARK: - SEL
     func bind(reactor: HomepageViewReactor) {
-        Observable.just(Reactor.Action.subtitleList)
+        self.rx.viewWillAppear
+            .map { _ in Reactor.Action.subtitleList }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -134,6 +135,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.subtitle }
+            .skip(1)
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
@@ -188,10 +190,10 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             .subscribe(onNext: { ImagePrefetcher(urls: $0).start() })
             .disposed(by: disposeBag)
         
-        collectionView.rx.cancelPrefetchingForItems
-            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
-            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
-            .disposed(by: disposeBag)
+//        collectionView.rx.cancelPrefetchingForItems
+//            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+//            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
+//            .disposed(by: disposeBag)
         
 //        editButton.rx.tap
 //            .map { [unowned self] in !self.editButton.isSelected }

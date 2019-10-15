@@ -26,7 +26,9 @@ class ProductionViewReactor: Reactor {
     var initialState: State
     
     init() {
-        let images = CreationCacher.shared.loads()
+        let images = CreationCacher.shared.loads().sorted { (left, right) -> Bool in
+            return left.timestamp > right.timestamp
+        }
         initialState = State(creationData: images)
     }
     

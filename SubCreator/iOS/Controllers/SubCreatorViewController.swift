@@ -147,18 +147,19 @@ class SubCreatorViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:)))
+        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
+        textLabel.addGestureRecognizer(pan)
+        cardView.addGestureRecognizer(rotate)
+        
         toolBarStyleItemView.fontSliderView
             .rx.controlEvent(.valueChanged)
             .map { [unowned self] in self.toolBarStyleItemView.fontSliderView.fraction * 100}
             .subscribe(onNext: { [unowned self] (value) in
                 self.textLabel.font = Metric.textLableFont(size: value)
+                self.panGesture(pan)
             })
             .disposed(by: disposeBag)
-        
-        let pan = UIPanGestureRecognizer(target: self, action: #selector(panGesture(_:)))
-        let rotate = UIRotationGestureRecognizer(target: self, action: #selector(rotateGesture(_:)))
-        textLabel.addGestureRecognizer(pan)
-        cardView.addGestureRecognizer(rotate)
         
         self.saveButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
@@ -181,10 +182,11 @@ class SubCreatorViewController: BaseViewController {
             .share()
             
         doneButtonTapped
-            .flatMap { (image) -> Observable<UIImage> in
+            .flatMap { [weak self] (image) -> Observable<UIImage> in
 //                guard let self = self else { return .empty() }
                 
 //                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
+                self?.doneButton.isEnabled = false
                 guard reachabilityManager?.isReach == true else {
                     message(.warning, title: "哎呀，我没连上网！")
                     return .empty()
@@ -196,7 +198,8 @@ class SubCreatorViewController: BaseViewController {
                     .asObservable()
                     .map { _ in image }
             }
-            .subscribe(onNext: { [unowned self] (image) in
+            .subscribe(onNext: { [weak self] (image) in
+                guard let self = self else { return }
                 CreationCacher.shared.add(ImageWrapper(image: image, timestamp: Date().timeIntervalSince1970))
                 message(.success, title: "发布成功", body: "请在”我的创作“中进行查看")
                 switch self.toolBarSel {
@@ -212,10 +215,13 @@ class SubCreatorViewController: BaseViewController {
                 case .face:
                     break
                 }
-                self.dismiss(animated: true, completion: nil)
-            }, onError: { (error) in
+                self.dismiss(animated: true, completion: {
+                    self.doneButton.isEnabled = true
+                })
+            }, onError: { [weak self] (error) in
                 log.error(error)
                 message(.error, title: "发布失败")
+                self?.doneButton.isEnabled = true
             })
             .disposed(by: disposeBag)
         
@@ -280,11 +286,11 @@ class SubCreatorViewController: BaseViewController {
         self.textLabel.transform.tx = tx
         self.textLabel.transform.ty = ty
         gesture.setTranslation(.zero, in: self.cardView)
-        if textLabel.transform.tx < -cardView.width / 2 + self.textLabel.width / 2 {
-            textLabel.transform.tx = -cardView.width / 2 + self.textLabel.width / 2
+        if textLabel.transform.tx < 0 {
+            textLabel.transform.tx = 0
         }
-        if textLabel.transform.tx > cardView.width / 2 - self.textLabel.width / 2 {
-            textLabel.transform.tx = cardView.width / 2 - self.textLabel.width / 2
+        if textLabel.transform.tx > cardView.width - self.textLabel.width {
+            textLabel.transform.tx = cardView.width - self.textLabel.width
         }
         if textLabel.transform.ty < -cardView.height / 2 + self.textLabel.height / 2 {
             textLabel.transform.ty = -cardView.height / 2 + self.textLabel.height / 2

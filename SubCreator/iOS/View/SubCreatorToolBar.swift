@@ -29,7 +29,16 @@ class SubCreatorToolBar: BaseView {
     
     private let items: [ToolBarItem] = [.style, .text]
     private let disposeBag = DisposeBag()
-    private var buttons: [UIButton] = []
+    private var buttons: [UIButton] = [] {
+        didSet {
+            self.buttons.forEach { (button) in
+                Observable.merge(self.buttons.map { button in button.rx.tap.map { button } })
+                    .map { $0 == button }
+                    .bind(to: button.rx.isSelected)
+                    .disposed(by: disposeBag)
+            }
+        }
+    }
     private let textAlignmentH = UIButton(type: .custom)
     private let textAlignmentV = UIButton(type: .custom)
     private let textAlignmentBehavior = BehaviorRelay<TextAlignment>(value: .horizontal)
@@ -126,7 +135,7 @@ class SubCreatorToolBar: BaseView {
                 .bind(to: currentSelected)
                 .disposed(by: disposeBag)
         case .style:
-            button.setImage(R.image.toobar_item_style_notmal(), for: .normal)
+            button.setImage(R.image.toobar_item_style_normal(), for: .normal)
             button.setImage(R.image.toobar_item_style_sel(), for: .selected)
             let tapped = button.rx.tap.map { ToolBarItem.style }
             tapped
@@ -135,6 +144,7 @@ class SubCreatorToolBar: BaseView {
         case .text:
             button.setImage(R.image.toobar_item_text_normal(), for: .normal)
             button.setImage(R.image.toobar_item_text_sel(), for: .selected)
+            button.isSelected = true
             let tapped = button.rx.tap.map { ToolBarItem.text }
             tapped
                 .bind(to: currentSelected)

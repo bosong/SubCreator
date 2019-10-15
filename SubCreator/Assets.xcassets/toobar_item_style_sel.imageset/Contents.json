@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "文字编辑-未选中.png",
+      "filename" : "textGray.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "文字编辑-未选中@2x.png",
+      "filename" : "textGray@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "文字编辑-未选中@3x.png",
+      "filename" : "textGray@3x.png",
       "scale" : "3x"
     }
   ],

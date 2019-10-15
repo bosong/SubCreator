@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "home_cell_local upload.png",
+      "filename" : "material_btn_localUpload.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "home_cell_local upload@2x.png",
+      "filename" : "material_btn_localUpload@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "home_cell_local upload@3x.png",
+      "filename" : "material_btn_localUpload@3x.png",
       "scale" : "3x"
     }
   ],

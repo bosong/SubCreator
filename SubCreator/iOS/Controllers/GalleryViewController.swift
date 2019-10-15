@@ -49,7 +49,8 @@ class GalleryViewControler: HomepageViewController {
             .subscribe(onNext: { [weak self] in self?.uploadButton(show: $0 == 1) })
             .disposed(by: disposeBag)
         
-        Observable.just(Reactor.Action.materialList)
+        self.rx.viewWillAppear
+            .map { _ in Reactor.Action.materialList }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -75,6 +76,7 @@ class GalleryViewControler: HomepageViewController {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.material }
+            .skip(1)
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.materials) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
@@ -127,10 +129,10 @@ class GalleryViewControler: HomepageViewController {
             .subscribe(onNext: { ImagePrefetcher(urls: $0).start() })
             .disposed(by: disposeBag)
         
-        collectionView.rx.cancelPrefetchingForItems
-            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
-            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
-            .disposed(by: disposeBag)
+//        collectionView.rx.cancelPrefetchingForItems
+//            .map { [unowned self] in $0.compactMap { URL(string: self.dataSource[$0].url) } }
+//            .subscribe(onNext: { ImagePrefetcher(urls: $0).stop() })
+//            .disposed(by: disposeBag)
         
         self.uploadButton.rx.tap
             .subscribe(onNext: { [weak self] in

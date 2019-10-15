@@ -175,6 +175,7 @@ class SearchViewController: BaseViewController, View {
                     let history = data
                     self?.historyView.historys.accept(history)
                 }
+                self?.historyView.isHidden = true
             })
             .disposed(by: disposeBag)
     }
@@ -273,7 +274,8 @@ class SearchHistoryView: BaseView {
             .mt.adhere(toSuperView: self)
             .mt.layout { (make) in
                 make.top.equalTo(clearButton.snp.bottom).offset(10)
-                make.left.right.bottom.equalToSuperview()
+                make.left.right.equalToSuperview()
+                make.height.equalTo(145)
         }
         
         collectionView.rx.modelSelected(SearchResult.self)
@@ -304,11 +306,12 @@ private class HistoryCell: BaseCollectionViewCell {
                 button.sizeToFit()
                 button.layerCornerRadius = button.height / 2
                 button.isUserInteractionEnabled = false
+                button.titleLabel?.lineBreakMode = .byTruncatingTail
             })
             .mt.adhere(toSuperView: contentView)
             .mt.layout { (make) in
                 make.edges.equalToSuperview()
-                make.width.lessThanOrEqualTo(160)
+                make.width.lessThanOrEqualTo(180)
         }
     }
 }

@@ -19,8 +19,9 @@ class MeViewController: BaseViewController {
     
     var tableView = UITableView().then {
         $0.registerCellClass(MeTableViewCell.self)
-        $0.rowHeight = 50
-        $0.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        $0.rowHeight = 60
+        $0.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+        $0.separatorColor = UIColor(hex: 0xF5F9FC)
         $0.tableFooterView = UIView()
     }
 
