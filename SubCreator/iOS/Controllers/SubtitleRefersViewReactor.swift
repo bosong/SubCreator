@@ -46,8 +46,7 @@ class SubtitleRefersViewReactor: Reactor {
             let data = Service.shared
                 .subtitleListMore(id: currentState.id, limit: 50, skip: 0)
                 .asObservable()
-                .map { $0.first?.subtitles }
-                .filterNil()
+                .map { $0.first?.subtitles ?? [] }
                 .map { Mutation.setData($0) }
             return .concat([start, data, end])
             
@@ -58,8 +57,7 @@ class SubtitleRefersViewReactor: Reactor {
             let data = Service.shared
                 .subtitleListMore(id: currentState.id, limit: 50, skip: currentState.data.count)
                 .asObservable()
-                .map { $0.first?.subtitles }
-                .filterNil()
+                .map { $0.first?.subtitles ?? [] }
                 .map { Mutation.addData($0) }
             return .concat([start, data, end])
         }

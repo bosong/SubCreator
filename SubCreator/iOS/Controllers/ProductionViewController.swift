@@ -118,7 +118,9 @@ class ProductionViewController: BaseViewController, View {
                     ])
             }
             .filter { $0 == 0 }
-            .map { [unowned self] _ in Reactor.Action.delete(self.selectedIp) }
+            .map { [unowned self] _ in Reactor.Action.delete(self.selectedIp, alert: {
+                message(.success, title: "删除成功")
+            }) }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
     }

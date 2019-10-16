@@ -154,7 +154,7 @@ class SubCreatorViewController: BaseViewController {
         
         toolBarStyleItemView.fontSliderView
             .rx.controlEvent(.valueChanged)
-            .map { [unowned self] in self.toolBarStyleItemView.fontSliderView.fraction * 100}
+            .map { [unowned self] in self.toolBarStyleItemView.fontSliderView.fraction * 100 }
             .subscribe(onNext: { [unowned self] (value) in
                 self.textLabel.font = Metric.textLableFont(size: value)
                 self.panGesture(pan)
@@ -174,6 +174,7 @@ class SubCreatorViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         let doneButtonTapped = self.doneButton.rx.tap
+            .do(onNext: { [weak self] in self?.doneButton.isEnabled = false })
             .map { [weak self] in self?.cardView.asImage() }
             .observeOn(SerialDispatchQueueScheduler.init(internalSerialQueueName: "image_resize_queue"))
             .map { $0?.resizeImage(maxSize: 315) }
@@ -182,16 +183,17 @@ class SubCreatorViewController: BaseViewController {
             .share()
             
         doneButtonTapped
-            .flatMap { [weak self] (image) -> Observable<UIImage> in
+            .flatMap { image -> Observable<UIImage> in
 //                guard let self = self else { return .empty() }
                 
 //                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
-                self?.doneButton.isEnabled = false
+                
                 guard reachabilityManager?.isReach == true else {
                     message(.warning, title: "哎呀，我没连上网！")
                     return .empty()
                 }
-                guard let data = image.resizeImage()?.pngData() else { return .empty() }
+                
+                guard let data = image.resizeImage()?.jpegData(compressionQuality: 1) else { return .empty() }
                 let a = Double(data.count)
                 log.info("img length \(a/1024/1024)M")
                 return Service.shared.upload(name: "", tid: "", mid: "", data: data)

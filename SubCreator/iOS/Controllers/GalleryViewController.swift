@@ -49,8 +49,17 @@ class GalleryViewControler: HomepageViewController {
             .subscribe(onNext: { [weak self] in self?.uploadButton(show: $0 == 1) })
             .disposed(by: disposeBag)
         
-        self.rx.viewWillAppear
+        TabBarController.selectedIndex
+            .filter { $0 == 1 }
+            .skip(1)
+            .do(onNext: { [weak self] _ in
+                self?.collectionView.contentOffset.y = 0
+            })
             .map { _ in Reactor.Action.materialList }
+            .bind(to: reactor.action)
+            .disposed(by: disposeBag)
+        
+        Observable.just(Reactor.Action.materialList)
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
         
@@ -199,11 +208,11 @@ extension GalleryViewControler: FusumaDelegate {
     func fusumaDismissedWithImage(_ image: UIImage, source: FusumaMode) {
         let subCreatorVC = SubCreatorViewController(image: image, item: nil)
         subCreatorVC.cardView.hero.id = self.uploadButton.hero.id
-        subCreatorVC.backButton.hero.id = self.uploadButton.hero.id
-        subCreatorVC.doneButton.hero.id = self.uploadButton.hero.id
-        subCreatorVC.saveButton.hero.id = self.uploadButton.hero.id
-        subCreatorVC.shareButton.hero.id = self.uploadButton.hero.id
-        subCreatorVC.collectButton.hero.id = self.uploadButton.hero.id
+//        subCreatorVC.backButton.hero.id = self.uploadButton.hero.id
+//        subCreatorVC.doneButton.hero.id = self.uploadButton.hero.id
+//        subCreatorVC.saveButton.hero.id = self.uploadButton.hero.id
+//        subCreatorVC.shareButton.hero.id = self.uploadButton.hero.id
+//        subCreatorVC.collectButton.hero.id = self.uploadButton.hero.id
         self.present(subCreatorVC, animated: true, completion: nil)
     }
     

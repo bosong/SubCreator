@@ -2,8 +2,8 @@
 //  UIView+Extension.swift
 //  DramaUIKit
 //
-//  Created by MorningStar on 2018/11/13.
-//  Copyright © 2018 FeiZaoTai. All rights reserved.
+//  Created by ripple_k on 2018/11/13.
+//  Copyright © 2018 VoidTech. All rights reserved.
 //
 //  swiftlint:disable identifier_name
 

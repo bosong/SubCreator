@@ -12,7 +12,7 @@ import ReactorKit
 
 class ProductionViewReactor: Reactor {
     enum Action {
-        case delete([IndexPath])
+        case delete([IndexPath], alert: () -> ())
     }
     
     enum Mutation {
@@ -34,14 +34,17 @@ class ProductionViewReactor: Reactor {
     
     func mutate(action: Action) -> Observable<Mutation> {
         switch action {
-        case .delete(let ip):
+        case .delete(let ip, let alert):
             ip.map { [weak self] in self?.currentState.creationData[$0.item] }
                 .forEach { (wrapper) in
                     if let wrapper = wrapper {
                         CreationCacher.shared.remove(wrapper)
                     }
                 }
-            return Observable.just(Mutation.setData(CreationCacher.shared.loads()))
+            alert()
+            return Observable.just(Mutation.setData(CreationCacher.shared.loads().sorted { (left, right) -> Bool in
+                return left.timestamp > right.timestamp
+            }))
         }
     }
     

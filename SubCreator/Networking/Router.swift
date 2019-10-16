@@ -2,8 +2,8 @@
 //  Router.swift
 //  DramaDataKit
 //
-//  Created by MorningStar on 2018/11/18.
-//  Copyright © 2018 FeiZaoTai. All rights reserved.
+//  Created by ripple_k on 2018/11/18.
+//  Copyright © 2018 VoidTech. All rights reserved.
 //
 
 import Moya

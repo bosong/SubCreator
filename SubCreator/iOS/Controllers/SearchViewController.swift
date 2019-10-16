@@ -87,6 +87,15 @@ class SearchViewController: BaseViewController, View {
 //            .bind(to: historyView.rx.isHidden)
 //            .disposed(by: disposeBag)
         
+        self.rx.viewWillAppear
+            .subscribe(onNext: { [weak self] (_) in
+                if let data = self?.historyCache.loads() {
+                    let history = data.sorted(by: { $0.timestamp > $1.timestamp })
+                    self?.historyView.historys.accept(history)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         searchBar.rx.text
             .filterNil()
             .flatMapLatest { Observable.just(Reactor.Action.search(keyword: $0)) }

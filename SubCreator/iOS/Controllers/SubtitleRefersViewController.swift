@@ -84,6 +84,7 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
             .disposed(by: disposeBag)
         
         reactor.state.map { $0.data }
+            .skip(1)
             .do(onNext: { [unowned self] in
                 self.empty(show: $0.isEmpty)
             })

@@ -108,7 +108,16 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     
     // MARK: - SEL
     func bind(reactor: HomepageViewReactor) {
-        self.rx.viewWillAppear
+//        self.rx.viewDidLoad
+//            .map { _ in Reactor.Action.subtitleList }
+//            .bind(to: reactor.action)
+//            .disposed(by: disposeBag)
+        
+        TabBarController.selectedIndex
+            .filter { $0 == 0 }
+            .do(onNext: { [weak self] _ in
+                self?.collectionView.contentOffset.y = 0
+            })
             .map { _ in Reactor.Action.subtitleList }
             .bind(to: reactor.action)
             .disposed(by: disposeBag)
@@ -136,6 +145,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         
         reactor.state.map { $0.subtitle }
             .skip(1)
+            .debug("subtitle")
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
@@ -175,7 +185,8 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 let cell = self.collectionView.cellForItem(at: ip) as? HomePageCollectionViewCell
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
-                let detailVC = DetailViewController(image: image, item: self.dataSource[ip])
+                let item = self.dataSource[ip]
+                let detailVC = DetailViewController(image: image, item: item)
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = self.uploadButton.hero.id
                 detailVC.saveButton.hero.id = self.uploadButton.hero.id

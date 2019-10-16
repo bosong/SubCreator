@@ -62,6 +62,15 @@ struct Subtitle: Codable {
 //    }
 }
 
+extension Subtitles: Equatable {
+    static func == (lhs: Subtitles, rhs: Subtitles) -> Bool {
+        return lhs.teleplayId == rhs.teleplayId &&
+            lhs.subtitleId == rhs.subtitleId &&
+            lhs.materialId == rhs.materialId &&
+            lhs.materialUrl == rhs.materialUrl
+    }
+}
+
 struct Subtitles: Codable {
     let teleplayId: String
     let subtitleId: String
@@ -90,7 +99,7 @@ struct Subtitles: Codable {
     }
 }
 
-extension Subtitles: Cachable, Equatable {
+extension Subtitles: Cachable {
     var fileName: String {
         return subtitleId
     }

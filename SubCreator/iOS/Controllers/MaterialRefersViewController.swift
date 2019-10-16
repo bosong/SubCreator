@@ -54,6 +54,7 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
     // MARK: - View Life Circle
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.hero.isEnabled = true
         let close = UIBarButtonItem(image: R.image.nav_item_back(), style: .done, target: self, action: #selector(pop))
         navigationItem.leftBarButtonItems = [close, UIBarButtonItem(customView: titleView)]
     }
@@ -120,11 +121,11 @@ class MaterialRefersViewController: BaseViewController, ReactorKit.View {
                 
                 let subCreatorVC = SubCreatorViewController(image: image, item: reactor.currentState.data[ip.item])
                 subCreatorVC.cardView.hero.id = cell?.hero.id
-                subCreatorVC.backButton.hero.id = cell?.hero.id
-                subCreatorVC.doneButton.hero.id = cell?.hero.id
-                subCreatorVC.saveButton.hero.id = cell?.hero.id
-                subCreatorVC.shareButton.hero.id = cell?.hero.id
-                subCreatorVC.collectButton.hero.id = cell?.hero.id
+//                subCreatorVC.backButton.hero.id = cell?.hero.id
+//                subCreatorVC.doneButton.hero.id = cell?.hero.id
+//                subCreatorVC.saveButton.hero.id = cell?.hero.id
+//                subCreatorVC.shareButton.hero.id = cell?.hero.id
+//                subCreatorVC.collectButton.hero.id = cell?.hero.id
                 self.present(subCreatorVC, animated: true, completion: nil)
             })
             .disposed(by: disposeBag)

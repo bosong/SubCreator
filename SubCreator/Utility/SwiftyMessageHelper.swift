@@ -2,7 +2,7 @@
 //  SwiftyMessageHelper.swift
 //  ACG
 //
-//  Created by MorningStar on 2019/1/11.
+//  Created by ripple_k on 2019/1/11.
 //  Copyright © 2019 SoapVideo. All rights reserved.
 //
 //  swiftlint:disable vertical_parameter_alignment

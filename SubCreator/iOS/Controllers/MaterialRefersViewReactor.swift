@@ -48,8 +48,7 @@ class MaterialRefersViewReactor: Reactor {
             let data = Service.shared
                 .materialListMore(id: currentState.id, limit: 50, skip: 0)
                 .asObservable()
-                .map { $0.first?.materials }
-                .filterNil()
+                .map { $0.first?.materials ?? [] }
                 .map { Mutation.setData($0) }
             return .concat([start, data, end])
             
@@ -60,8 +59,7 @@ class MaterialRefersViewReactor: Reactor {
             let data = Service.shared
                 .materialListMore(id: currentState.id, limit: 50, skip: currentState.data.count)
                 .asObservable()
-                .map { $0.first?.materials }
-                .filterNil()
+                .map { $0.first?.materials ?? [] }
                 .map { Mutation.addData($0) }
             return .concat([start, data, end])
         }
