@@ -2,7 +2,7 @@
 //  CALayer+Ex.swift
 //  BGIMAdmin
 //
-//  Created by rpple_k on 2019/7/19.
+//  Created by ripple_k on 2019/7/19.
 //  Copyright © 2019 sks. All rights reserved.
 //
 

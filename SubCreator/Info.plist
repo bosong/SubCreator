@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>3</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -28,11 +28,11 @@
 		<true/>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>请求访问您的相机权限来拍摄照片</string>
+	<string>用于拍摄图片素材时访问相机</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>请求访问您的相册权限来保存图片</string>
+	<string>用于保存作品到相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>请求访问您的相册权限来读取图片</string>
+	<string>用于从相册选取图片素材</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>GJJHPJW--GB1-0.ttf</string>

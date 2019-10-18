@@ -2,7 +2,7 @@
 //  CollectViewReactor.swift
 //  SubCreator
 //
-//  Created by rpple_k on 2019/8/3.
+//  Created by ripple_k on 2019/8/3.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 
@@ -15,7 +15,7 @@ class CollectViewReactor: Reactor {
     
     enum Action {
         case reload
-        case delete([IndexPath], alert: () -> ())
+        case delete([IndexPath], alert: () -> Void)
     }
     
     enum Mutation {

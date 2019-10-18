@@ -2,7 +2,7 @@
 //  Optional+Ex.swift
 //  SubCreator
 //
-//  Created by rpple_k on 2019/8/1.
+//  Created by ripple_k on 2019/8/1.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 

@@ -12,7 +12,7 @@ import ReactorKit
 
 class ProductionViewReactor: Reactor {
     enum Action {
-        case delete([IndexPath], alert: () -> ())
+        case delete([IndexPath], alert: () -> Void)
     }
     
     enum Mutation {

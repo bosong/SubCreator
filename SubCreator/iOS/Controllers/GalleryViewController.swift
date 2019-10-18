@@ -159,8 +159,11 @@ class GalleryViewControler: HomepageViewController {
             fusumaCameraRollTitle = "相册"
             fusumaCameraTitle = "拍照"
         }
+        fusuma.autoSelectFirstImage = true
         fusuma.delegate = self
-        self.present(fusuma, animated: true, completion: nil)
+        self.present(fusuma, animated: true, completion: {
+            fusuma.albumShouldEnableDoneButton(isEnabled: true)
+        })
     }
     
     override func searchClicked() {

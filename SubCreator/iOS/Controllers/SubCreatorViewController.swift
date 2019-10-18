@@ -2,7 +2,7 @@
 //  SubCreatorViewController.swift
 //  SubCreator
 //
-//  Created by rpple_k on 2019/7/31.
+//  Created by ripple_k on 2019/7/31.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 
@@ -183,7 +183,7 @@ class SubCreatorViewController: BaseViewController {
             .share()
             
         doneButtonTapped
-            .flatMap { image -> Observable<UIImage> in
+            .flatMap { [weak self] image -> Observable<UIImage> in
 //                guard let self = self else { return .empty() }
                 
 //                return Service.shared.upload(name: "", tid: self.item?.teleplayId ?? "", mid: self.item?.materialId ?? "", data: data).asObservable()
@@ -196,7 +196,7 @@ class SubCreatorViewController: BaseViewController {
                 guard let data = image.resizeImage()?.jpegData(compressionQuality: 1) else { return .empty() }
                 let a = Double(data.count)
                 log.info("img length \(a/1024/1024)M")
-                return Service.shared.upload(name: "", tid: "", mid: "", data: data)
+                return Service.shared.upload(name: "", tid: "", mid: self?.item?.materialId ?? "", data: data)
                     .asObservable()
                     .map { _ in image }
             }

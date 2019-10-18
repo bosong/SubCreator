@@ -2,7 +2,7 @@
 //  HomePageCollectionViewCell.swift
 //  SubCreator
 //
-//  Created by rpple_k on 2019/7/30.
+//  Created by ripple_k on 2019/7/30.
 //  Copyright © 2019 ripple_k. All rights reserved.
 //
 
