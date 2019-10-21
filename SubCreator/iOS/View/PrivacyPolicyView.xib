@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clipsSubviews="YES" contentMode="scaleToFill" id="iN0-l3-epB" customClass="PrivacyPolicyView" customModule="ACG" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="240" height="371"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="用户隐私政策概要" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Alt-ez-jSx">
+                    <rect key="frame" x="63" y="20" width="114.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kDS-yr-ePr">
+                    <rect key="frame" x="10" y="57" width="220" height="233"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vHB-bL-9H7">
+                            <rect key="frame" x="0.0" y="0.0" width="220" height="266"/>
+                            <attributedString key="attributedText">
+                                <fragment content="本《隐私政策》将向你说明：">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment>
+                                    <string key="content">
+1.</string>
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="为帮助你浏览推荐、发布信息、交流沟通、注册认证，我们会收集你的部分必要信息；">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment>
+                                    <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="2.">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="为提供上述服务，我们可能会收集联络方式、音视频等敏感信息，你有权拒绝或撤回授权；">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment>
+                                    <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="5" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="3.">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="未经你同意，我们不会从第三方获取、共享或对外提供你的信息；">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment>
+                                    <string key="content" base64-UTF8="YES">
+Cg
+</string>
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="4.">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" metaFont="cellTitle"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                                <fragment content="你可以访问你的个人信息，我们也将提供投诉方式。如你点击不同意，我们将仅收集浏览推荐所必需的信息，不会收集上述敏感信息，但发布视频、交流沟通等功能可能会受影响。">
+                                    <attributes>
+                                        <color key="NSColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                        <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                        <paragraphStyle key="NSParagraphStyle" alignment="left" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineHeightMultiple="1.5" tighteningFactorForTruncation="0.0"/>
+                                    </attributes>
+                                </fragment>
+                            </attributedString>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="bottom" secondItem="vHB-bL-9H7" secondAttribute="bottom" constant="9" id="3yD-Pj-7B2"/>
+                        <constraint firstItem="vHB-bL-9H7" firstAttribute="leading" secondItem="kDS-yr-ePr" secondAttribute="leading" id="7pJ-U2-uXT"/>
+                        <constraint firstAttribute="trailing" secondItem="vHB-bL-9H7" secondAttribute="trailing" id="mpj-is-cCc"/>
+                        <constraint firstItem="vHB-bL-9H7" firstAttribute="top" secondItem="kDS-yr-ePr" secondAttribute="top" id="pDN-AT-9Sd"/>
+                        <constraint firstItem="vHB-bL-9H7" firstAttribute="width" secondItem="kDS-yr-ePr" secondAttribute="width" id="yCl-KY-Zln"/>
+                    </constraints>
+                </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mrp-1L-8CS">
+                    <rect key="frame" x="0.0" y="296" width="240" height="75"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="QjM-Bv-r1g">
+                            <rect key="frame" x="34" y="0.0" width="172" height="24"/>
+                            <state key="normal">
+                                <attributedString key="attributedTitle">
+                                    <fragment content="你可以查看完整版《隐私政策">
+                                        <attributes>
+                                            <color key="NSBackgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="NSColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                    <fragment content="》">
+                                        <attributes>
+                                            <font key="NSFont" size="12" name=".PingFangSC-Regular"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                            </state>
+                            <connections>
+                                <action selector="privacyPolicy" destination="iN0-l3-epB" eventType="touchUpInside" id="XnF-hf-t1c"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jMI-Rp-YlA">
+                            <rect key="frame" x="0.0" y="35" width="120" height="40"/>
+                            <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <state key="normal" title="不同意">
+                                <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="disAgree" destination="iN0-l3-epB" eventType="touchUpInside" id="2xc-PP-jPJ"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1gD-a0-1bl">
+                            <rect key="frame" x="120" y="35" width="120" height="40"/>
+                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="s0V-9v-IAg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="17"/>
+                            <state key="normal" title="同意">
+                                <color key="titleColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                            </state>
+                            <connections>
+                                <action selector="agree" destination="iN0-l3-epB" eventType="touchUpInside" id="MQy-3z-ccj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="jMI-Rp-YlA" firstAttribute="leading" secondItem="mrp-1L-8CS" secondAttribute="leading" id="48i-IE-Cbb"/>
+                        <constraint firstItem="QjM-Bv-r1g" firstAttribute="centerX" secondItem="mrp-1L-8CS" secondAttribute="centerX" id="6hD-es-sdQ"/>
+                        <constraint firstAttribute="bottom" secondItem="jMI-Rp-YlA" secondAttribute="bottom" id="GMv-JB-aa9"/>
+                        <constraint firstAttribute="height" constant="75" id="Y9c-8j-u3i"/>
+                        <constraint firstItem="QjM-Bv-r1g" firstAttribute="top" secondItem="mrp-1L-8CS" secondAttribute="top" id="Z8A-yl-UrU"/>
+                        <constraint firstAttribute="bottom" secondItem="1gD-a0-1bl" secondAttribute="bottom" id="a3O-WM-vhe"/>
+                        <constraint firstItem="1gD-a0-1bl" firstAttribute="width" secondItem="jMI-Rp-YlA" secondAttribute="width" id="acS-H9-Kvj"/>
+                        <constraint firstItem="1gD-a0-1bl" firstAttribute="height" secondItem="jMI-Rp-YlA" secondAttribute="height" id="bES-rU-43o"/>
+                        <constraint firstItem="1gD-a0-1bl" firstAttribute="leading" secondItem="jMI-Rp-YlA" secondAttribute="trailing" id="hmC-Xx-4iw"/>
+                        <constraint firstAttribute="trailing" secondItem="1gD-a0-1bl" secondAttribute="trailing" id="jOb-qc-BLK"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Alt-ez-jSx" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="6KA-bT-zZ3"/>
+                <constraint firstItem="mrp-1L-8CS" firstAttribute="top" secondItem="kDS-yr-ePr" secondAttribute="bottom" constant="6" id="D0H-8q-2nx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="mrp-1L-8CS" secondAttribute="bottom" id="IKc-YM-Q10"/>
+                <constraint firstItem="mrp-1L-8CS" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="J5G-65-P2B"/>
+                <constraint firstItem="kDS-yr-ePr" firstAttribute="top" secondItem="Alt-ez-jSx" secondAttribute="bottom" constant="20" id="JYX-Qa-I50"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="mrp-1L-8CS" secondAttribute="trailing" id="Phk-5A-3mc"/>
+                <constraint firstItem="kDS-yr-ePr" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="Xs3-yo-tnZ"/>
+                <constraint firstItem="Alt-ez-jSx" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="20" id="c5v-fv-nyX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kDS-yr-ePr" secondAttribute="trailing" constant="10" id="isu-r0-dka"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="layer.layerCornerRadius">
+                    <integer key="value" value="5"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <connections>
+                <outlet property="agreeButton" destination="1gD-a0-1bl" id="moX-3Q-hqi"/>
+                <outlet property="disAgreeButton" destination="jMI-Rp-YlA" id="PSz-7I-Wgo"/>
+                <outlet property="privacyPolicyButton" destination="QjM-Bv-r1g" id="9s6-ee-ijo"/>
+            </connections>
+            <point key="canvasLocation" x="88" y="134.48275862068968"/>
+        </view>
+    </objects>
+</document>

@@ -52,6 +52,13 @@ public final class CompositionRoot {
     
     /// ConfigurePreferences for App
     static func configurePreferences() {
-        
+        if var preferences = Preferences.current {
+            preferences.installation = false
+            Preferences.update(preferences)
+            
+        } else {
+            let preferences = Preferences(agreePrivacyPolicyView: nil, installation: true)
+            Preferences.update(preferences)
+        }
     }
 }

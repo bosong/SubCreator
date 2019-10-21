@@ -56,6 +56,19 @@ class DetailViewController: BaseViewController {
         $0.setImage(R.image.btn_collection_sel(), for: .selected)
         $0.sizeToFit()
     }
+    let reportButton = UIButton(type: .custom).then {
+        $0.setTitle("违规举报", for: .normal)
+        let title = NSMutableAttributedString(string: "违规举报")
+        let strRange = NSRange.init(location: 0, length: title.length)
+        let number = NSNumber(value: NSUnderlineStyle.single.rawValue)
+        let color = UIColor(hex: 0xAEB7C5)
+        title.addAttribute(.underlineStyle, value: number, range: strRange)
+        title.addAttribute(.foregroundColor, value: color, range: strRange)
+        title.addAttribute(.underlineColor, value: color, range: strRange)
+        $0.setAttributedTitle(title, for: .normal)
+        $0.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .regular)
+        $0.sizeToFit()
+    }
     let dismissTapGesture = UITapGestureRecognizer()
     
     // MARK: - View Life Circle
@@ -120,6 +133,10 @@ class DetailViewController: BaseViewController {
         
         self.saveButton.rx.tap
             .subscribe(onNext: { [unowned self] (_) in
+                if Permission.photos.status == .denied {
+                    self.p_gotoPermission(message: "相册")
+                    return
+                }
                 SaveImageTools.shared.saveImage(self.cardView.asImage(), completed: { (error) in
                     error.noneDo {
                         DispatchQueue.main.async {
@@ -135,6 +152,13 @@ class DetailViewController: BaseViewController {
             .subscribe(onNext: { [weak self] (tap) in
                 self?.dismiss(animated: true, completion: nil)
             })
+            .disposed(by: disposeBag)
+        
+        self.reportButton
+            .rx.tap
+            .subscribe(onNext: { [weak self] in self?.confirmAlert(title: "举报", message: "确定要举报该内容吗？", confirmAction: {
+                message(.success, title: "举报成功", body: "已收到您的举报，感谢您的监督。")
+            })})
             .disposed(by: disposeBag)
     }
     
@@ -176,6 +200,13 @@ class DetailViewController: BaseViewController {
                 make.size.equalTo(CGSize(width: cardWidth, height: cardHeight))
         }
         
+        reportButton
+            .mt.adhere(toSuperView: view)
+            .mt.layout { (make) in
+                make.right.equalTo(-35)
+                make.top.equalTo(cardView.snp.bottom).offset(3)
+        }
+        
         shareButton
             .mt.adhere(toSuperView: view)
             .mt.layout { (make) in
@@ -205,7 +236,35 @@ class DetailViewController: BaseViewController {
 //        }
     }
     // MARK: - Private Functions
-
+    private func confirmAlert(title: String,
+                              message: String,
+                              confirmAction: @escaping () -> Void) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "确认", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "取消", style: .default, handler: { (action) in
+        }))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func p_gotoPermission(message: String) {
+        UIAlertController
+            .present(in: self,
+                     title: "您拒绝了该权限，功能无法正常使用。",
+                     message: "请到系统”设置-搞笑字幕“中授权使用你的\(message)",
+                style: .alert,
+                actions: [UIAlertController.AlertAction.action(title: "去设置")])
+            .subscribe(onNext: { (_) in
+                if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+                        //                        UIApplication.shared.openURL(settingsUrl)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 class CardView: BaseView {

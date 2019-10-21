@@ -19,7 +19,7 @@
 	<key>CFBundleShortVersionString</key>
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -32,7 +32,7 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>用于保存作品到相册</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>用于从相册选取图片素材</string>
+	<string>用于从相册选取图片素材或保存作品</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>GJJHPJW--GB1-0.ttf</string>

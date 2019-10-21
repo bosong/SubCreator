@@ -2,13 +2,8 @@ import UIKit
 
 extension UIApplication {
     fileprivate var topViewController: UIViewController? {
-        var vc = delegate?.window??.rootViewController
         
-        while let presentedVC = vc?.presentedViewController {
-            vc = presentedVC
-        }
-        
-        return vc
+        return (UIApplication.shared.delegate as! AppDelegate).window?.rootViewController // swiftlint:disable:this force_cast
     }
     
     internal func presentViewController(_ viewController: UIViewController, animated: Bool = true, completion: (() -> Void)? = nil) {

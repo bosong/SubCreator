@@ -15,6 +15,7 @@ class MeViewController: BaseViewController {
     enum Item {
         case collect
         case gallery
+        case EULA
     }
     
     var tableView = UITableView().then {
@@ -30,7 +31,7 @@ class MeViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: HomePageTitleView("我的"))
         
         let cellIdentifier = getClassName(MeTableViewCell.self)
-        Observable.just([Item.collect, .gallery])
+        Observable.just([Item.collect, .gallery, .EULA])
             .bind(to: tableView.rx.items(cellIdentifier: cellIdentifier, cellType: MeTableViewCell.self)) { ip, element, cell in
                 switch element {
                 case .collect:
@@ -39,6 +40,9 @@ class MeViewController: BaseViewController {
                 case .gallery:
                     cell.imgView.image = R.image.me_icon_gallery()
                     cell.titleLabel.text = "我的创作"
+                case .EULA:
+                    cell.imgView.image = R.image.userAgreement()
+                    cell.titleLabel.text = "用户协议"
                 }
             }
             .disposed(by: disposeBag)
@@ -54,6 +58,14 @@ class MeViewController: BaseViewController {
                     let productionVC = ProductionViewController()
                     productionVC.reactor = ProductionViewReactor()
                     self?.navigationController?.pushViewController(productionVC, animated: true)
+                case .EULA:
+                    if let eulaURL = R.file.eulaHtml() {
+                        let webVC = WebViewController()
+                        let request = URLRequest(url: eulaURL)
+                        webVC.webView.loadRequest(request)
+                        webVC.title = "用户协议"
+                        self?.present(BaseNavigationViewController(rootViewController: webVC), animated: true, completion: nil)
+                    }
                 }
             })
             .disposed(by: disposeBag)

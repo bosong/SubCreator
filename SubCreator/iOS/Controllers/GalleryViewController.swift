@@ -159,10 +159,11 @@ class GalleryViewControler: HomepageViewController {
             fusumaCameraRollTitle = "相册"
             fusumaCameraTitle = "拍照"
         }
-        fusuma.autoSelectFirstImage = true
         fusuma.delegate = self
         self.present(fusuma, animated: true, completion: {
-            fusuma.albumShouldEnableDoneButton(isEnabled: true)
+            if Permission.camera.status == .denied, Permission.photos.status == .authorized {
+                self.p_gotoPermission(message: "相机")
+            }
         })
     }
     
@@ -224,6 +225,27 @@ extension GalleryViewControler: FusumaDelegate {
     }
     
     func fusumaCameraRollUnauthorized() {
-        
+        if Permission.photos.status == .denied {
+            p_gotoPermission(message: "相册")
+        }
+    }
+    
+    private func p_gotoPermission(message: String) {
+        let vc = self.presentedViewController ?? self
+        UIAlertController
+            .present(in: vc,
+                     title: "您拒绝了该权限，功能无法正常使用。",
+                     message: "请到系统”设置-搞笑字幕“中授权使用你的\(message)",
+                style: .alert,
+                actions: [UIAlertController.AlertAction.action(title: "去设置")])
+            .subscribe(onNext: { (_) in
+                if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                    if UIApplication.shared.canOpenURL(settingsUrl) {
+                        UIApplication.shared.open(settingsUrl, options: [:], completionHandler: nil)
+                        //                        UIApplication.shared.openURL(settingsUrl)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

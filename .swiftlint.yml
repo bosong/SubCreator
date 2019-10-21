@@ -6,6 +6,7 @@ excluded:
   - SubCreatorUITests
   - ./SubCreator/Utility/Device
   - ./SubCreator/iOS/Controllers/Photo
+  - ./SubCreator/iOS/Alert
 disabled_rules:
   - trailing_whitespace
 

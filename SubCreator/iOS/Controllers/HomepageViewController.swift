@@ -145,7 +145,6 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         
         reactor.state.map { $0.subtitle }
             .skip(1)
-            .debug("subtitle")
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
             .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
@@ -343,6 +342,18 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 return view
             }
         })
+    }
+    
+    private func p_checkPrivacy() {
+        if
+            var preferences = UserDefaults.standard.get(objectType: Preferences.self, forKey: PreferenceKey.preferences),
+            preferences.agreePrivacyPolicyView == nil {
+            PrivacyPolicyView.show(in: self) { (policyStatus) in
+                preferences.agreePrivacyPolicyView = policyStatus
+                UserDefaults.standard.set(object: preferences, forKey: PreferenceKey.preferences)
+                UserDefaults.standard.synchronize()
+            }
+        }
     }
 }
 
