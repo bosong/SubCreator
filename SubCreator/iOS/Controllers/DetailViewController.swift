@@ -8,6 +8,8 @@
 
 import UIKit
 import Hero
+import RxSwift
+import RxCocoa
 
 class DetailViewController: BaseViewController {
 
@@ -156,9 +158,26 @@ class DetailViewController: BaseViewController {
         
         self.reportButton
             .rx.tap
-            .subscribe(onNext: { [weak self] in self?.confirmAlert(title: "举报", message: "确定要举报该内容吗？", confirmAction: {
-                message(.success, title: "举报成功", body: "已收到您的举报，感谢您的监督。")
-            })})
+            .flatMap({ [unowned self] (_) -> Observable<Int> in
+                return UIAlertController.present(in: self, title: "违规举报", message: nil, style: .actionSheet, actions: [.action(title: "举报", style: .default), .action(title: "屏蔽", style: .default), .action(title: "取消", style: .cancel)]) // swiftlint:disable:this line_length
+            })
+            .subscribe(onNext: { [weak self] idx in
+                switch idx {
+                case 0:
+                    self?.reportAlert {
+                        message(.success, title: "举报成功", body: "已收到您的举报，感谢您的监督。")
+                    }
+                case 1:
+                    self?.confirmAlert(title: "屏蔽", message: "确定要屏蔽该内容吗？", confirmAction: {
+                        if let subtitle = self?.item {
+                            ShieldingSubtitlesCacher.shared.add(subtitle)
+                        }
+                        message(.success, title: "屏蔽成功", body: "已屏蔽此条内容")
+                    })
+                default:
+                    break
+                }
+            })
             .disposed(by: disposeBag)
     }
     
@@ -244,6 +263,28 @@ class DetailViewController: BaseViewController {
             confirmAction()
         }))
         alertController.addAction(UIAlertAction(title: "取消", style: .default, handler: { (action) in
+        }))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func reportAlert(confirmAction: @escaping () -> Void) {
+        let alertController = UIAlertController(title: "请选择举报原因", message: nil, preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "色情低俗", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "垃圾广告信息", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "不友善行为", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "涉嫌侵权", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "其他", style: .default, handler: { (action) in
+            confirmAction()
+        }))
+        alertController.addAction(UIAlertAction(title: "取消", style: .cancel, handler: { (action) in
         }))
         present(alertController, animated: true, completion: nil)
     }

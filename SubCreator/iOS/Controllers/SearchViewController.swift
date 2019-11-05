@@ -45,7 +45,7 @@ class SearchViewController: BaseViewController, View {
         searchBar.placeholder = "请输入您想要搜索的影视名称"
         searchBar.delegate = self
         
-        if let searchField = searchBar.value(forKey: "_searchField") as? UITextField {
+        if let searchField = searchBar.getIvar(name: "_searchField") as? UITextField {
             searchField.leftViewMode = .never
         }
         

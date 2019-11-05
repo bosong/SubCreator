@@ -83,7 +83,7 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
             .bind(to: collectionView.mj_footer.rx.endRefresh)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.data }
+        reactor.state.map { $0.data.filter { !ShieldingSubtitlesCacher.shared.loads().contains($0) } }
             .skip(1)
             .do(onNext: { [unowned self] in
                 self.empty(show: $0.isEmpty)

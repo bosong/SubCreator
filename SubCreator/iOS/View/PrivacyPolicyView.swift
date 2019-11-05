@@ -48,4 +48,15 @@ class PrivacyPolicyView: UIView {
                 .present(BaseNavigationViewController(rootViewController: webVC), animated: true, completion: nil)
         }
     }
+    
+    @IBAction func eulaPolicy() {
+        if let path = Bundle.main.path(forResource: "EULA", ofType: "html") {
+            let webVC = WebViewController()
+            let url = URL(fileURLWithPath: path)
+            let request = URLRequest(url: url)
+            webVC.webView.loadRequest(request)
+            findViewController(view: self)
+                .present(BaseNavigationViewController(rootViewController: webVC), animated: true, completion: nil)
+        }
+    }
 }

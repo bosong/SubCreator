@@ -159,6 +159,7 @@ class GalleryViewControler: HomepageViewController {
             fusumaCameraRollTitle = "相册"
             fusumaCameraTitle = "拍照"
         }
+        fusuma.modalPresentationStyle = .fullScreen
         fusuma.delegate = self
         self.present(fusuma, animated: true, completion: {
             if Permission.camera.status == .denied, Permission.photos.status == .authorized {

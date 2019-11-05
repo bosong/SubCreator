@@ -106,6 +106,13 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         uploadButton.hero.id = "uploadButton"
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        DispatchQueue.once(token: "p_checkPrivacy") { [weak self] in
+            self?.p_checkPrivacy()
+        }
+    }
+    
     // MARK: - SEL
     func bind(reactor: HomepageViewReactor) {
 //        self.rx.viewDidLoad
@@ -146,7 +153,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         reactor.state.map { $0.subtitle }
             .skip(1)
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
-            .map { $0.map { Section(model: $0, items: $0.subtitles) } }
+            .map { $0.map { Section(model: $0, items: $0.subtitles.filter { !ShieldingSubtitlesCacher.shared.loads().contains($0) }) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         

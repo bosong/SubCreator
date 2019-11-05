@@ -113,3 +113,56 @@ public class CollectSubtitlesCacher {
         }
     }
 }
+
+public class ShieldingSubtitlesCacher {
+    public static let creationCacherUrl = URL(fileURLWithPath: NSHomeDirectory() + "/Library/Caches/Shielding/Subtitles")
+    
+    var path: String {
+        return CollectSubtitlesCacher.creationCacherUrl.path
+    }
+    
+    /// shared
+    public static let shared = CollectSubtitlesCacher()
+    
+    /// Cacher
+    private lazy var _cacher = Cacher(destination: .custom(path))
+    
+    /// loadImageWrappers
+    ///
+    /// - Returns: ImageWrapper
+    func loads() -> [Subtitles] {
+        
+        var result: [Subtitles] = []
+        for file in _cacher.findFiles(path: path) {
+            if let model: Subtitles = _cacher.load(fileName: file) {
+                result.append(model)
+            }
+        }
+        return result.sorted(by: { $0.timestamp > $1.timestamp })
+    }
+    
+    /// addImageWrapper
+    ///
+    /// - Parameter draft: ImageWrapper
+    func add(_ model: Subtitles) {
+        _cacher.persist(item: model) { (_, error) in
+            if let error = error {
+                log.error(error.localizedDescription)
+            }
+        }
+    }
+    
+    /// removeImageWrapper
+    ///
+    /// - Parameter draft: ImageWrapper
+    func remove(_ model: Subtitles) {
+        _cacher.remove(fileName: model.fileName)
+    }
+    
+    /// clearImageWrapper
+    func clearImageWrappers() {
+        for draftFile in _cacher.findFiles(path: path) {
+            _cacher.remove(fileName: draftFile)
+        }
+    }
+}

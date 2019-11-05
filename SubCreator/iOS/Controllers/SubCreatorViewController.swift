@@ -27,6 +27,7 @@ class SubCreatorViewController: BaseViewController {
     // MARK: - Initialized
     init(image: UIImage, item: Materials?) {
         super.init(nibName: nil, bundle: nil)
+        self.modalPresentationStyle = .fullScreen
         cardView.image = image
         self.item = item
         if let item = item {
