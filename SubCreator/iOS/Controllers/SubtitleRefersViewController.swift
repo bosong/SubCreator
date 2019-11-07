@@ -83,7 +83,7 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
             .bind(to: collectionView.mj_footer.rx.endRefresh)
             .disposed(by: disposeBag)
         
-        reactor.state.map { $0.data.filter { !ShieldingSubtitlesCacher.shared.loads().contains($0) } }
+        reactor.state.map { $0.data }
             .skip(1)
             .do(onNext: { [unowned self] in
                 self.empty(show: $0.isEmpty)
@@ -121,6 +121,9 @@ class SubtitleRefersViewController: BaseViewController, ReactorKit.View {
                 
                 let detailVC = DetailViewController(image: image, item: reactor.currentState.data[ip.item])
                 //                detailVC.subCreatorButton.hero.id = self.uploadButton.hero.id
+                detailVC.reloadHomepageClosure = { [weak self] in
+                    self?.reactor?.action.onNext(.reloadData)
+                }
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = cell?.hero.id
                 detailVC.saveButton.hero.id = cell?.hero.id

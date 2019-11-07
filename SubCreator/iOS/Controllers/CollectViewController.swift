@@ -123,6 +123,7 @@ class CollectViewController: BaseViewController, ReactorKit.View {
                 switch self.dataSource[ip] {
                 case .subtitle(let model):
                     let detailVC = DetailViewController(image: image, item: model)
+                    detailVC.hideReport = true
                     detailVC.cardView.hero.id = cell?.hero.id
                     detailVC.shareButton.hero.id = cell?.hero.id
                     detailVC.saveButton.hero.id = cell?.hero.id

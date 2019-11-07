@@ -91,7 +91,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
     }()
     let uploadButton: UIButton = {
         let button = UIButton(type: .custom)
-        button.setImage(R.image.btn_upload(), for: .normal)
+        button.setImage(R.image.material_btn_localUpload(), for: .normal)
         button.sizeToFit()
         button.isHidden = true
         return button
@@ -153,7 +153,7 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
         reactor.state.map { $0.subtitle }
             .skip(1)
             .do(onNext: { [weak self] in self?.empty(show: $0.isEmpty) })
-            .map { $0.map { Section(model: $0, items: $0.subtitles.filter { !ShieldingSubtitlesCacher.shared.loads().contains($0) }) } }
+            .map { $0.map { Section(model: $0, items: $0.subtitles) } }
             .bind(to: collectionView.rx.items(dataSource: dataSource))
             .disposed(by: disposeBag)
         
@@ -193,6 +193,9 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 let item = self.dataSource[ip]
                 let detailVC = DetailViewController(image: image, item: item)
+                detailVC.reloadHomepageClosure = { [weak self] in
+                    self?.reactor?.action.onNext(.reloadSubtitleList)
+                }
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = self.uploadButton.hero.id
                 detailVC.saveButton.hero.id = self.uploadButton.hero.id
@@ -356,9 +359,11 @@ class HomepageViewController: BaseViewController, ReactorKit.View {
             var preferences = UserDefaults.standard.get(objectType: Preferences.self, forKey: PreferenceKey.preferences),
             preferences.agreePrivacyPolicyView == nil {
             PrivacyPolicyView.show(in: self) { (policyStatus) in
-                preferences.agreePrivacyPolicyView = policyStatus
-                UserDefaults.standard.set(object: preferences, forKey: PreferenceKey.preferences)
-                UserDefaults.standard.synchronize()
+                if policyStatus {
+                    preferences.agreePrivacyPolicyView = policyStatus
+                    UserDefaults.standard.set(object: preferences, forKey: PreferenceKey.preferences)
+                    UserDefaults.standard.synchronize()
+                }
             }
         }
     }

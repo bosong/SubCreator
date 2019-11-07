@@ -17,6 +17,7 @@ class HomepageViewReactor: Reactor {
         case materialListMore
         case subtitleList
         case subtitleListMore
+        case reloadSubtitleList
     }
     
     enum Mutation {
@@ -79,6 +80,8 @@ class HomepageViewReactor: Reactor {
                 .asObservable()
                 .map(Mutation.addSubtitle)
             return .concat([start, data, end])
+        case .reloadSubtitleList:
+            return Observable.just(Mutation.setSubtitle(currentState.subtitle))
         }
     }
     
@@ -90,12 +93,25 @@ class HomepageViewReactor: Reactor {
         case .addMaterial(let data):
             state.material += data
         case .setSubtitle(let data):
-            state.subtitle = data
+            state.subtitle = filterShielding(data)
         case .addSubtitle(let data):
-            state.subtitle += data
+            state.subtitle += filterShielding(data)
         case .setLoading(let loading):
             state.isLoading = loading
         }
         return state
+    }
+    
+    private func filterShielding(_ subtitle: [Subtitle]) -> [Subtitle] {
+        return subtitle.map { (subtitle) -> Subtitle in
+            var subtitle = subtitle
+            subtitle.subtitles = subtitle.subtitles.compactMap { element -> Subtitles? in
+                if ShieldingSubtitlesCacher.shared.loads().contains(element) {
+                    return nil
+                }
+                return element
+            }
+            return subtitle
+        }
     }
 }

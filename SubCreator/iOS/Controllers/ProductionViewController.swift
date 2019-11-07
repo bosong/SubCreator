@@ -96,6 +96,7 @@ class ProductionViewController: BaseViewController, View {
                 guard let image = cell?.imgV.image else { return }
                 cell?.hero.id = "homepageCell\(ip.section)\(ip.item)"
                 let detailVC = DetailViewController(image: image, item: nil)
+                detailVC.hideReport = true
                 detailVC.cardView.hero.id = cell?.hero.id
                 detailVC.shareButton.hero.id = cell?.hero.id
                 detailVC.saveButton.hero.id = cell?.hero.id

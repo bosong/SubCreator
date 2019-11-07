@@ -32,7 +32,7 @@ class InputTextView: UIView {
     var container = UIView()
     func initSubView() {
         self.addSubview(container)
-        backgroundColor = UIColor.mt.theme
+        backgroundColor = UIColor.white
         keyboardHeight = safeAreaBottomMargin
         
         textHeight = textView.font?.lineHeight ?? 0
@@ -62,8 +62,8 @@ class InputTextView: UIView {
                 guard let self = self else { return }
                 self.keyboardHeight = safeAreaBottomMargin
                 self.updateTextViewFrame()
-                self.textView.textColor = .white
-                self.backgroundColor = UIColor.mt.theme
+//                self.textView.textColor = .white
+                self.backgroundColor = UIColor.white
             })
             .disposed(by: disposeBag)
     }
@@ -79,7 +79,8 @@ class InputTextView: UIView {
             (textView.font?.lineHeight ?? 0) + 2 * topBottomInset) + 10
         
         textView.frame = CGRect(x: 0, y: 0, width: screenWidth, height: textViewHeight)
-        let inputTextViewY = keyboardHeight == 0 ? screenHeight : screenHeight - keyboardHeight - textViewHeight
+        let inputTextViewY = keyboardHeight == 0 ? screenHeight - textViewHeight : screenHeight - keyboardHeight - textViewHeight
+//        let inputTextViewY = screenHeight - keyboardHeight - textViewHeight
         frame = CGRect(x: 0, y: inputTextViewY, width: screenWidth, height: textViewHeight + keyboardHeight)
         textViewHeightSubject.onNext(frame.height)
     }

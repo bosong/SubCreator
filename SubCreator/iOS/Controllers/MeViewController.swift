@@ -16,6 +16,7 @@ class MeViewController: BaseViewController {
         case collect
         case gallery
         case EULA
+        case about
     }
     
     var tableView = UITableView().then {
@@ -31,7 +32,7 @@ class MeViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: HomePageTitleView("我的"))
         
         let cellIdentifier = getClassName(MeTableViewCell.self)
-        Observable.just([Item.collect, .gallery, .EULA])
+        Observable.just([Item.collect, .gallery, .EULA, .about])
             .bind(to: tableView.rx.items(cellIdentifier: cellIdentifier, cellType: MeTableViewCell.self)) { ip, element, cell in
                 switch element {
                 case .collect:
@@ -43,6 +44,9 @@ class MeViewController: BaseViewController {
                 case .EULA:
                     cell.imgView.image = R.image.userAgreement()
                     cell.titleLabel.text = "用户协议"
+                case .about:
+                    cell.imgView.image = R.image.aboutUs()
+                    cell.titleLabel.text = "关于我们"
                 }
             }
             .disposed(by: disposeBag)
@@ -64,8 +68,13 @@ class MeViewController: BaseViewController {
                         let request = URLRequest(url: eulaURL)
                         webVC.webView.loadRequest(request)
                         webVC.title = "用户协议"
-                        self?.present(BaseNavigationViewController(rootViewController: webVC), animated: true, completion: nil)
+                        let vc = BaseNavigationViewController(rootViewController: webVC)
+                        vc.modalPresentationStyle = .fullScreen
+                        self?.present(vc, animated: true, completion: nil)
                     }
+                case .about:
+                    let aboutVC = AboutViewController()
+                    self?.navigationController?.pushViewController(aboutVC, animated: true)
                 }
             })
             .disposed(by: disposeBag)

@@ -157,7 +157,7 @@ class SubCreatorToolBar: BaseView {
 
 class ToolBarStyleItemView: BaseView {
     init() {
-        super.init(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217))
+        super.init(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 217 + safeAreaBottomMargin))
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -204,7 +204,7 @@ class ToolBarStyleItemView: BaseView {
     }
     
     override func setupSubviews() {
-        
+        backgroundColor = .white
         helpLabel
             .mt.adhere(toSuperView: self)
             .mt.layout { (make) in

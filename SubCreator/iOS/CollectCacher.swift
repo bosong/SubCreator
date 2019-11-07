@@ -118,11 +118,11 @@ public class ShieldingSubtitlesCacher {
     public static let creationCacherUrl = URL(fileURLWithPath: NSHomeDirectory() + "/Library/Caches/Shielding/Subtitles")
     
     var path: String {
-        return CollectSubtitlesCacher.creationCacherUrl.path
+        return ShieldingSubtitlesCacher.creationCacherUrl.path
     }
     
     /// shared
-    public static let shared = CollectSubtitlesCacher()
+    public static let shared = ShieldingSubtitlesCacher()
     
     /// Cacher
     private lazy var _cacher = Cacher(destination: .custom(path))

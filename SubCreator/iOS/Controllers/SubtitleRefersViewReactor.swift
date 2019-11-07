@@ -13,6 +13,7 @@ class SubtitleRefersViewReactor: Reactor {
     enum Action {
         case loadData
         case loadMore
+        case reloadData
     }
     
     enum Mutation {
@@ -60,6 +61,9 @@ class SubtitleRefersViewReactor: Reactor {
                 .map { $0.first?.subtitles ?? [] }
                 .map { Mutation.addData($0) }
             return .concat([start, data, end])
+            
+        case .reloadData:
+            return Observable.just(Mutation.setData(currentState.data))
         }
     }
     
@@ -67,12 +71,21 @@ class SubtitleRefersViewReactor: Reactor {
         var state = state
         switch mutation {
         case .setData(let data):
-            state.data = data
+            state.data = filterShielding(data)
         case .addData(let data):
-            state.data += data
+            state.data += filterShielding(data)
         case .setLoading(let loading):
             state.isLoading = loading
         }
         return state
+    }
+    
+    private func filterShielding(_ subtitles: [Subtitles]) -> [Subtitles] {
+        return subtitles.compactMap { element -> Subtitles? in
+            if ShieldingSubtitlesCacher.shared.loads().contains(element) {
+                return nil
+            }
+            return element
+        }
     }
 }

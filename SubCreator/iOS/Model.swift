@@ -53,7 +53,7 @@ struct Subtitle: Codable {
     let teleplayName: String
 //    let total: Int
     
-    let subtitles: [Subtitles]
+    var subtitles: [Subtitles]
 //    private enum CodingKeys: String, CodingKey {
 //        case teleplayId = "teleplay_id"
 //        case teleplayName = "teleplay_name"
@@ -64,10 +64,8 @@ struct Subtitle: Codable {
 
 extension Subtitles: Equatable {
     static func == (lhs: Subtitles, rhs: Subtitles) -> Bool {
-        return lhs.teleplayId == rhs.teleplayId &&
-            lhs.subtitleId == rhs.subtitleId &&
-            lhs.materialId == rhs.materialId &&
-            lhs.materialUrl == rhs.materialUrl
+        return lhs.subtitleId == rhs.subtitleId &&
+            lhs.url == rhs.url
     }
 }
 

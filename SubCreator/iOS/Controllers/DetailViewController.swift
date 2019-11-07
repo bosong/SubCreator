@@ -13,8 +13,15 @@ import RxCocoa
 
 class DetailViewController: BaseViewController {
 
+    var hideReport = false {
+        didSet {
+            self.reportButton.isHidden = self.hideReport
+        }
+    }
+    var reloadHomepageClosure: (() -> Void)?
     // MARK: - Properties
     private var item: Subtitles?
+    private var shouldReloadHomepage = false
     // MARK: - Initialized
     init(image: UIImage, item: Subtitles? = nil) {
         super.init(nibName: nil, bundle: nil)
@@ -25,7 +32,6 @@ class DetailViewController: BaseViewController {
             self.item = item
             self.collectButton.isSelected = CollectSubtitlesCacher.shared.loads().contains(item)
         }
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -152,7 +158,7 @@ class DetailViewController: BaseViewController {
         dismissTapGesture
             .rx.event
             .subscribe(onNext: { [weak self] (tap) in
-                self?.dismiss(animated: true, completion: nil)
+                self?.dismissSelf()
             })
             .disposed(by: disposeBag)
         
@@ -172,6 +178,8 @@ class DetailViewController: BaseViewController {
                         if let subtitle = self?.item {
                             ShieldingSubtitlesCacher.shared.add(subtitle)
                         }
+                        self?.shouldReloadHomepage = true
+                        self?.dismissSelf()
                         message(.success, title: "屏蔽成功", body: "已屏蔽此条内容")
                     })
                 default:
@@ -255,6 +263,14 @@ class DetailViewController: BaseViewController {
 //        }
     }
     // MARK: - Private Functions
+    private func dismissSelf() {
+        self.dismiss(animated: true, completion: {
+            if self.shouldReloadHomepage == true {
+                self.reloadHomepageClosure?()
+            }
+        })
+    }
+    
     private func confirmAlert(title: String,
                               message: String,
                               confirmAction: @escaping () -> Void) {

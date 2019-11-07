@@ -281,6 +281,11 @@ class SubCreatorViewController: BaseViewController {
         navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        inputTextView.textView.resignFirstResponder()
+    }
+    
     // MARK: - SEL
     @objc func panGesture(_ gesture: UIPanGestureRecognizer) {
         let point = gesture.translation(in: self.cardView)

@@ -76,6 +76,8 @@
 		586FE21122F28A4B00A0EF82 /* Device.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE20D22F28A4B00A0EF82 /* Device.swift */; };
 		586FE21322F28DCF00A0EF82 /* NSAttributedString+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21222F28DCF00A0EF82 /* NSAttributedString+Ex.swift */; };
 		586FE21722F28E7600A0EF82 /* UITextView+Placeholder.m in Sources */ = {isa = PBXBuildFile; fileRef = 586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */; };
+		589EAD3F2372AFBF005E2DA3 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589EAD3D2372AFBF005E2DA3 /* AboutViewController.swift */; };
+		589EAD402372AFBF005E2DA3 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 589EAD3E2372AFBF005E2DA3 /* AboutViewController.xib */; };
 		589EE7AC23614EA7001CACC7 /* privacy.html in Resources */ = {isa = PBXBuildFile; fileRef = 589EE7AB23614EA7001CACC7 /* privacy.html */; };
 		589EEB05236AC6A4001CACC7 /* NSObject+Ex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 589EEB04236AC6A4001CACC7 /* NSObject+Ex.swift */; };
 		58CE8299235D5C20008B0F48 /* EULA.html in Resources */ = {isa = PBXBuildFile; fileRef = 58CE8298235D5C20008B0F48 /* EULA.html */; };
@@ -202,6 +204,8 @@
 		586FE21422F28E7500A0EF82 /* SubCreator-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SubCreator-Bridging-Header.h"; sourceTree = "<group>"; };
 		586FE21522F28E7600A0EF82 /* UITextView+Placeholder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITextView+Placeholder.m"; sourceTree = "<group>"; };
 		586FE21622F28E7600A0EF82 /* UITextView+Placeholder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITextView+Placeholder.h"; sourceTree = "<group>"; };
+		589EAD3D2372AFBF005E2DA3 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		589EAD3E2372AFBF005E2DA3 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		589EE7AB23614EA7001CACC7 /* privacy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = privacy.html; sourceTree = "<group>"; };
 		589EEB04236AC6A4001CACC7 /* NSObject+Ex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSObject+Ex.swift"; sourceTree = "<group>"; };
 		58CE8298235D5C20008B0F48 /* EULA.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = EULA.html; sourceTree = "<group>"; };
@@ -498,6 +502,8 @@
 				58262821233B545500FADB14 /* SearchViewController.swift */,
 				58262823233B61A400FADB14 /* SearchViewReactor.swift */,
 				58262829233C9F7200FADB14 /* UICollectionViewLeftAlignedLayout.swift */,
+				589EAD3D2372AFBF005E2DA3 /* AboutViewController.swift */,
+				589EAD3E2372AFBF005E2DA3 /* AboutViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -668,6 +674,7 @@
 				58FF557022F4344B009E8CCC /* GJJHPJW--GB1-0.ttf in Resources */,
 				58CE8299235D5C20008B0F48 /* EULA.html in Resources */,
 				586FE12D22EFEBB300A0EF82 /* Assets.xcassets in Resources */,
+				589EAD402372AFBF005E2DA3 /* AboutViewController.xib in Resources */,
 				582704DE235D8B7100EAD83C /* PrivacyPolicyView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -834,6 +841,7 @@
 				5826281A233A1B0400FADB14 /* ProductionViewReactor.swift in Sources */,
 				582704EC235D8BAC00EAD83C /* KAlertFadeAnimation.swift in Sources */,
 				58FF557922F53011009E8CCC /* CollectViewReactor.swift in Sources */,
+				589EAD3F2372AFBF005E2DA3 /* AboutViewController.swift in Sources */,
 				582623C12334B42100FADB14 /* BaseNavigationViewController.swift in Sources */,
 				58FF557F22F561B1009E8CCC /* SwiftyMessageHelper.swift in Sources */,
 				586FE17322EFF69800A0EF82 /* HomepageViewReactor.swift in Sources */,
@@ -1063,7 +1071,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 62VW83T5P8;
 				INFOPLIST_FILE = SubCreator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
@@ -1088,7 +1096,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_TEAM = 62VW83T5P8;
 				INFOPLIST_FILE = SubCreator/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
